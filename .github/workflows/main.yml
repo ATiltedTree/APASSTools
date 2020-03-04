@@ -15,6 +15,8 @@ jobs:
         with:
           path: ../Qt
           key: QtCache
+      - name: Setup | Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v1
       - name: Setup | CMake
         uses: jwlawson/actions-setup-cmake@v1.0
         with:
