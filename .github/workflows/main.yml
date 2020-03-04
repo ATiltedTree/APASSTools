@@ -24,6 +24,7 @@ jobs:
         uses: jurplel/install-qt-action@v2.5.0
         with:
           cached: ${{ steps.cache.outputs.cache-hit }}
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
       - name: Build | CMake
         run: |
           mkdir build && cd build
