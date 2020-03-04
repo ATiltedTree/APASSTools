@@ -32,6 +32,10 @@ jobs:
           mkdir build && cd build
           cmake -GNinja ..
       - name: Build | Ninja
-        run: ninja
+        run: |
+          cd build
+          ninja
       - name: Build | Package
-        run: ninja package
+        run: |
+          cd build
+          ninja package
