@@ -1,0 +1,20 @@
+[Desktop Entry]
+Categories=Utility;
+Comment[en_US]=Converts APASS files
+Comment=Converts APASS files
+Exec=APASSTools
+GenericName[en_US]=
+GenericName=
+Icon=apasstools
+MimeType=
+Name[en_US]=APASSTools
+Name=APASSTools
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

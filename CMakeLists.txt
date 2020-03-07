@@ -20,24 +20,27 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 # Static Build option
-if(WIN32)
-  option(STATIC "Use static Qt5 libraries" ON)
-endif(WIN32)
+option(STATIC "Use static Qt5 libraries" OFF)
 
 # Qt Config
 if(STATIC)
   set(QT_PREFIX StaticQt5)
-  set(QT5_PKGS Core Widgets Gui Svg Network)
 else()
   set(QT_PREFIX Qt5)
-  set(QT5_PKGS Core Widgets Gui Svg Network)
 endif()
+
+set(QT5_PKGS Core Widgets Gui Svg Network)
+set(LINKER_FLAGS "")
 
 # Linking
 if(STATIC)
-  set(LINKER_FLAGS -static -static-libstdc++ -static-libgcc -mwindows)
-else()
-    set(LINKER_FLAGS -Wl,-z,relro,-z,now)
+  list(APPEND LINKER_FLAGS -static -static-libstdc++ -static-libgcc)
+endif()
+
+if(WIN32)
+  list(APPEND LINKER_FLAGS -mwindows)
+elseif(UNIX)
+  list(APPEND LINKER_FLAGS -Wl,-z,relro,-z,now)
 endif()
 
 # Better include
@@ -78,18 +81,18 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
 
 # Libs
 ######################################################################
+set(LIBS "")
+
 # Custom Libs
-if(WIN32)
-  set(LIBS
-          ${QT_PREFIX}::QWindowsIntegrationPlugin
-          ${QT_PREFIX}::QWindowsVistaStylePlugin
-          ${QT_PREFIX}::QSvgPlugin
-          ${QT_PREFIX}::QICOPlugin
-          ${QT_PREFIX}::QGifPlugin
-          ${QT_PREFIX}::QJpegPlugin)
-else()
-  set(LIBS "")
-endif(WIN32)
+if(STATIC)
+  list(APPEND LIBS
+      ${QT_PREFIX}::QWindowsIntegrationPlugin
+      ${QT_PREFIX}::QWindowsVistaStylePlugin
+      ${QT_PREFIX}::QSvgPlugin
+      ${QT_PREFIX}::QICOPlugin
+      ${QT_PREFIX}::QGifPlugin
+      ${QT_PREFIX}::QJpegPlugin)
+endif(STATIC)
 
 # Qt Libs
 foreach(pkg ${QT5_PKGS})
@@ -120,19 +123,64 @@ set(SOURCES
   common/CSVObject
   common/PRN
   common/TDF
-  assets/icons/icons.qrc)
+  assets/assets.qrc)
 
 foreach(source ${SOURCES})
   string(PREPEND source "src/")
   target_sources(APASSTools PRIVATE ${source})
 endforeach()
 
+if(WIN32)
+  target_sources(APASSTools PRIVATE src/assets/assets.rc)
+endif(WIN32)
+
 target_link_libraries(APASSTools PRIVATE ${LINKER_FLAGS} ${LIBS})
 
 if(STATIC)
   set_target_properties(APASSTools PROPERTIES
-    LINK_SEARCH_START_STATIC ON
+    LINK_SEARCH_START_STATIC OFF
     LINK_SEARCH_END_STATIC ON
   )
 endif()
+######################################################################
+
+# Installing
+######################################################################
+install(TARGETS APASSTools)
+install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION share/doc/APASSTools)
+install(FILES ${CMAKE_SOURCE_DIR}/APASSTools.desktop DESTINATION share/applications)
+install(FILES ${CMAKE_SOURCE_DIR}/src/assets/icons/logo.svg DESTINATION share/icons/hicolor/scalable/apps RENAME apasstools.svg)
+######################################################################
+
+# Packaging
+######################################################################
+if(WIN32)
+  list(APPEND CPACK_GENERATOR "NSIS64")
+
+  set(CPACK_SOURCE_GENERATOR "ZIP")
+
+  set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_MUI_ICON ${CMAKE_SOURCE_DIR}/src/assets/icons/logo.ico)
+  set(CPACK_NSIS_INSTALLED_ICON_NAME ${CMAKE_BINARY_DIR}/APASSTools.exe)
+  set(CPACK_NSIS_PACKAGE_NAME ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_DISPLAY_NAME ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_MENU_LINKS "bin/APASSTools.exe" ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+elseif(UNIX)
+  list(APPEND CPACK_GENERATOR "DEB")
+  list(APPEND CPACK_GENERATOR "RPM")
+
+  set(CPACK_SOURCE_GENERATOR "TGZ")
+
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "ATiltedTree")
+  list(APPEND CPACK_DEBIAN_PACKAGE_DEPENDS qt5-default)
+elseif(DARWIN)
+
+endif()
+
+set(CPACK_PACKAGE_VENDOR "ATiltedTree")
+set(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_SOURCE_DIR}/README.md)
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
+
+include(CPack)
 ######################################################################
