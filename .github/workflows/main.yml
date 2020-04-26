@@ -16,7 +16,7 @@ jobs:
             name: APASSTools-Linux.deb
 
           - os: windows-latest
-            qt-arch: win64_mingw73
+            qt-arch: win64_msvc2017_64
             name: APASSTools-Windows.exe
 
     runs-on: ${{ matrix.os }}
@@ -32,10 +32,6 @@ jobs:
           key: ${{ runner.os }}-QtCache
       - name: Setup | Ninja
         uses: seanmiddleditch/gha-setup-ninja@v1
-      - name: Setup | CMake
-        uses: jwlawson/actions-setup-cmake@v1.1
-        with:
-          github-api-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup | Qt
         uses: jurplel/install-qt-action@v2
         with:
