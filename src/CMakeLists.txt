@@ -71,28 +71,6 @@ if(WIN32)
         "$<TARGET_FILE:APASSTools>"
     )
 
-    add_custom_command(
-      TARGET APASSTools
-      POST_BUILD
-      COMMAND
-        "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}" --dry-run
-        --list mapping --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
-        --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins" --no-angle --no-opengl-sw
-        $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
-        "$<TARGET_FILE:APASSTools>"
-    )
-
-    file(
-      GENERATE
-      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/target_path"
-      CONTENT "$<TARGET_FILE:APASSTools>"
-    )
-
-    file(
-      GENERATE
-      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/target_type"
-      CONTENT "$<IF:$<CONFIG:Debug>,--debug,--release>"
-    )
   endif()
 endif()
 
@@ -112,36 +90,22 @@ elseif(WIN32)
     RENAME qt.conf
   )
 
-  install(
-    CODE "
-        file(READ \"${CMAKE_CURRENT_BINARY_DIR}/target_path\" _file)
-        file(READ \"${CMAKE_CURRENT_BINARY_DIR}/target_type\" _type)
-        execute_process(
-            COMMAND \"${CMAKE_COMMAND}\" -E
-                env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\"
-                    --dry-run
-                    --libdir=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}\"
-                    --plugindir=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins\"
-                    ${_type}
-                    --no-translations
-                    --no-compiler-runtime
-                    --no-angle
-                    --no-opengl-sw
-                    --list mapping
-                    \${_file}
-            OUTPUT_VARIABLE _output
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        separate_arguments(_files WINDOWS_COMMAND \${_output})
-        while(_files)
-            list(GET _files 0 _src)
-            list(GET _files 1 _dest)
-            execute_process(
-                COMMAND \"${CMAKE_COMMAND}\" -E
-                    copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/\${_dest}\"
-            )
-            list(REMOVE_AT _files 0 1)
-        endwhile()
-        "
+  execute_process(
+    COMMAND
+      "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}" --dry-run
+      --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+      --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins"
+      $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
+      --no-opengl-sw --list mapping "$<TARGET_FILE:APASSTools>"
+    OUTPUT_VARIABLE _output
+    OUTPUT_STRIP_TRAILING_WHITESPACE
   )
+  separate_arguments(_files WINDOWS_COMMAND ${_output})
+
+  while(_files)
+    list(GET _files 0 _src)
+    list(GET _files 1 _dest)
+    install(FILES ${_src} DESTINATION bin/${_dest})
+    list(REMOVE_AT _files 0 1)
+  endwhile()
 endif()
