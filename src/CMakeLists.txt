@@ -60,16 +60,12 @@ if(WIN32)
     get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
-    add_custom_command(
-      TARGET APASSTools
-      POST_BUILD
-      COMMAND
-        "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}"
-        --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
-        --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins"
-        $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
-        "$<TARGET_FILE:APASSTools>"
-    )
+    # add_custom_command( TARGET APASSTools POST_BUILD COMMAND "${CMAKE_COMMAND}" -E env
+    # PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}"
+    # --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+    # --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins"
+    # $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
+    # "$<TARGET_FILE:APASSTools>" )
 
   endif()
 endif()
