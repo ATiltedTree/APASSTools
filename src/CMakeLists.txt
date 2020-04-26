@@ -76,6 +76,12 @@ if(WIN32)
       OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/target_path"
       CONTENT "$<TARGET_FILE:APASSTools>"
     )
+
+    file(
+      GENERATE
+      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/target_type"
+      CONTENT "$<IF:$<CONFIG:Debug>,--debug,--release>"
+    )
   endif()
 endif()
 
@@ -97,14 +103,15 @@ elseif(WIN32)
 
   install(
     CODE "
-        file(READ \"${CMAKE_CURRENT_BINARY_DIR}/${target}_path\" _file)
+        file(READ \"${CMAKE_CURRENT_BINARY_DIR}/target_path\" _file)
+        file(READ \"${CMAKE_CURRENT_BINARY_DIR}/target_type\" _type)
         execute_process(
             COMMAND \"${CMAKE_COMMAND}\" -E
                 env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\"
                     --dry-run
                     --libdir=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}\"
                     --plugindir=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins\"
-                    $<IF:$<CONFIG:Debug>,--debug,--release>
+                    ${_type}
                     --no-translations
                     --no-compiler-runtime
                     --list mapping
