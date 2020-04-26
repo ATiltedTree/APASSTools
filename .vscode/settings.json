@@ -3,6 +3,9 @@
   "files.associations": {
     ".firebaserc": "json",
     "*.idl": "idl",
+    "*.rc": "cpp",
+    "*.am": "makefile",
+    "*.ll": "lex",
     "qapplication": "cpp",
     "*.tcc": "cpp",
     "fstream": "cpp",
@@ -82,7 +85,7 @@
     "typeindex": "cpp",
     "typeinfo": "cpp",
     "valarray": "cpp",
-    "variant": "cpp"
-  },
-  "cmake.configureArgs": ["-DSTATIC=ON"]
+    "variant": "cpp",
+    "qtabwidget": "cpp"
+  }
 }
