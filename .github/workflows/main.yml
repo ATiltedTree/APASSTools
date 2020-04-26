@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: QtCache
+          key: ${{ runner.os }}-QtCache
       - name: Setup | Ninja
         uses: seanmiddleditch/gha-setup-ninja@v1
       - name: Setup | CMake
