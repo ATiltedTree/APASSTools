@@ -54,7 +54,6 @@ jobs:
         run: |
           cd build
           ninja package
-          ls _CPack_Packages/win64/NSIS64/APASSTools-Windows/bin
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2-preview
         with:

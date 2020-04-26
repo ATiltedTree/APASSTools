@@ -103,7 +103,7 @@ elseif(WIN32)
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
   separate_arguments(_files WINDOWS_COMMAND ${_output})
-
+  message(STATUS ${_files})
   while(_files)
     list(GET _files 0 _src)
     list(GET _files 1 _dest)
