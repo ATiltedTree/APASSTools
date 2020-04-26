@@ -71,6 +71,17 @@ if(WIN32)
         "$<TARGET_FILE:APASSTools>"
     )
 
+    add_custom_command(
+      TARGET APASSTools
+      POST_BUILD
+      COMMAND
+        "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}" --dry-run
+        --list mapping --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+        --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins"
+        $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
+        "$<TARGET_FILE:APASSTools>"
+    )
+
     file(
       GENERATE
       OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/target_path"
