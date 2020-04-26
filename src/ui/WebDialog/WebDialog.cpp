@@ -1,8 +1,7 @@
 #include "WebDialog.h"
-#include "./ui_WebDialog.h"
 
-WebDialog::WebDialog(QWidget* parent) : QDialog(parent), ui(new Ui::WebDialog) {
-  ui->setupUi(this);
+WebDialog::WebDialog(QWidget* parent) : QDialog(parent), ui(new Ui::WebDialog(this)) {
+  ui->setupUi();
   connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this, &WebDialog::doDownload);
   connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
@@ -31,9 +30,9 @@ void WebDialog::onProgress(qint64 bytesReceived, qint64 bytesTotal) {
   this->ui->progressBar->setValue(bytesReceived);
 }
 
-void WebDialog::onFinished(QNetworkReply* reply) {
-  if (reply->isReadable()) {
-    this->data   = reply->readAll();
+void WebDialog::onFinished(QNetworkReply* networkReply) {
+  if (networkReply->isReadable()) {
+    this->data   = networkReply->readAll();
     this->isDone = true;
     this->accept();
   }

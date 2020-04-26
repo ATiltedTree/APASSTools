@@ -1,39 +1,43 @@
 #pragma once
 
 #include "CSVObject.h"
+#include "Macros.h"
 #include <QList>
 #include <QString>
 
 class Comet {
 public:
-  Comet(QList<QString> data);
-  CSVObject radeg;
-  CSVObject raerr;
-  CSVObject decdeg;
-  CSVObject decerr;
-  CSVObject Johnson_V;
-  CSVObject Verr;
-  CSVObject Vnobs;
-  CSVObject Johnson_B;
-  CSVObject Berr;
-  CSVObject Bnobs;
-  CSVObject Sloan_u;
-  CSVObject SUerr;
-  CSVObject SUnobs;
-  CSVObject Sloan_g;
-  CSVObject SGerr;
-  CSVObject SGnobs;
-  CSVObject Sloan_r;
-  CSVObject SRerr;
-  CSVObject SRnobs;
-  CSVObject Sloan_i;
-  CSVObject SIerr;
-  CSVObject SInobs;
-  CSVObject Sloan_z;
-  CSVObject SZerr;
-  CSVObject SZnobs;
-  CSVObject PanSTARRS_Y;
-  CSVObject Yerr;
-  CSVObject Ynobs;
-  ~Comet();
+  explicit Comet(QList<QString> data);
+  SMART_PTRS(Comet)
+
+  CSVObject::Ref radeg;
+  CSVObject::Ref raerr;
+  CSVObject::Ref decdeg;
+  CSVObject::Ref decerr;
+  CSVObject::Ref Johnson_V;
+  CSVObject::Ref Verr;
+  CSVObject::Ref Vnobs;
+  CSVObject::Ref Johnson_B;
+  CSVObject::Ref Berr;
+  CSVObject::Ref Bnobs;
+  CSVObject::Ref Sloan_u;
+  CSVObject::Ref SUerr;
+  CSVObject::Ref SUnobs;
+  CSVObject::Ref Sloan_g;
+  CSVObject::Ref SGerr;
+  CSVObject::Ref SGnobs;
+  CSVObject::Ref Sloan_r;
+  CSVObject::Ref SRerr;
+  CSVObject::Ref SRnobs;
+  CSVObject::Ref Sloan_i;
+  CSVObject::Ref SIerr;
+  CSVObject::Ref SInobs;
+  CSVObject::Ref Sloan_z;
+  CSVObject::Ref SZerr;
+  CSVObject::Ref SZnobs;
+  CSVObject::Ref PanSTARRS_Y;
+  CSVObject::Ref Yerr;
+  CSVObject::Ref Ynobs;
+
+  QList<QString> data;
 };

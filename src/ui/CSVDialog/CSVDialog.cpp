@@ -1,8 +1,6 @@
 #include "CSVDialog.h"
-#include "./ui_CSVDialog.h"
 
-CSVDialog::CSVDialog(QWidget* parent) : QDialog(parent), ui(new Ui::CSVDialog) {
-  ui->setupUi(this);
+CSVDialog::CSVDialog(QWidget* parent) : QDialog(parent), ui(new Ui::CSVDialog(this)) {
   connect(this->ui->buttonCSVFile, &QPushButton::clicked, this, &CSVDialog::onSelectFile);
   connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
   connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
@@ -14,7 +12,7 @@ CSVDialog::~CSVDialog() {
 QString CSVDialog::getResult() {
   QFile csvFile(this->ui->lineEditCSVFile->text());
   if (!csvFile.open(QIODevice::ReadOnly)) {
-    QMessageBox::information(0, "error", csvFile.errorString());
+    QMessageBox::information(nullptr, "error", csvFile.errorString());
     throw csvFile.errorString();
   }
   QTextStream in(&csvFile);

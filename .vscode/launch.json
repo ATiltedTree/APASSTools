@@ -8,7 +8,7 @@
       "name": "(gdb) Launch",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/APASSTools",
+      "program": "${workspaceFolder}/build/bin/APASSTools",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

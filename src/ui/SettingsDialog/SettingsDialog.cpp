@@ -1,9 +1,8 @@
 #include "SettingsDialog.h"
-#include "ui_SettingsDialog.h"
-#include <config.h>
 
-SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent), ui(new Ui::SettingsDialog) {
-  ui->setupUi(this);
+SettingsDialog::SettingsDialog(QWidget* parent)
+    : QDialog(parent), ui(new Ui::SettingsDialog(this)) {
+  ui->setupUi();
   connect(this->ui->buttons->button(QDialogButtonBox::Apply), &QPushButton::clicked, this,
           &SettingsDialog::onApply);
   connect(this->ui->buttons->button(QDialogButtonBox::Ok), &QPushButton::clicked, this,

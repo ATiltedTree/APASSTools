@@ -4,7 +4,25 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        compiler: [g++, clang++]
+        include:
+          - os: ubuntu-latest
+            qt-arch: linux_x64
+            name: APASSTools-Linux.deb
+          - os: windows-latest
+            qt-arch: win64_mingw73
+            name: APASSTools-Windows.exe
+        exclude:
+          - os: windows-latest
+            compiler: clang++
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Setup | Checkout
@@ -14,28 +32,29 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: QtCache
+          key: ${{ runner.os }}-${{ matrix.qt-arch }}-QtCache
       - name: Setup | Ninja
         uses: seanmiddleditch/gha-setup-ninja@v1
-      - name: Setup | CMake
-        uses: jwlawson/actions-setup-cmake@v1.0
-        with:
-          cmake-version: "3.16.x"
-          github-api-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup | Qt
-        uses: jurplel/install-qt-action@v2.5.0
+        uses: jurplel/install-qt-action@v2
         with:
+          arch: ${{ matrix.qt-arch }}
           cached: ${{ steps.cache.outputs.cache-hit }}
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+          modules: qtsvg
       - name: Build | CMake
         run: |
           mkdir build && cd build
-          cmake -GNinja ..
-      - name: Build | Ninja
+          cmake -G Ninja -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} ..
+      - name: Build | Compile
         run: |
           cd build
-          ninja
+          cmake --build .
       - name: Build | Package
         run: |
           cd build
-          ninja package
+          cmake --build . --target package
+      - name: Post Setup | Upload Artifacts
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: ${{ matrix.name }}
+          path: build/${{ matrix.name }}

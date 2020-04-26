@@ -1,7 +1,9 @@
 #include "CSVObject.h"
 
+#include <utility>
+
 CSVObject::CSVObject(QString value) {
-  this->value = value;
+  this->value = std::move(value);
 }
 /**
  * @brief Gets the internal value as a string

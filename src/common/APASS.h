@@ -1,21 +1,22 @@
 #pragma once
 
 #include "Comet.h"
+#include "Macros.h"
 #include <QList>
 #include <QProgressBar>
 #include <QString>
 
 class APASS {
 private:
-  QList<Comet> comets;
+  QList<Comet::Ref> comets;
 
 public:
   APASS();
-  ~APASS();
-  void addComet(Comet comet);
-  void addComet(QList<Comet> comet);
+  SMART_PTRS(APASS)
+
+  void addComet(Comet::Ref comet);
   void clearComets();
-  QList<Comet> getComets();
-  void importCSV(QString csv, int observationThreshold, double magnitudeThreshold,
+  QList<Comet::Ref> getComets();
+  void importCSV(const QString& csv, int observationThreshold, double magnitudeThreshold,
                  QProgressBar* bar);
 };

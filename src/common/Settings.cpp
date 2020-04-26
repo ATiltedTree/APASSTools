@@ -15,7 +15,7 @@ void Settings::init() {
   Settings::appSettings.defaultSaveDir       = settings.value("defaultSaveDir").toString();
   Settings::appSettings.lastCSVDir           = settings.value("lastCSVDir").toString();
   Settings::appSettings.observationThreshold = settings.value("observationThreshold").toInt();
-  Settings::appSettings.magnitudeThreshold   = settings.value("magnitudeThreshold").toFloat();
+  Settings::appSettings.magnitudeThreshold   = settings.value("magnitudeThreshold").toDouble();
   Settings::appSettings.createTDFFile        = settings.value("createTDFFile").toBool();
   settings.endGroup();
 }
