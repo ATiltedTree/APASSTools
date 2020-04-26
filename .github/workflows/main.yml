@@ -30,7 +30,15 @@ jobs:
           github-api-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup | Qt
         uses: jurplel/install-qt-action@v2
+        if: contains( matrix.os, 'ubuntu')
         with:
+          cached: ${{ steps.cache.outputs.cache-hit }}
+          modules: qtsvg
+      - name: Setup | Qt
+        uses: jurplel/install-qt-action@v2
+        if: contains( matrix.os, 'windows')
+        with:
+          arch: win64_mingw73
           cached: ${{ steps.cache.outputs.cache-hit }}
           modules: qtsvg
       - name: Build | CMake
