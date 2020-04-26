@@ -4,7 +4,13 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Setup | Checkout
@@ -23,10 +29,10 @@ jobs:
           cmake-version: "3.16.x"
           github-api-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup | Qt
-        uses: jurplel/install-qt-action@v2.5.0
+        uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache.outputs.cache-hit }}
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+          modules: qtsvg
       - name: Build | CMake
         run: |
           mkdir build && cd build
