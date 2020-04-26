@@ -10,7 +10,7 @@
 #define LENGTH_OF_DEG 9
 #define LENGTH_OF_V_NOBS 2
 
-class PRN {
+class PRNFile {
 private:
   APASS::Ref apass;
   int radegLength  = LENGTH_OF_DEG;
@@ -18,8 +18,8 @@ private:
   int VnobsLength  = LENGTH_OF_V_NOBS;
 
 public:
-  explicit PRN(APASS::Ref apass);
-  SMART_PTRS(PRN)
+  explicit PRNFile(APASS::Ref apass);
+  SMART_PTRS(PRNFile)
 
   void buildFile(const QString& filepath);
 };

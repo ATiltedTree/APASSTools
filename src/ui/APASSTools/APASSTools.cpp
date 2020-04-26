@@ -170,10 +170,10 @@ void APASSTools::onSaveAs() {
 }
 
 void APASSTools::doSave(const QString& dirname, bool createTDF) {
-  PRN::Ref prn = PRN::New(this->apass);
+  PRNFile::Ref prn = PRNFile::New(this->apass);
   prn->buildFile(dirname + this->ui->nameEdit->text() + "/" + ".prn");
   if (createTDF) {
-    TDF::Ref tdf = TDF::New(this->ui->nameEdit->text());
+    TDFFile::Ref tdf = TDFFile::New(this->ui->nameEdit->text());
     tdf->buildFile(dirname + "/" + this->ui->nameEdit->text() + ".tdf");
   }
   this->unsavedChanges = false;

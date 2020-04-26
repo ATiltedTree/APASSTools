@@ -1,8 +1,8 @@
-#include "PRN.h"
+#include "PRNFile.h"
 
-PRN::PRN(APASS::Ref apass) : apass(std::move(apass)) {}
+PRNFile::PRNFile(APASS::Ref apass) : apass(std::move(apass)) {}
 
-void PRN::buildFile(const QString& filepath) {
+void PRNFile::buildFile(const QString& filepath) {
   QFile file(filepath);
   if (file.open(QIODevice::ReadWrite)) {
     QTextStream out(&file);

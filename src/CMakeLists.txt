@@ -24,10 +24,10 @@ add_executable(
   common/Comet.h
   common/CSVObject.cpp
   common/CSVObject.h
-  common/PRN.cpp
-  common/PRN.h
-  common/TDF.cpp
-  common/TDF.h
+  common/PRNFile.cpp
+  common/PRNFile.h
+  common/TDFFile.cpp
+  common/TDFFile.h
   assets/assets.qrc
 )
 

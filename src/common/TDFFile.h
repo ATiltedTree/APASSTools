@@ -15,13 +15,13 @@
   "^ICQ reference key^: AQ.\\n\n~r  1  20 \\n\nepoch 2000\nfield 0.00 21.00\nshown 5\ntype "       \
   "6\nend\n"
 
-class TDF {
+class TDFFile {
 private:
   QString name;
 
 public:
-  explicit TDF(QString name);
-  SMART_PTRS(TDF)
+  explicit TDFFile(QString name);
+  SMART_PTRS(TDFFile)
 
   void buildFile(const QString& filepath);
 };
