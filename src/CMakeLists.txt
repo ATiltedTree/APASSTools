@@ -54,14 +54,6 @@ if(WIN32)
       APASSTools PRIVATE Qt5::QWindowsIntegrationPlugin Qt5::QWindowsVistaStylePlugin
     )
   else()
-    add_custom_command(
-      TARGET APASSTools
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/assets/qt.conf.win"
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/qt.conf"
-    )
-
     # Delegate to Qt's official deployment binary on Windows to copy over the necessary Qt-specific
     # libraries, etc.
     get_target_property(MOC_EXECUTABLE_LOCATION Qt5::moc IMPORTED_LOCATION)
@@ -78,8 +70,13 @@ if(WIN32)
         $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
         "$<TARGET_FILE:APASSTools>"
     )
-  endif()
 
+    file(
+      GENERATE
+      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/target_path"
+      CONTENT "$<TARGET_FILE:APASSTools>"
+    )
+  endif()
 endif()
 
 install(TARGETS APASSTools)
@@ -91,4 +88,40 @@ if(UNIX)
     DESTINATION share/icons/hicolor/scalable/apps
     RENAME apasstools.svg
   )
-endif(UNIX)
+elseif(WIN32)
+  install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/qt.conf.win
+    TYPE BIN
+    RENAME qt.conf
+  )
+
+  install(
+    CODE "
+        file(READ \"${CMAKE_CURRENT_BINARY_DIR}/${target}_path\" _file)
+        execute_process(
+            COMMAND \"${CMAKE_COMMAND}\" -E
+                env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\"
+                    --dry-run
+                    --libdir=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}\"
+                    --plugindir=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins\"
+                    $<IF:$<CONFIG:Debug>,--debug,--release>
+                    --no-translations
+                    --no-compiler-runtime
+                    --list mapping
+                    \${_file}
+            OUTPUT_VARIABLE _output
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        separate_arguments(_files WINDOWS_COMMAND \${_output})
+        while(_files)
+            list(GET _files 0 _src)
+            list(GET _files 1 _dest)
+            execute_process(
+                COMMAND \"${CMAKE_COMMAND}\" -E
+                    copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/\${_dest}\"
+            )
+            list(REMOVE_AT _files 0 1)
+        endwhile()
+        "
+  )
+endif()
