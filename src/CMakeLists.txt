@@ -92,8 +92,8 @@ elseif(WIN32)
     COMMAND
       \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\" --dry-run
       --libdir=\"${CMAKE_BINARY_DIR}/bin\"
-      --plugindir=\"${CMAKE_BINARY_DIR}/bin/QtPlugins\" --no-translations
-      --no-compiler-runtime --no-angle --no-opengl-sw --list mapping
+      --plugindir=\"${CMAKE_BINARY_DIR}/bin/QtPlugins\" --no-translations --debug --dir \"${CMAKE_BINARY_DIR}/bin\"
+      --compiler-runtime --no-angle --no-opengl-sw --list mapping
       \"${CMAKE_BINARY_DIR}/bin/APASSTools.exe\"
     OUTPUT_VARIABLE _output
     OUTPUT_STRIP_TRAILING_WHITESPACE
