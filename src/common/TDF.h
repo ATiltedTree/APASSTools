@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Macros.h"
 #include <QFile>
 #include <QObject>
 #include <QString>
@@ -14,13 +15,13 @@
   "^ICQ reference key^: AQ.\\n\n~r  1  20 \\n\nepoch 2000\nfield 0.00 21.00\nshown 5\ntype "       \
   "6\nend\n"
 
-class TDF : public QObject {
-  Q_OBJECT
+class TDF {
 private:
   QString name;
 
 public:
-  TDF(QString name);
-  ~TDF();
-  void buildFile(QString filepath);
+  explicit TDF(QString name);
+  SMART_PTRS(TDF)
+
+  void buildFile(const QString& filepath);
 };

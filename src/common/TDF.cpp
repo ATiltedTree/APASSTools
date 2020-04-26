@@ -1,11 +1,11 @@
 #include "TDF.h"
 
-TDF::TDF(QString name) : name(name) {}
+#include <utility>
 
-TDF::~TDF() {}
+TDF::TDF(QString name) : name(std::move(name)) {}
 
-void TDF::buildFile(QString filepath) {
-  QString content = QString(tr(CONFIG_TDF_TEMPLATE).arg(name, name + ".prn"));
+void TDF::buildFile(const QString& filepath) {
+  QString content = QString(QObject::tr(TDF_TEMPLATE).arg(name, name + ".prn"));
   QFile file(filepath);
   if (file.open(QIODevice::ReadWrite)) {
     QTextStream out(&file);

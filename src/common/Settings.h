@@ -13,7 +13,7 @@ struct AppSettings {
   QString defaultSaveDir;
   QString lastCSVDir;
   int observationThreshold;
-  float magnitudeThreshold;
+  double magnitudeThreshold;
   bool createTDFFile;
 };
 

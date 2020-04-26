@@ -1,8 +1,8 @@
 #include "APASSTools.h"
-#include "./ui_APASSTools.h"
 
-APASSTools::APASSTools(QWidget* parent) : QMainWindow(parent), ui(new Ui::APASSTools) {
-  ui->setupUi(this);
+APASSTools::APASSTools(QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::APASSTools(this)), apass(APASS::New()) {
+  ui->setupUi();
   QApplication::setOrganizationName("ATiltedTree");
   QApplication::setApplicationName(CONFIG_APP_NAME);
   this->setupConnections();
@@ -88,46 +88,21 @@ void APASSTools::changeSettings(SettingsAction action) {
 }
 
 void APASSTools::updateTree() {
-  for (Comet comet : this->apass.getComets()) {
-    QTreeWidgetItem* item = new QTreeWidgetItem();
-    item->setText(0, QString::number(comet.radeg.asDouble(), 'd', 3));
-    item->setText(1, QString::number(comet.raerr.asDouble(), 'd', 3));
-    item->setText(2, QString::number(comet.decdeg.asDouble(), 'd', 3));
-    item->setText(3, QString::number(comet.decerr.asDouble(), 'd', 3));
-    item->setText(4, QString::number(comet.Johnson_V.asDouble(), 'd', 3));
-    item->setText(5, QString::number(comet.Verr.asDouble(), 'd', 3));
-    item->setText(6, QString::number(comet.Vnobs.asDouble(), 'd', 3));
-    item->setText(7, QString::number(comet.Johnson_B.asDouble(), 'd', 3));
-    item->setText(8, QString::number(comet.Berr.asDouble(), 'd', 3));
-    item->setText(9, QString::number(comet.Bnobs.asDouble(), 'd', 3));
-    item->setText(10, QString::number(comet.Sloan_u.asDouble(), 'd', 3));
-    item->setText(11, QString::number(comet.SUerr.asDouble(), 'd', 3));
-    item->setText(12, QString::number(comet.SUnobs.asDouble(), 'd', 3));
-    item->setText(13, QString::number(comet.Sloan_g.asDouble(), 'd', 3));
-    item->setText(14, QString::number(comet.SGerr.asDouble(), 'd', 3));
-    item->setText(15, QString::number(comet.SGnobs.asDouble(), 'd', 3));
-    item->setText(16, QString::number(comet.Sloan_r.asDouble(), 'd', 3));
-    item->setText(17, QString::number(comet.SRerr.asDouble(), 'd', 3));
-    item->setText(18, QString::number(comet.SRnobs.asDouble(), 'd', 3));
-    item->setText(19, QString::number(comet.Sloan_i.asDouble(), 'd', 3));
-    item->setText(20, QString::number(comet.SIerr.asDouble(), 'd', 3));
-    item->setText(21, QString::number(comet.SInobs.asDouble(), 'd', 3));
-    item->setText(22, QString::number(comet.Sloan_z.asDouble(), 'd', 3));
-    item->setText(23, QString::number(comet.SZerr.asDouble(), 'd', 3));
-    item->setText(24, QString::number(comet.SZnobs.asDouble(), 'd', 3));
-    item->setText(25, QString::number(comet.PanSTARRS_Y.asDouble(), 'd', 3));
-    item->setText(26, QString::number(comet.Yerr.asDouble(), 'd', 3));
-    item->setText(27, QString::number(comet.Ynobs.asDouble(), 'd', 3));
+  for (Comet::Ref comet : this->apass->getComets()) {
+    auto* item = new QTreeWidgetItem();
+    for (int i = 0; i < comet->data.size(); i++) {
+      item->setText(i, QString::number(comet->data[i].toDouble(), 'd', 3));
+    }
     this->ui->CSVDisplay->addTopLevelItem(item);
   }
 }
 
-void APASSTools::doImport(QString data) {
-  this->apass.clearComets();
-  QProgressBar* bar = new QProgressBar(this);
+void APASSTools::doImport(const QString& data) {
+  this->apass->clearComets();
+  auto* bar = new QProgressBar(this);
   this->ui->statusbar->addWidget(bar, 1);
-  this->apass.importCSV(data, this->ui->observationSpin->value(), this->ui->magnitudeSpin->value(),
-                        bar);
+  this->apass->importCSV(data, this->ui->observationSpin->value(), this->ui->magnitudeSpin->value(),
+                         bar);
   this->updateTree();
   this->unsavedChanges = true;
   this->ui->statusbar->removeWidget(bar);
@@ -140,66 +115,66 @@ void APASSTools::onClear() {
 }
 
 void APASSTools::onFromCSVFile() {
-  CSVDialog csvDialog;
-  csvDialog.setModal(true);
-  if (csvDialog.exec() == QDialog::Accepted) {
-    this->doImport(csvDialog.getResult());
+  CSVDialog::Ref csvDialog = CSVDialog::New(this);
+  csvDialog->setModal(true);
+  if (csvDialog->exec() == QDialog::Accepted) {
+    this->doImport(csvDialog->getResult());
   }
 }
 
 void APASSTools::onFromWeb() {
-  WebDialog webDialog;
-  webDialog.setModal(true);
-  if (webDialog.exec() == QDialog::Accepted) {
-    this->doImport(webDialog.getResult());
+  WebDialog::Ref webDialog = WebDialog::New(this);
+  webDialog->setModal(true);
+  if (webDialog->exec() == QDialog::Accepted) {
+    this->doImport(webDialog->getResult());
   }
 }
 
 void APASSTools::onAbout() {
-  AboutDialog aboutDialog;
-  aboutDialog.setModal(true);
-  aboutDialog.exec();
+  AboutDialog::Ref aboutDialog = AboutDialog::New(this);
+  aboutDialog->setModal(true);
+  aboutDialog->exec();
 }
 
 void APASSTools::onSettings() {
-  SettingsDialog settingsDialog;
-  settingsDialog.setModal(true);
-  if (settingsDialog.exec() == QDialog::Accepted) {
+  SettingsDialog::Ref settingsDialog = SettingsDialog::New(this);
+  settingsDialog->setModal(true);
+  if (settingsDialog->exec() == QDialog::Accepted) {
     this->changeSettings(SettingsAction::RestoreValues);
   }
 }
 
 void APASSTools::onSave() {
+  if (this->ui->nameEdit->text().isEmpty()) {
+    SHOW_ERROR(Please enter a name !)
+  } else if (!this->unsavedChanges) {
+    SHOW_ERROR(Please import something before saving !)
+  }
   if (Settings::appSettings.defaultSaveDir.isEmpty()) {
     QString dirname = QFileDialog::getExistingDirectory(this, tr("Open save location"), "/");
     Settings::appSettings.defaultSaveDir = dirname;
-    PRN prn                              = PRN(this->apass);
-    if (Settings::appSettings.createTDFFile) {
-      TDF* tdf = new TDF(this->ui->nameEdit->text());
-      tdf->buildFile(Settings::appSettings.defaultSaveDir + "/" + this->ui->nameEdit->text() +
-                     ".tdf");
-    }
-    prn.buildFile(dirname + this->ui->nameEdit->text() + "/" + ".prn");
-  } else {
-    PRN prn = PRN(this->apass);
-    if (Settings::appSettings.createTDFFile) {
-      TDF* tdf = new TDF(this->ui->nameEdit->text());
-      tdf->buildFile(Settings::appSettings.defaultSaveDir + "/" + this->ui->nameEdit->text() +
-                     ".tdf");
-    }
-    prn.buildFile(Settings::appSettings.defaultSaveDir + "/" + this->ui->nameEdit->text() + ".prn");
   }
-  this->unsavedChanges = false;
+  this->doSave(Settings::appSettings.defaultSaveDir, Settings::appSettings.createTDFFile);
 }
+
 void APASSTools::onSaveAs() {
+  if (this->ui->nameEdit->text().isEmpty()) {
+    SHOW_ERROR(Please enter a name !)
+  } else if (!this->unsavedChanges) {
+    SHOW_ERROR(Please import something before saving !)
+  }
   QString dirname = QFileDialog::getExistingDirectory(this, tr("Open save location"), "/");
   Settings::appSettings.defaultSaveDir = dirname;
-  PRN prn                              = PRN(this->apass);
-  if (Settings::appSettings.createTDFFile) {
-    TDF* tdf = new TDF(this->ui->nameEdit->text());
-    tdf->buildFile(Settings::appSettings.defaultSaveDir + "/" + this->ui->nameEdit->text() +
-                   ".tdf");
+
+  this->doSave(Settings::appSettings.defaultSaveDir, Settings::appSettings.createTDFFile);
+}
+
+void APASSTools::doSave(const QString& dirname, bool createTDF) {
+  PRN::Ref prn = PRN::New(this->apass);
+  prn->buildFile(dirname + this->ui->nameEdit->text() + "/" + ".prn");
+  if (createTDF) {
+    TDF::Ref tdf = TDF::New(this->ui->nameEdit->text());
+    tdf->buildFile(dirname + "/" + this->ui->nameEdit->text() + ".tdf");
   }
-  prn.buildFile(dirname + this->ui->nameEdit->text() + "/" + ".prn");
   this->unsavedChanges = false;
 }
