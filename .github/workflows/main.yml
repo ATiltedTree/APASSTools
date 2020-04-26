@@ -26,7 +26,6 @@ jobs:
       - name: Setup | CMake
         uses: jwlawson/actions-setup-cmake@v1.0
         with:
-          cmake-version: "3.16.x"
           github-api-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup | Qt
         uses: jurplel/install-qt-action@v2
@@ -53,3 +52,7 @@ jobs:
         run: |
           cd build
           ninja package
+      - name: Post Setup | Upload Artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          path: build/APASSTools-*-*.*
