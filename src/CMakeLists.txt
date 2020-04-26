@@ -70,6 +70,7 @@ if(WIN32)
         $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
         "$<TARGET_FILE:APASSTools>"
     )
+
   endif()
 endif()
 
@@ -82,4 +83,29 @@ if(UNIX)
     DESTINATION share/icons/hicolor/scalable/apps
     RENAME apasstools.svg
   )
+elseif(WIN32)
+  install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/qt.conf.win
+    TYPE BIN
+    RENAME qt.conf
+  )
+
+  execute_process(
+    COMMAND
+      "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}" --dry-run
+      --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+      --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins"
+      $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
+      --no-opengl-sw --list mapping "$<TARGET_FILE:APASSTools>"
+    OUTPUT_VARIABLE _output
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  separate_arguments(_files WINDOWS_COMMAND ${_output})
+
+  while(_files)
+    list(GET _files 0 _src)
+    list(GET _files 1 _dest)
+    install(FILES ${_src} DESTINATION bin/${_dest})
+    list(REMOVE_AT _files 0 1)
+  endwhile()
 endif()

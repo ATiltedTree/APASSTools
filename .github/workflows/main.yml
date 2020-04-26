@@ -14,12 +14,10 @@ jobs:
           - os: ubuntu-latest
             qt-arch: linux_x64
             name: APASSTools-Linux.deb
-            cmake-args: ""
 
           - os: windows-latest
             qt-arch: win64_mingw73
             name: APASSTools-Windows.exe
-            cmake-args: -DSTATIC=ON
 
     runs-on: ${{ matrix.os }}
 
@@ -47,7 +45,7 @@ jobs:
       - name: Build | CMake
         run: |
           mkdir build && cd build
-          cmake -GNinja ${{ matrix.cmake-args }} ..
+          cmake -GNinja ..
       - name: Build | Ninja
         run: |
           cd build
@@ -56,6 +54,7 @@ jobs:
         run: |
           cd build
           ninja package
+          ls _CPack_Packages/win64/NSIS64/APASSTools-Windows/bin
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2-preview
         with:
