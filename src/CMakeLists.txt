@@ -77,7 +77,7 @@ if(WIN32)
       COMMAND
         "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}" --dry-run
         --list mapping --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
-        --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins"
+        --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins" --no-angle --no-opengl-sw
         $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
         "$<TARGET_FILE:APASSTools>"
     )
@@ -125,6 +125,8 @@ elseif(WIN32)
                     ${_type}
                     --no-translations
                     --no-compiler-runtime
+                    --no-angle
+                    --no-opengl-sw
                     --list mapping
                     \${_file}
             OUTPUT_VARIABLE _output
