@@ -87,5 +87,8 @@
     "valarray": "cpp",
     "variant": "cpp",
     "qtabwidget": "cpp"
-  }
+  },
+  "conventionalCommits.scopes": [
+    "release"
+  ]
 }
