@@ -18,14 +18,12 @@ jobs:
         include:
           - os: ubuntu-latest
             qt-arch: linux_x64
-            name: APASSTools-Linux
-            ext: deb
+            name: APASSTools-Linux.deb
             cmake: "-DCMAKE_CXX_COMPILER=g++ -GNinja"
 
           - os: windows-latest
             qt-arch: win64_msvc2017_64
-            name: APASSTools-Windows
-            ext: exe
+            name: APASSTools-Windows.exe
             cmake: -G "Visual Studio 16 2019"
 
     runs-on: ${{ matrix.os }}
@@ -62,5 +60,5 @@ jobs:
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2-preview
         with:
-          name: ${{ matrix.name }}-${{ matrix.compiler }}.${{ matrix.ext }}
-          path: build/${{ matrix.name }}.${{ matrix.ext }}
+          name: ${{ matrix.name }}
+          path: build/${{ matrix.name }}
