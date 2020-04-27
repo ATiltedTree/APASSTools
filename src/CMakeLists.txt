@@ -62,13 +62,8 @@ if(WIN32)
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
     set(WINDEPLOYQT_ARGS
-        "$<IF:$<CONFIG:Debug>,--debug,--release>
-        --no-translations
-        --no-compiler-runtime
-        --no-angle
-        --no-opengl-sw
-        --verbose 000
-        \"$<TARGET_FILE:APASSTools>\""
+        $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
+        --no-opengl-sw "$<TARGET_FILE:APASSTools>"
     )
 
   endif()
