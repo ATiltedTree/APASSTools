@@ -47,13 +47,6 @@ endif()
 if(WIN32)
   target_sources(APASSTools PRIVATE assets/assets.rc)
 
-  # Workaround because 'InstallRequiredSystemLibraries' does not install them when we are not using
-  # MSVC and copying them over is just not an option
-  if(NOT MSVC)
-    target_link_libraries(APASSTools PRIVATE -static -static-libstdc++ -static-libgcc)
-    message(STATUS "Building the standard lib statically as we are on windows but not using MSVC")
-  endif()
-
   if(STATIC)
     qt5_import_plugins(
       APASSTools INCLUDE Qt5::QWindowsIntegrationPlugin Qt5::QWindowsVistaStylePlugin
