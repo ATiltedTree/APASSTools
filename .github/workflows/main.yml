@@ -19,12 +19,14 @@ jobs:
           - os: ubuntu-latest
             qt-arch: linux_x64
             name: APASSTools-Linux.deb
-            cmake: "-DCMAKE_CXX_COMPILER=g++ -GNinja"
+            cmake-configure: "-DCMAKE_CXX_COMPILER=g++ -GNinja"
+            cmake-build: ""
 
           - os: windows-latest
             qt-arch: win64_msvc2017_64
             name: APASSTools-Windows.exe
-            cmake: -G "Visual Studio 16 2019"
+            cmake-configure: -G "Visual Studio 16 2019"
+            cmake-build: ""
 
     runs-on: ${{ matrix.os }}
 
@@ -48,11 +50,11 @@ jobs:
       - name: Build | CMake
         run: |
           mkdir build && cd build
-          cmake ${{ matrix.cmake }} ..
+          cmake ${{ matrix.cmake-configure }} ..
       - name: Build | Compile
         run: |
           cd build
-          cmake --build .
+          cmake --build . ${{ matrix.cmake-build }}
       - name: Build | Package
         run: |
           cd build
