@@ -72,8 +72,11 @@ jobs:
         uses: actions/download-artifact@v2-preview
       - name: Setup | Changelog
         run: |
+          # Temporary fix for https://github.com/actions/setup-go/issues/14
+          export PATH=$PATH:$(go env GOPATH)/bin
           go get -u github.com/git-chglog/git-chglog/cmd/git-chglog
           git-chglog ${{ github.ref }} > RELEASE.md
+          ls -la
       - name: Deploy | Release
         uses: softprops/action-gh-release@v1
         env:
@@ -81,5 +84,5 @@ jobs:
         with:
           body_path: RELEASE.md
           files: |
-            APASSTools-Linux/APASSTools-Linux.deb
-            APASSTools-Windows/APASSTools-Windows.exe
+            APASSTools-Linux.deb/APASSTools-Linux.deb
+            APASSTools-Windows.exe/APASSTools-Windows.exe
