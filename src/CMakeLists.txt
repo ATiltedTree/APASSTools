@@ -49,7 +49,7 @@ if(WIN32)
 
   # Workaround because 'InstallRequiredSystemLibraries' does not install them when we are not using
   # MSVC and copying them over is just not an option
-  if(NOT MSVC)
+  if(${CMAKE_CXX_COMPILER_ID} NOT STREQUAL "MSVC")
     target_link_libraries(APASSTools PRIVATE -static -static-libstdc++ -static-libgcc)
   endif()
 
@@ -110,8 +110,6 @@ elseif(WIN32)
   while(_files)
     list(GET _files 0 _src)
     list(GET _files 1 _dest)
-    message(STATUS \"\${_src}\")
-    message(STATUS \"\${_dest}\")
     execute_process(
                 COMMAND \"${CMAKE_COMMAND}\" -E
                     copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/\${_dest}\"

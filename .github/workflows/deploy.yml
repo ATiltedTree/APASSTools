@@ -69,7 +69,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: "0"
-
+      - name: Setup | Tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Setup | Artifacts
         uses: actions/download-artifact@v2-preview
       - name: Setup | Changelog
