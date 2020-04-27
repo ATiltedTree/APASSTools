@@ -43,8 +43,15 @@ if(STATIC)
     APASSTools PROPERTIES LINK_SEARCH_START_STATIC OFF LINK_SEARCH_END_STATIC ON
   )
 endif()
+
 if(WIN32)
   target_sources(APASSTools PRIVATE assets/assets.rc)
+
+  # Workaround because 'InstallRequiredSystemLibraries' does not install them when we are not using
+  # MSVC and copying them over is just not an option
+  if(NOT MSVC)
+    target_link_libraries(APASSTools PRIVATE -static -static-libstdc++ -static-libgcc)
+  endif()
 
   if(STATIC)
     qt5_import_plugins(
@@ -118,9 +125,9 @@ elseif(WIN32)
   foreach(lib ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS})
     get_filename_component(filename "${lib}" NAME)
     add_custom_command(
-      TARGET ${target}
+      TARGET APASSTools
       POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${lib}" \"$<TARGET_FILE_DIR:${target}>\"
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${lib}" \"$<TARGET_FILE_DIR:APASSTools>\"
     )
   endforeach()
 endif()
