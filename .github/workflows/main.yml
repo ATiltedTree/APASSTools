@@ -14,19 +14,19 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        compiler: [g++, clang++]
+
         include:
           - os: ubuntu-latest
             qt-arch: linux_x64
             name: APASSTools-Linux
             ext: deb
+            cmake: "-DCMAKE_CXX_COMPILER=g++ -GNinja"
+
           - os: windows-latest
-            qt-arch: win64_mingw73
+            qt-arch: win64_msvc2017_64
             name: APASSTools-Windows
             ext: exe
-        exclude:
-          - os: windows-latest
-            compiler: clang++
+            cmake: -G "Visual Studio 16 2019"
 
     runs-on: ${{ matrix.os }}
 
@@ -50,7 +50,7 @@ jobs:
       - name: Build | CMake
         run: |
           mkdir build && cd build
-          cmake -G Ninja -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} ..
+          cmake ${{ matrix.cmake }} ..
       - name: Build | Compile
         run: |
           cd build
