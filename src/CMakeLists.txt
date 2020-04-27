@@ -47,13 +47,6 @@ endif()
 if(WIN32)
   target_sources(APASSTools PRIVATE assets/assets.rc)
 
-  # Workaround because 'InstallRequiredSystemLibraries' does not install them when we are not using
-  # MSVC and copying them over is just not an option
-  if(NOT MSVC)
-    target_link_libraries(APASSTools PRIVATE -static -static-libstdc++ -static-libgcc)
-    message(STATUS "Building the standard lib statically as we are on windows but not using MSVC")
-  endif()
-
   if(STATIC)
     qt5_import_plugins(
       APASSTools INCLUDE Qt5::QWindowsIntegrationPlugin Qt5::QWindowsVistaStylePlugin
@@ -68,13 +61,15 @@ if(WIN32)
     get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
-    add_custom_command(
-      TARGET APASSTools
-      POST_BUILD
-      COMMAND
-        "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}"
-        $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
-        --no-opengl-sw "$<TARGET_FILE:APASSTools>"
+    set(WINDEPLOYQT_ARGS
+        "
+        --no-translations
+        --no-compiler-runtime
+        --no-opengl-sw
+        --no-system-d3d-compiler
+        --no-angle
+        $<IF:$<STREQUAL:${CMAKE_BUILD_TYPE},Release>,--release,--debug>
+        $<TARGET_FILE:APASSTools>"
     )
 
   endif()
@@ -94,19 +89,14 @@ elseif(WIN32)
     CODE "
   execute_process(
     COMMAND
-      \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\"
+      \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\"
+      \"${WINDEPLOYQT_EXE}\"
+      ${WINDEPLOYQT_ARGS}
       --dry-run
-      --no-translations
-      --no-compiler-runtime
-      --no-angle
-      --no-opengl-sw
-      --release
       --list mapping
-      \"${CMAKE_BINARY_DIR}/bin/APASSTools.exe\"
     OUTPUT_VARIABLE _output
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-
   separate_arguments(_files WINDOWS_COMMAND \${_output})
   while(_files)
     list(GET _files 0 _src)
@@ -120,13 +110,8 @@ elseif(WIN32)
   "
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
+  if(NOT ${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    set(CMAKE_INSTALL_DEBUG_LIBRARIES ON)
+  endif()
   include(InstallRequiredSystemLibraries)
-  foreach(lib ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS})
-    get_filename_component(filename "${lib}" NAME)
-    add_custom_command(
-      TARGET APASSTools
-      POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${lib}" \"$<TARGET_FILE_DIR:APASSTools>\"
-    )
-  endforeach()
 endif()

@@ -14,19 +14,19 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        compiler: [g++, clang++]
+
         include:
           - os: ubuntu-latest
             qt-arch: linux_x64
-            name: APASSTools-Linux
-            ext: deb
+            name: APASSTools-Linux.deb
+            cmake-configure: "-DCMAKE_CXX_COMPILER=g++ -GNinja"
+            cmake-build: ""
+
           - os: windows-latest
-            qt-arch: win64_mingw73
-            name: APASSTools-Windows
-            ext: exe
-        exclude:
-          - os: windows-latest
-            compiler: clang++
+            qt-arch: win64_msvc2017_64
+            name: APASSTools-Windows.exe
+            cmake-configure: -G "Visual Studio 16 2019"
+            cmake-build: ""
 
     runs-on: ${{ matrix.os }}
 
@@ -50,11 +50,11 @@ jobs:
       - name: Build | CMake
         run: |
           mkdir build && cd build
-          cmake -G Ninja -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} ..
+          cmake ${{ matrix.cmake-configure }} -DCMAKE_BUILD_TYPE=Debug ..
       - name: Build | Compile
         run: |
           cd build
-          cmake --build .
+          cmake --build . ${{ matrix.cmake-build }}
       - name: Build | Package
         run: |
           cd build
@@ -62,5 +62,5 @@ jobs:
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2-preview
         with:
-          name: ${{ matrix.name }}-${{ matrix.compiler }}.${{ matrix.ext }}
-          path: build/${{ matrix.name }}.${{ matrix.ext }}
+          name: ${{ matrix.name }}
+          path: build/${{ matrix.name }}
