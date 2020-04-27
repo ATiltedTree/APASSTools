@@ -51,6 +51,7 @@ if(WIN32)
   # MSVC and copying them over is just not an option
   if(NOT MSVC)
     target_link_libraries(APASSTools PRIVATE -static -static-libstdc++ -static-libgcc)
+    message(STATUS "Building the standard lib statically as we are on windows but not using MSVC")
   endif()
 
   if(STATIC)
