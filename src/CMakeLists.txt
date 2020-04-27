@@ -110,7 +110,7 @@ elseif(WIN32)
   "
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
-  if(NOT $<STREQUAL:${CMAKE_BUILD_TYPE},Release>)
+  if(NOT ${CMAKE_BUILD_TYPE} STREQUAL "Release")
     set(CMAKE_INSTALL_DEBUG_LIBRARIES_ONLY ON)
   endif()
   include(InstallRequiredSystemLibraries)
