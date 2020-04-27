@@ -89,6 +89,7 @@
     "qtabwidget": "cpp"
   },
   "conventionalCommits.scopes": [
-    "release"
+    "release",
+    "windows"
   ]
 }
