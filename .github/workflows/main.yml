@@ -1,6 +1,6 @@
 name: CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -14,10 +14,12 @@ jobs:
         include:
           - os: ubuntu-latest
             qt-arch: linux_x64
-            name: APASSTools-Linux.deb
+            name: APASSTools-Linux
+            ext: deb
           - os: windows-latest
             qt-arch: win64_mingw73
-            name: APASSTools-Windows.exe
+            name: APASSTools-Windows
+            ext: exe
         exclude:
           - os: windows-latest
             compiler: clang++
@@ -56,5 +58,5 @@ jobs:
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2-preview
         with:
-          name: ${{ matrix.name }}
-          path: build/${{ matrix.name }}
+          name: ${{ matrix.name }}-${{ matrix.compiler }}.${{ matrix.ext }}
+          path: build/${{ matrix.name }}.${{ matrix.ext }}
