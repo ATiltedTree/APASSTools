@@ -92,6 +92,7 @@ elseif(WIN32)
       --no-compiler-runtime
       --no-angle
       --no-opengl-sw
+      --release
       --list mapping
       \"${CMAKE_BINARY_DIR}/bin/APASSTools.exe\"
     OUTPUT_VARIABLE _output
