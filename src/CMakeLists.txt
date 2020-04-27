@@ -61,18 +61,9 @@ if(WIN32)
     get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
-    add_custom_command(
-      TARGET APASSTools
-      POST_BUILD
-      COMMAND
-        "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}"
+    set(WINDEPLOYQT_ARGS
         $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
         --no-opengl-sw "$<TARGET_FILE:APASSTools>"
-    )
-    file(
-      GENERATE
-      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/target_path"
-      CONTENT "$<TARGET_FILE:APASSTools>"
     )
 
   endif()
@@ -90,18 +81,11 @@ if(UNIX)
 elseif(WIN32)
   install(
     CODE "
-    file(READ \"${CMAKE_CURRENT_BINARY_DIR}/target_path\" _file)
   execute_process(
     COMMAND
-      \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\"
-      --dry-run
-      --no-translations
-      --no-compiler-runtime
-      --no-angle
-      --no-opengl-sw
-      --release
-      --list mapping
-      \${_file}
+      \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\"
+      \"${WINDEPLOYQT_EXE}\"
+      \"${WINDEPLOYQT_ARGS}\"
     OUTPUT_VARIABLE _output
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
@@ -112,7 +96,7 @@ elseif(WIN32)
     list(GET _files 1 _dest)
     execute_process(
                 COMMAND \"${CMAKE_COMMAND}\" -E
-                    copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/\${_dest}\"
+                    copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/${CMAKE_BUILD_TYPE}/\${_dest}\"
             )
     list(REMOVE_AT _files 0 1)
   endwhile()
@@ -120,12 +104,4 @@ elseif(WIN32)
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
   include(InstallRequiredSystemLibraries)
-  foreach(lib ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS})
-    get_filename_component(filename "${lib}" NAME)
-    add_custom_command(
-      TARGET APASSTools
-      POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${lib}" \"$<TARGET_FILE_DIR:APASSTools>\"
-    )
-  endforeach()
 endif()

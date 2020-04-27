@@ -50,7 +50,7 @@ jobs:
       - name: Build | CMake
         run: |
           mkdir build && cd build
-          cmake ${{ matrix.cmake-configure }} ..
+          cmake ${{ matrix.cmake-configure }} -DCMAKE_BUILD_TYPE=Debug ..
       - name: Build | Compile
         run: |
           cd build
