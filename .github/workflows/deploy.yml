@@ -76,7 +76,6 @@ jobs:
           export PATH=$PATH:$(go env GOPATH)/bin
           go get -u github.com/git-chglog/git-chglog/cmd/git-chglog
           git-chglog $(git describe --tags) > RELEASE.md
-          ls -la
       - name: Deploy | Release
         uses: softprops/action-gh-release@v1
         env:
