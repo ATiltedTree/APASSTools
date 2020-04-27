@@ -71,17 +71,15 @@ jobs:
       - name: Setup | Artifacts
         uses: actions/download-artifact@v2-preview
       - name: Setup | Changelog
-        id: changelog
-        uses: nuuday/github-changelog-action@v1.0.0
-        with:
-          next_version: ${{ github.ref }}
-          filename: ""
+        run: |
+          go get -u github.com/git-chglog/git-chglog/cmd/git-chglog
+          git-chglog ${{ github.ref }} > RELEASE.md
       - name: Deploy | Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          body: ${{ steps.changelog.outputs.changelog }}
+          body_path: RELEASE.md
           files: |
-            APASSTools-Linux.deb
-            APASSTools-Windows.exe
+            APASSTools-Linux/APASSTools-Linux.deb
+            APASSTools-Windows/APASSTools-Windows.exe
