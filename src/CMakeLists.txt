@@ -66,9 +66,10 @@ if(WIN32)
         --no-translations
         --no-compiler-runtime
         --no-opengl-sw
+        --no-system-d3d-compiler
+        --no-angle
         $<IF:$<STREQUAL:${CMAKE_BUILD_TYPE},Release>,--release,--debug>
-        $<TARGET_FILE:APASSTools>
-        "
+        $<TARGET_FILE:APASSTools>"
     )
 
   endif()
@@ -109,6 +110,8 @@ elseif(WIN32)
   "
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
-  set(CMAKE_INSTALL_DEBUG_LIBRARIES ON)
+  if(NOT $<STREQUAL:${CMAKE_BUILD_TYPE},Release>)
+    set(CMAKE_INSTALL_DEBUG_LIBRARIES_ONLY ON)
+  endif()
   include(InstallRequiredSystemLibraries)
 endif()
