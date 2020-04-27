@@ -61,9 +61,8 @@ if(WIN32)
     get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
-    set(WINDEPLOYQT_ARGS
-        $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
-        --no-opengl-sw "$<TARGET_FILE:APASSTools>"
+    set(WINDEPLOYQT_ARGS --no-translations --no-compiler-runtime --no-angle --no-opengl-sw
+                         "$<TARGET_FILE:APASSTools>"
     )
 
   endif()
@@ -89,17 +88,6 @@ elseif(WIN32)
     OUTPUT_VARIABLE _output
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-
-  separate_arguments(_files WINDOWS_COMMAND \${_output})
-  while(_files)
-    list(GET _files 0 _src)
-    list(GET _files 1 _dest)
-    execute_process(
-                COMMAND \"${CMAKE_COMMAND}\" -E
-                    copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/${CMAKE_BUILD_TYPE}/\${_dest}\"
-            )
-    list(REMOVE_AT _files 0 1)
-  endwhile()
   "
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
