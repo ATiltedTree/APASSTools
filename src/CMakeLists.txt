@@ -62,8 +62,13 @@ if(WIN32)
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
     set(WINDEPLOYQT_ARGS
-        "$<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
-        --no-opengl-sw \"$<TARGET_FILE:APASSTools>\""
+        "
+        --no-translations
+        --no-compiler-runtime
+        --no-opengl-sw
+        $<IF:$<STREQUAL:${CMAKE_BUILD_TYPE},Release>,--release,--debug>
+        $<TARGET_FILE:APASSTools>
+        "
     )
 
   endif()
@@ -85,10 +90,11 @@ elseif(WIN32)
     COMMAND
       \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\"
       \"${WINDEPLOYQT_EXE}\"
-      \"${WINDEPLOYQT_ARGS}\"
+      ${WINDEPLOYQT_ARGS}
   )
   "
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
+  set(CMAKE_INSTALL_DEBUG_LIBRARIES ON)
   include(InstallRequiredSystemLibraries)
 endif()
