@@ -60,12 +60,12 @@ if(WIN32)
     get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
-    # add_custom_command( TARGET APASSTools POST_BUILD COMMAND "${CMAKE_COMMAND}" -E env
-    # PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}"
-    # --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
-    # --plugindir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/QtPlugins"
-    # $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
-    # "$<TARGET_FILE:APASSTools>" )
+    add_custom_command(TARGET APASSTools POST_BUILD COMMAND "${CMAKE_COMMAND}" -E
+    env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}"
+      --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+      $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime
+      "$<TARGET_FILE:APASSTools>"
+    )
 
   endif()
 endif()
@@ -81,32 +81,31 @@ if(UNIX)
   )
 elseif(WIN32)
   install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/qt.conf.win
-    TYPE BIN
-    RENAME qt.conf
-  )
-
-  install(
     CODE "
   execute_process(
     COMMAND
       \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\" --dry-run
-      --libdir=\"${CMAKE_BINARY_DIR}/bin\"
-      --plugindir=\"${CMAKE_BINARY_DIR}/bin/QtPlugins\" --no-translations --debug --dir \"${CMAKE_BINARY_DIR}/bin\"
-      --compiler-runtime --no-angle --no-opengl-sw --list mapping
+      --libdir=\"${CMAKE_INSTALL_PREFIX}/bin\"
+      --no-translations
+      --no-compiler-runtime --no-angle --no-opengl-sw --list mapping
       \"${CMAKE_BINARY_DIR}/bin/APASSTools.exe\"
     OUTPUT_VARIABLE _output
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-  separate_arguments(_files WINDOWS_COMMAND ${_output})
-  message(STATUS ${_files})
+
+  separate_arguments(_files WINDOWS_COMMAND \${_output})
   while(_files)
     list(GET _files 0 _src)
     list(GET _files 1 _dest)
-    install(FILES ${_src} DESTINATION bin/${_dest})
+    message(STATUS \"\${_src}\")
+    message(STATUS \"\${_dest}\")
+    execute_process(
+                COMMAND \"${CMAKE_COMMAND}\" -E
+                    copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/\${_dest}\"
+            )
     list(REMOVE_AT _files 0 1)
   endwhile()
   "
   )
-
+)
 endif()
