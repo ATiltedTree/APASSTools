@@ -69,6 +69,11 @@ if(WIN32)
         $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
         --no-opengl-sw "$<TARGET_FILE:APASSTools>"
     )
+    file(
+      GENERATE
+      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/target_path"
+      CONTENT "$<TARGET_FILE:APASSTools>"
+    )
 
   endif()
 endif()
@@ -85,6 +90,7 @@ if(UNIX)
 elseif(WIN32)
   install(
     CODE "
+    file(READ \"${CMAKE_CURRENT_BINARY_DIR}/target_path\" _file)
   execute_process(
     COMMAND
       \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\"
@@ -95,7 +101,7 @@ elseif(WIN32)
       --no-opengl-sw
       --release
       --list mapping
-      \"${CMAKE_BINARY_DIR}/bin/APASSTools.exe\"
+      \${_file}
     OUTPUT_VARIABLE _output
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
