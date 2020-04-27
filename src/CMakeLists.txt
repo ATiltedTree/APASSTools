@@ -91,7 +91,21 @@ elseif(WIN32)
       \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\"
       \"${WINDEPLOYQT_EXE}\"
       ${WINDEPLOYQT_ARGS}
+      --dry-run
+      --list mapping
+    OUTPUT_VARIABLE _output
+    OUTPUT_STRIP_TRAILING_WHITESPACE
   )
+  separate_arguments(_files WINDOWS_COMMAND \${_output})
+  while(_files)
+    list(GET _files 0 _src)
+    list(GET _files 1 _dest)
+    execute_process(
+                COMMAND \"${CMAKE_COMMAND}\" -E
+                    copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/\${_dest}\"
+            )
+    list(REMOVE_AT _files 0 1)
+  endwhile()
   "
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
