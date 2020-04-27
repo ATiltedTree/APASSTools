@@ -65,8 +65,8 @@ if(WIN32)
       POST_BUILD
       COMMAND
         "${CMAKE_COMMAND}" -E env PATH="${QT_BINARY_DIRECTORY}" "${WINDEPLOYQT_EXE}"
-        --libdir="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" $<IF:$<CONFIG:Debug>,--debug,--release>
-        --no-translations --no-compiler-runtime "$<TARGET_FILE:APASSTools>"
+        $<IF:$<CONFIG:Debug>,--debug,--release> --no-translations --no-compiler-runtime --no-angle
+        --no-opengl-sw "$<TARGET_FILE:APASSTools>"
     )
 
   endif()
@@ -86,10 +86,13 @@ elseif(WIN32)
     CODE "
   execute_process(
     COMMAND
-      \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\" --dry-run
-      --libdir=\"${CMAKE_INSTALL_PREFIX}/bin\"
+      \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\" \"${WINDEPLOYQT_EXE}\"
+      --dry-run
       --no-translations
-      --no-compiler-runtime --no-angle --no-opengl-sw --list mapping
+      --no-compiler-runtime
+      --no-angle
+      --no-opengl-sw
+      --list mapping
       \"${CMAKE_BINARY_DIR}/bin/APASSTools.exe\"
     OUTPUT_VARIABLE _output
     OUTPUT_STRIP_TRAILING_WHITESPACE
