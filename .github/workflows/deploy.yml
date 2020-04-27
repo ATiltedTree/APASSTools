@@ -75,7 +75,7 @@ jobs:
           # Temporary fix for https://github.com/actions/setup-go/issues/14
           export PATH=$PATH:$(go env GOPATH)/bin
           go get -u github.com/git-chglog/git-chglog/cmd/git-chglog
-          git-chglog ${{ github.ref }} > RELEASE.md
+          git-chglog $(git describe --tags) > RELEASE.md
           ls -la
       - name: Deploy | Release
         uses: softprops/action-gh-release@v1
