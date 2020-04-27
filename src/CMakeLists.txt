@@ -61,8 +61,14 @@ if(WIN32)
     get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
-    set(WINDEPLOYQT_ARGS --no-translations --no-compiler-runtime --no-angle --no-opengl-sw
-                         "$<TARGET_FILE:APASSTools>"
+    set(WINDEPLOYQT_ARGS
+        "$<IF:$<CONFIG:Debug>,--debug,--release>
+        --no-translations
+        --no-compiler-runtime
+        --no-angle
+        --no-opengl-sw
+        --verbose 000
+        \"$<TARGET_FILE:APASSTools>\""
     )
 
   endif()
@@ -85,8 +91,6 @@ elseif(WIN32)
       \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\"
       \"${WINDEPLOYQT_EXE}\"
       \"${WINDEPLOYQT_ARGS}\"
-    OUTPUT_VARIABLE _output
-    OUTPUT_STRIP_TRAILING_WHITESPACE
   )
   "
   )
