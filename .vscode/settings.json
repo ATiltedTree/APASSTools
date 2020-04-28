@@ -88,8 +88,6 @@
     "variant": "cpp",
     "qtabwidget": "cpp"
   },
-  "conventionalCommits.scopes": [
-    "release",
-    "windows"
-  ]
+  "conventionalCommits.scopes": ["release", "windows"],
+  "cmake.configureArgs": ["-DLOCAL_DEV=ON"]
 }

@@ -107,18 +107,15 @@ namespace Ui {
       menuHelp           = new QMenu(menubar);
       statusbar          = new QStatusBar(parent);
       auto* CSVDisplayHeaderItem = new QTreeWidgetItem();
-      auto* icon                 = new QIcon();
 
-      icon->addFile(":/logo", QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-
-      parent->setWindowIcon(*icon);
+      parent->setWindowIcon(QIcon::fromTheme("apasstools"));
       parent->addToolBar(Qt::TopToolBarArea, toolBar);
       parent->setCentralWidget(centralwidget);
       parent->setMenuBar(menubar);
       parent->setStatusBar(statusbar);
 
       actionCSV->setIcon(QIcon::fromTheme("text-csv"));
-      actionWeb->setIcon(QIcon::fromTheme("web-browser"));
+      actionWeb->setIcon(QIcon::fromTheme("download"));
       actionSave->setIcon(QIcon::fromTheme("filesave"));
       actionSaveAs->setIcon(QIcon::fromTheme("filesaveas"));
       actionQuit->setIcon(QIcon::fromTheme("window-close"));

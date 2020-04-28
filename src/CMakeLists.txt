@@ -1,7 +1,6 @@
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Network)
 
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 
 add_executable(
   APASSTools WIN32
@@ -28,7 +27,6 @@ add_executable(
   common/PRNFile.h
   common/TDFFile.cpp
   common/TDFFile.h
-  assets/assets.qrc
 )
 
 configure_file(config.h.in config.h @ONLY)
@@ -45,7 +43,7 @@ if(STATIC)
 endif()
 
 if(WIN32)
-  target_sources(APASSTools PRIVATE assets/assets.rc)
+  target_sources(APASSTools PRIVATE apasstools.rc)
 
   if(STATIC)
     qt5_import_plugins(
@@ -76,15 +74,7 @@ if(WIN32)
 endif()
 
 install(TARGETS APASSTools)
-if(UNIX)
-  install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION share/doc/APASSTools)
-  install(FILES ${CMAKE_SOURCE_DIR}/APASSTools.desktop DESTINATION share/applications)
-  install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/icons/logo.svg
-    DESTINATION share/icons/hicolor/scalable/apps
-    RENAME apasstools.svg
-  )
-elseif(WIN32)
+if(WIN32)
   install(
     CODE "
   execute_process(

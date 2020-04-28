@@ -1,0 +1,17 @@
+[Icon Theme]
+Name=resources
+Directories=scalable/apps,scalable/mimetypes
+
+[scalable/apps]
+Size=48
+Type=Scalable
+MinSize=1
+MaxSize=256
+Context=Applications
+
+[scalable/mimetypes]
+Size=48
+Type=Scalable
+MinSize=1
+MaxSize=256
+Context=MimeTypes

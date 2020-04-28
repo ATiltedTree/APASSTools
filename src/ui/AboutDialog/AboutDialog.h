@@ -5,6 +5,7 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QGridLayout>
+#include <QIcon>
 #include <QLabel>
 #include <QLayout>
 #include <config.h>
@@ -57,7 +58,7 @@ namespace Ui {
           "SOFTWARE\n");
 
       lableIcon->setMaximumSize(QSize(100, 100));
-      lableIcon->setPixmap(QPixmap(QString::fromUtf8(":/logo")));
+      lableIcon->setPixmap(QIcon::fromTheme("apasstools").pixmap(100));
       lableIcon->setScaledContents(true);
 
       buttonBox->setOrientation(Qt::Horizontal);

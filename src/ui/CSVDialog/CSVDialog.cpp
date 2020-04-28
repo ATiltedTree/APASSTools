@@ -1,6 +1,7 @@
 #include "CSVDialog.h"
 
 CSVDialog::CSVDialog(QWidget* parent) : QDialog(parent), ui(new Ui::CSVDialog(this)) {
+  ui->setupUi();
   connect(this->ui->buttonCSVFile, &QPushButton::clicked, this, &CSVDialog::onSelectFile);
   connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
   connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);

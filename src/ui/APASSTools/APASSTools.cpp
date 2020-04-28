@@ -2,6 +2,8 @@
 
 APASSTools::APASSTools(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::APASSTools(this)), apass(APASS::New()) {
+  QIcon::setFallbackSearchPaths(QStringList(CONFIG_DATA_DIR));
+  QIcon::setFallbackThemeName("resources");
   ui->setupUi();
   QApplication::setOrganizationName("ATiltedTree");
   QApplication::setApplicationName(CONFIG_APP_NAME);

@@ -42,7 +42,7 @@ namespace Ui {
 
     void setupUi() {
       parent->resize(362, 208);
-      parent->setWindowIcon(QIcon::fromTheme("web-browser"));
+      parent->setWindowIcon(QIcon::fromTheme("download"));
 
       spinBoxRadius->setMinimum(1);
       spinBoxRadius->setMaximum(15);
