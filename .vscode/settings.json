@@ -86,7 +86,9 @@
     "typeinfo": "cpp",
     "valarray": "cpp",
     "variant": "cpp",
-    "qtabwidget": "cpp"
+    "qtabwidget": "cpp",
+    "csignal": "cpp",
+    "any": "cpp"
   },
   "conventionalCommits.scopes": ["release", "windows"],
   "cmake.configureArgs": ["-DLOCAL_DEV=ON"]

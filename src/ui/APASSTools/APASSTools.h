@@ -68,11 +68,11 @@ namespace Ui {
     QLabel* nameLabel;
     QLabel* magLabel;
     QTreeWidget* CSVDisplay;
-    QToolBar* toolBar;
     QMenuBar* menubar;
     QMenu* menuFile;
     QMenu* menuNewFrom;
     QMenu* menuHelp;
+    QMenu* menuEdit;
     QStatusBar* statusbar;
     QMainWindow* parent;
 
@@ -101,30 +101,18 @@ namespace Ui {
       nameLabel          = new QLabel(settingsBox);
       magLabel           = new QLabel(settingsBox);
       CSVDisplay         = new QTreeWidget(centralwidget);
-      toolBar            = new QToolBar(parent);
       menubar            = new QMenuBar(parent);
       menuFile           = new QMenu(menubar);
+      menuEdit           = new QMenu(menubar);
       menuNewFrom        = new QMenu(menuFile);
       menuHelp           = new QMenu(menubar);
       statusbar          = new QStatusBar(parent);
       auto* CSVDisplayHeaderItem = new QTreeWidgetItem();
 
-      parent->setWindowIcon(QIcon::fromTheme("apasstools"));
-      parent->addToolBar(Qt::TopToolBarArea, toolBar);
+      parent->setWindowIcon(QIcon(CONFIG_ICON_PATH.string().c_str()));
       parent->setCentralWidget(centralwidget);
       parent->setMenuBar(menubar);
       parent->setStatusBar(statusbar);
-
-      actionCSV->setIcon(QIcon::fromTheme("text-csv"));
-      actionWeb->setIcon(QIcon::fromTheme("download"));
-      actionSave->setIcon(QIcon::fromTheme("filesave"));
-      actionSaveAs->setIcon(QIcon::fromTheme("filesaveas"));
-      actionQuit->setIcon(QIcon::fromTheme("window-close"));
-      actionHelp->setIcon(QIcon::fromTheme("help"));
-      actionAbout->setIcon(QIcon::fromTheme("help-about"));
-      actionAboutQt->setIcon(QIcon::fromTheme("qt5-logo"));
-      actionSettings->setIcon(QIcon::fromTheme("settings"));
-      actionClear->setIcon(QIcon::fromTheme("edit-clear"));
 
       settingsBoxLayout->addWidget(magnitudeSpin, 2, 2, 1, 1);
       settingsBoxLayout->addWidget(observationSpin, 1, 2, 1, 1);
@@ -146,18 +134,6 @@ namespace Ui {
       centralLayout->addWidget(settingsBox, 0, 0, 2, 2);
       centralLayout->addWidget(CSVDisplay, 2, 0, 1, 2);
 
-      toolBar->addAction(actionCSV);
-      toolBar->addAction(actionWeb);
-      toolBar->addSeparator();
-      toolBar->addAction(actionSave);
-      toolBar->addAction(actionSaveAs);
-      toolBar->addSeparator();
-      toolBar->addAction(actionClear);
-      toolBar->addSeparator();
-      toolBar->addAction(actionSettings);
-      toolBar->addAction(actionAbout);
-
-      menuNewFrom->setIcon(QIcon::fromTheme("filenew"));
       menuNewFrom->addAction(actionCSV);
       menuNewFrom->addAction(actionWeb);
 
@@ -175,7 +151,10 @@ namespace Ui {
       menuHelp->addAction(actionAbout);
       menuHelp->addAction(actionAboutQt);
 
+      menuEdit->addAction(actionClear);
+
       menubar->addAction(menuFile->menuAction());
+      menubar->addAction(menuEdit->menuAction());
       menubar->addAction(menuHelp->menuAction());
 
       retranslateUi();
@@ -206,6 +185,7 @@ namespace Ui {
       nameLabel->setText(QCoreApplication::translate("APASSTools", "Name", nullptr));
       magLabel->setText(QCoreApplication::translate("APASSTools", "Magnitude Threshold", nullptr));
       menuFile->setTitle(QCoreApplication::translate("APASSTools", "File", nullptr));
+      menuEdit->setTitle(QCoreApplication::translate("APASSTools", "Edit", nullptr));
       menuNewFrom->setTitle(QCoreApplication::translate("APASSTools", "New from", nullptr));
       menuHelp->setTitle(QCoreApplication::translate("APASSTools", "Help", nullptr));
     } // retranslateUi

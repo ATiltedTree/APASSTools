@@ -16,6 +16,7 @@
 #include <QSpinBox>
 #include <QTabWidget>
 #include <QToolButton>
+#include <config.h>
 
 namespace Ui {
   class SettingsDialog {
@@ -57,7 +58,7 @@ namespace Ui {
 
     void setupUi() {
       parent->resize(589, 521);
-      parent->setWindowIcon(QIcon::fromTheme("settings"));
+      parent->setWindowIcon(QIcon(CONFIG_ICON_PATH.string().c_str()));
       parent->setModal(true);
 
       buttons->setOrientation(Qt::Horizontal);

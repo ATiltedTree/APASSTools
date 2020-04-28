@@ -17,6 +17,7 @@
 #include <QString>
 #include <QUrlQuery>
 #include <QWidget>
+#include <config.h>
 
 namespace Ui {
   class WebDialog {
@@ -42,7 +43,7 @@ namespace Ui {
 
     void setupUi() {
       parent->resize(362, 208);
-      parent->setWindowIcon(QIcon::fromTheme("download"));
+      parent->setWindowIcon(QIcon(CONFIG_ICON_PATH.string().c_str()));
 
       spinBoxRadius->setMinimum(1);
       spinBoxRadius->setMaximum(15);

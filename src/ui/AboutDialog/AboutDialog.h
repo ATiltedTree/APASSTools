@@ -58,7 +58,7 @@ namespace Ui {
           "SOFTWARE\n");
 
       lableIcon->setMaximumSize(QSize(100, 100));
-      lableIcon->setPixmap(QIcon::fromTheme("apasstools").pixmap(100));
+      lableIcon->setPixmap(QIcon(CONFIG_ICON_PATH.string().c_str()).pixmap(100));
       lableIcon->setScaledContents(true);
 
       buttonBox->setOrientation(Qt::Horizontal);

@@ -16,6 +16,7 @@
 #include <QPushButton>
 #include <QString>
 #include <QTextStream>
+#include <config.h>
 
 namespace Ui {
   class CSVDialog {
@@ -35,10 +36,10 @@ namespace Ui {
 
     void setupUi() {
       parent->resize(400, 88);
-      parent->setWindowIcon(QIcon::fromTheme("text-csv"));
+      parent->setWindowIcon(QIcon(CONFIG_ICON_PATH.string().c_str()));
       parent->setModal(true);
 
-      buttonCSVFile->setIcon(QIcon::fromTheme("document-open"));
+      buttonCSVFile->setText("...");
 
       buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
 
