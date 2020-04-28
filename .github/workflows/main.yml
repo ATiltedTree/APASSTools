@@ -19,7 +19,7 @@ jobs:
           - os: ubuntu-latest
             qt-arch: linux_x64
             name: APASSTools-Linux.deb
-            cmake-configure: "-GNinja"
+            cmake-configure: "-DCMAKE_CXX_COMPILER=clang++ -GNinja"
             cmake-build: ""
 
           - os: windows-latest
