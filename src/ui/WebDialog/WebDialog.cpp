@@ -1,4 +1,4 @@
-#include "WebDialog.h"
+#include "WebDialog.hpp"
 
 WebDialog::WebDialog(QWidget* parent) : QDialog(parent), ui(new Ui::WebDialog(this)) {
   ui->setupUi();

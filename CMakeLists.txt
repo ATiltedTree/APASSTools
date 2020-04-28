@@ -15,7 +15,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(STATIC "Build the executable statically" OFF)
 option(WITH_CLANG_TIDY "Enable clang-tidy on build" OFF)
-option(LOCAL_DEV "Use the local data dir instead of the installed one" OFF)
 
 if(STATIC)
   set(USE_STATIC_QT_BY_DEFAULT ON)
@@ -36,8 +35,6 @@ if(UNIX)
           DESTINATION share/icons/hicolor/scalable/apps
   )
 endif()
-
-install(DIRECTORY data/resources DESTINATION share/apasstools)
 
 if(WIN32)
   list(APPEND CPACK_GENERATOR "NSIS64")

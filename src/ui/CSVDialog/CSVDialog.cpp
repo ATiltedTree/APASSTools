@@ -1,4 +1,4 @@
-#include "CSVDialog.h"
+#include "CSVDialog.hpp"
 
 CSVDialog::CSVDialog(QWidget* parent) : QDialog(parent), ui(new Ui::CSVDialog(this)) {
   ui->setupUi();

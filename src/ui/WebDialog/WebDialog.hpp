@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Macros.h"
+#include "Macros.hpp"
+#include "common/Icon.hpp"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDialog>
@@ -17,7 +18,7 @@
 #include <QString>
 #include <QUrlQuery>
 #include <QWidget>
-#include <config.h>
+#include <config.hpp>
 
 namespace Ui {
   class WebDialog {
@@ -42,8 +43,9 @@ namespace Ui {
           buttonBox(new QDialogButtonBox(parent)), progressBar(new QProgressBar(parent)){};
 
     void setupUi() {
-      parent->resize(362, 208);
-      parent->setWindowIcon(QIcon(CONFIG_ICON_PATH.string().c_str()));
+      parent->window()->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+      parent->setWindowFlag(Qt::WindowType::MSWindowsFixedSizeDialogHint, true);
+      parent->setWindowIcon(getIcon(Icon::Download));
 
       spinBoxRadius->setMinimum(1);
       spinBoxRadius->setMaximum(15);

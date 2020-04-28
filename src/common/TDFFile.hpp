@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Macros.h"
+#include "Macros.hpp"
 #include <QFile>
 #include <QObject>
 #include <QString>

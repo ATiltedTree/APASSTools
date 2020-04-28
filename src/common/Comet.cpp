@@ -1,4 +1,4 @@
-#include "Comet.h"
+#include "Comet.hpp"
 
 Comet::Comet(QList<QString> data)
     : radeg(CSVObject::New(data[0])), raerr(CSVObject::New(data[1])),

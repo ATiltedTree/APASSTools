@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CSVObject.h"
-#include "Macros.h"
+#include "CSVObject.hpp"
+#include "Macros.hpp"
 #include <QList>
 #include <QString>
 

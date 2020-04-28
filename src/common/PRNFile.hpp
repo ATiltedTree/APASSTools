@@ -1,7 +1,7 @@
 #pragma once
 
-#include "APASS.h"
-#include "Macros.h"
+#include "APASS.hpp"
+#include "Macros.hpp"
 #include <QFile>
 #include <QString>
 #include <QTextStream>

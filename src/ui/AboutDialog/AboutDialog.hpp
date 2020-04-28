@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Macros.h"
+#include "Macros.hpp"
+#include "common/Icon.hpp"
 #include <QApplication>
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -8,7 +9,7 @@
 #include <QIcon>
 #include <QLabel>
 #include <QLayout>
-#include <config.h>
+#include <config.hpp>
 
 namespace Ui {
   class AboutDialog {
@@ -28,6 +29,7 @@ namespace Ui {
     void setupUi() {
       parent->window()->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
       parent->setWindowFlag(Qt::WindowType::MSWindowsFixedSizeDialogHint, true);
+      parent->setWindowIcon(getIcon(Icon::HelpAbout));
 
       lableTitle->setText(
           QObject::tr("<p><span style=\"font-size: 14pt; font-weight:600;\">%1<span/><p/>"
@@ -58,7 +60,7 @@ namespace Ui {
           "SOFTWARE\n");
 
       lableIcon->setMaximumSize(QSize(100, 100));
-      lableIcon->setPixmap(QIcon(CONFIG_ICON_PATH.string().c_str()).pixmap(100));
+      lableIcon->setPixmap(getIcon(Icon::APASSTools).pixmap(100));
       lableIcon->setScaledContents(true);
 
       buttonBox->setOrientation(Qt::Horizontal);

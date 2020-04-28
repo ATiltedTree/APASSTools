@@ -1,4 +1,4 @@
-#include "APASSTools.h"
+#include "APASSTools.hpp"
 
 APASSTools::APASSTools(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::APASSTools(this)), apass(APASS::New()) {

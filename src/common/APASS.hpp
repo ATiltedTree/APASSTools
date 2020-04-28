@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Comet.h"
-#include "Macros.h"
+#include "Comet.hpp"
+#include "Macros.hpp"
 #include <QList>
 #include <QProgressBar>
 #include <QString>

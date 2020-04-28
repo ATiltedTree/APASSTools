@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Macros.h"
-#include "common/Settings.h"
+#include "Macros.hpp"
+#include "common/Icon.hpp"
+#include "common/Settings.hpp"
 #include <QApplication>
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -16,7 +17,7 @@
 #include <QPushButton>
 #include <QString>
 #include <QTextStream>
-#include <config.h>
+#include <config.hpp>
 
 namespace Ui {
   class CSVDialog {
@@ -35,11 +36,11 @@ namespace Ui {
           buttonCSVFile(new QPushButton(parent)), buttonBox(new QDialogButtonBox(parent)){};
 
     void setupUi() {
-      parent->resize(400, 88);
-      parent->setWindowIcon(QIcon(CONFIG_ICON_PATH.string().c_str()));
-      parent->setModal(true);
+      parent->window()->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+      parent->setWindowFlag(Qt::WindowType::MSWindowsFixedSizeDialogHint, true);
+      parent->setWindowIcon(getIcon(Icon::TextCSV));
 
-      buttonCSVFile->setText("...");
+      buttonCSVFile->setIcon(getIcon(Icon::DocumentOpen));
 
       buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
 

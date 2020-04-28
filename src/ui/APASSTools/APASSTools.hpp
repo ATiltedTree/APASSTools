@@ -1,15 +1,16 @@
 #pragma once
 
-#include "Macros.h"
-#include "common/APASS.h"
-#include "common/Error.h"
-#include "common/PRNFile.h"
-#include "common/Settings.h"
-#include "common/TDFFile.h"
-#include "ui/AboutDialog/AboutDialog.h"
-#include "ui/CSVDialog/CSVDialog.h"
-#include "ui/SettingsDialog/SettingsDialog.h"
-#include "ui/WebDialog/WebDialog.h"
+#include "Macros.hpp"
+#include "common/APASS.hpp"
+#include "common/Error.hpp"
+#include "common/Icon.hpp"
+#include "common/PRNFile.hpp"
+#include "common/Settings.hpp"
+#include "common/TDFFile.hpp"
+#include "ui/AboutDialog/AboutDialog.hpp"
+#include "ui/CSVDialog/CSVDialog.hpp"
+#include "ui/SettingsDialog/SettingsDialog.hpp"
+#include "ui/WebDialog/WebDialog.hpp"
 #include <QAction>
 #include <QApplication>
 #include <QCloseEvent>
@@ -34,7 +35,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QWidget>
-#include <config.h>
+#include <config.hpp>
 #include <filesystem>
 
 const QList<QString> apassValues = {
@@ -59,11 +60,10 @@ namespace Ui {
     QWidget* centralwidget;
     QGridLayout* centralLayout;
     QGroupBox* settingsBox;
-    QGridLayout* settingsBoxLayout;
+    QFormLayout* settingsBoxLayout;
     QDoubleSpinBox* magnitudeSpin;
     QSpinBox* observationSpin;
     QLabel* obsLabel;
-    QSpacerItem* horizontalSpacer_2;
     QLineEdit* nameEdit;
     QLabel* nameLabel;
     QLabel* magLabel;
@@ -79,48 +79,46 @@ namespace Ui {
     APASSTools(QMainWindow* parent) : parent(parent){};
 
     void setupUi() {
-      actionCSV          = new QAction(parent);
-      actionWeb          = new QAction(parent);
-      actionSave         = new QAction(parent);
-      actionSaveAs       = new QAction(parent);
-      actionQuit         = new QAction(parent);
-      actionHelp         = new QAction(parent);
-      actionAbout        = new QAction(parent);
-      actionAboutQt      = new QAction(parent);
-      actionSettings     = new QAction(parent);
-      actionClear        = new QAction(parent);
-      centralwidget      = new QWidget(parent);
-      centralLayout      = new QGridLayout(centralwidget);
-      settingsBox        = new QGroupBox(centralwidget);
-      settingsBoxLayout  = new QGridLayout(settingsBox);
-      magnitudeSpin      = new QDoubleSpinBox(settingsBox);
-      observationSpin    = new QSpinBox(settingsBox);
-      obsLabel           = new QLabel(settingsBox);
-      horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-      nameEdit           = new QLineEdit(settingsBox);
-      nameLabel          = new QLabel(settingsBox);
-      magLabel           = new QLabel(settingsBox);
-      CSVDisplay         = new QTreeWidget(centralwidget);
-      menubar            = new QMenuBar(parent);
-      menuFile           = new QMenu(menubar);
-      menuEdit           = new QMenu(menubar);
-      menuNewFrom        = new QMenu(menuFile);
-      menuHelp           = new QMenu(menubar);
-      statusbar          = new QStatusBar(parent);
+      actionCSV                  = new QAction(parent);
+      actionWeb                  = new QAction(parent);
+      actionSave                 = new QAction(parent);
+      actionSaveAs               = new QAction(parent);
+      actionQuit                 = new QAction(parent);
+      actionHelp                 = new QAction(parent);
+      actionAbout                = new QAction(parent);
+      actionAboutQt              = new QAction(parent);
+      actionSettings             = new QAction(parent);
+      actionClear                = new QAction(parent);
+      centralwidget              = new QWidget(parent);
+      centralLayout              = new QGridLayout(centralwidget);
+      settingsBox                = new QGroupBox(centralwidget);
+      settingsBoxLayout          = new QFormLayout(settingsBox);
+      magnitudeSpin              = new QDoubleSpinBox(settingsBox);
+      observationSpin            = new QSpinBox(settingsBox);
+      obsLabel                   = new QLabel(settingsBox);
+      nameEdit                   = new QLineEdit(settingsBox);
+      nameLabel                  = new QLabel(settingsBox);
+      magLabel                   = new QLabel(settingsBox);
+      CSVDisplay                 = new QTreeWidget(centralwidget);
+      menubar                    = new QMenuBar(parent);
+      menuFile                   = new QMenu(menubar);
+      menuEdit                   = new QMenu(menubar);
+      menuNewFrom                = new QMenu(menuFile);
+      menuHelp                   = new QMenu(menubar);
+      statusbar                  = new QStatusBar(parent);
       auto* CSVDisplayHeaderItem = new QTreeWidgetItem();
 
-      parent->setWindowIcon(QIcon(CONFIG_ICON_PATH.string().c_str()));
+      parent->setWindowIcon(getIcon(Icon::APASSTools));
       parent->setCentralWidget(centralwidget);
       parent->setMenuBar(menubar);
       parent->setStatusBar(statusbar);
 
-      settingsBoxLayout->addWidget(magnitudeSpin, 2, 2, 1, 1);
-      settingsBoxLayout->addWidget(observationSpin, 1, 2, 1, 1);
-      settingsBoxLayout->addWidget(obsLabel, 1, 0, 1, 1);
-      settingsBoxLayout->addItem(horizontalSpacer_2, 0, 1, 1, 1);
-      settingsBoxLayout->addWidget(nameEdit, 0, 2, 1, 1);
-      settingsBoxLayout->addWidget(nameLabel, 0, 0, 1, 1);
-      settingsBoxLayout->addWidget(magLabel, 2, 0, 1, 1);
+      settingsBoxLayout->setWidget(0, QFormLayout::FieldRole, nameEdit);
+      settingsBoxLayout->setWidget(0, QFormLayout::LabelRole, nameLabel);
+      settingsBoxLayout->setWidget(1, QFormLayout::FieldRole, observationSpin);
+      settingsBoxLayout->setWidget(1, QFormLayout::LabelRole, obsLabel);
+      settingsBoxLayout->setWidget(2, QFormLayout::FieldRole, magnitudeSpin);
+      settingsBoxLayout->setWidget(2, QFormLayout::LabelRole, magLabel);
 
       for (int i = 0; i < apassValues.size(); i++) {
         CSVDisplayHeaderItem->setText(i, apassValues.at(i));
@@ -134,6 +132,18 @@ namespace Ui {
       centralLayout->addWidget(settingsBox, 0, 0, 2, 2);
       centralLayout->addWidget(CSVDisplay, 2, 0, 1, 2);
 
+      actionCSV->setIcon(getIcon(Icon::TextCSV));
+      actionWeb->setIcon(getIcon(Icon::Download));
+      actionSave->setIcon(getIcon(Icon::FileSave));
+      actionSaveAs->setIcon(getIcon(Icon::FileSaveAs));
+      actionQuit->setIcon(getIcon(Icon::WindowClose));
+      actionHelp->setIcon(getIcon(Icon::Help));
+      actionAbout->setIcon(getIcon(Icon::HelpAbout));
+      actionAboutQt->setIcon(getIcon(Icon::QtIcon));
+      actionSettings->setIcon(getIcon(Icon::Settings));
+      actionClear->setIcon(getIcon(Icon::EditClear));
+
+      menuNewFrom->setIcon(getIcon(Icon::FileNew));
       menuNewFrom->addAction(actionCSV);
       menuNewFrom->addAction(actionWeb);
 

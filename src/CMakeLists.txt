@@ -1,35 +1,39 @@
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Network)
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 add_executable(
   APASSTools WIN32
   main.cpp
   ui/CSVDialog/CSVDialog.cpp
-  ui/CSVDialog/CSVDialog.h
+  ui/CSVDialog/CSVDialog.hpp
   ui/APASSTools/APASSTools.cpp
-  ui/APASSTools/APASSTools.h
+  ui/APASSTools/APASSTools.hpp
   ui/WebDialog/WebDialog.cpp
-  ui/WebDialog/WebDialog.h
+  ui/WebDialog/WebDialog.hpp
   ui/AboutDialog/AboutDialog.cpp
-  ui/AboutDialog/AboutDialog.h
+  ui/AboutDialog/AboutDialog.hpp
   ui/SettingsDialog/SettingsDialog.cpp
-  ui/SettingsDialog/SettingsDialog.h
+  ui/SettingsDialog/SettingsDialog.hpp
   common/Settings.cpp
-  common/Settings.h
+  common/Settings.hpp
   common/APASS.cpp
-  common/APASS.h
+  common/APASS.hpp
   common/Comet.cpp
-  common/Comet.h
+  common/Comet.hpp
   common/CSVObject.cpp
-  common/CSVObject.h
+  common/CSVObject.hpp
   common/PRNFile.cpp
-  common/PRNFile.h
+  common/PRNFile.hpp
   common/TDFFile.cpp
-  common/TDFFile.h
+  common/TDFFile.hpp
+  common/Icon.cpp
+  common/Icon.hpp
+  assets/apasstools.qrc
 )
 
-configure_file(config.h.in config.h @ONLY)
+configure_file(config.hpp.in config.hpp @ONLY)
 
 target_link_libraries(APASSTools PRIVATE Qt5::Widgets Qt5::Svg Qt5::Network)
 
@@ -43,7 +47,7 @@ if(STATIC)
 endif()
 
 if(WIN32)
-  target_sources(APASSTools PRIVATE apasstools.rc)
+  target_sources(APASSTools PRIVATE assets/apasstools.rc)
 
   if(STATIC)
     qt5_import_plugins(

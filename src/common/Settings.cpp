@@ -1,4 +1,4 @@
-#include "Settings.h"
+#include "Settings.hpp"
 
 WindowSettings Settings::windowSettings = WindowSettings();
 AppSettings Settings::appSettings       = AppSettings();

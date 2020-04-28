@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Macros.h"
-#include "common/Settings.h"
+#include "Macros.hpp"
+#include "common/Icon.hpp"
+#include "common/Settings.hpp"
 #include <QCheckBox>
 #include <QCoreApplication>
 #include <QDialog>
@@ -16,7 +17,7 @@
 #include <QSpinBox>
 #include <QTabWidget>
 #include <QToolButton>
-#include <config.h>
+#include <config.hpp>
 
 namespace Ui {
   class SettingsDialog {
@@ -57,9 +58,7 @@ namespace Ui {
               {};
 
     void setupUi() {
-      parent->resize(589, 521);
-      parent->setWindowIcon(QIcon(CONFIG_ICON_PATH.string().c_str()));
-      parent->setModal(true);
+      parent->setWindowIcon(getIcon(Icon::Settings));
 
       buttons->setOrientation(Qt::Horizontal);
       buttons->setStandardButtons(QDialogButtonBox::Apply | QDialogButtonBox::Cancel |

@@ -1,4 +1,4 @@
-#include "PRNFile.h"
+#include "PRNFile.hpp"
 
 PRNFile::PRNFile(APASS::Ref apass) : apass(std::move(apass)) {}
 
