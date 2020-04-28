@@ -2,7 +2,13 @@
 
 APASSTools::APASSTools(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::APASSTools(this)), apass(APASS::New()) {
-  QIcon::setFallbackSearchPaths(QStringList(CONFIG_DATA_DIR));
+  std::filesystem::path resourceDir;
+#if defined(CONFIG_LOCAL_DEV)
+  resourceDir = std::filesystem::current_path().append("../data").lexically_normal();
+#else
+  resourceDir = std::filesystem::current_path().append("../share/apasstools").lexically_normal();
+#endif
+  QIcon::setFallbackSearchPaths(QStringList(resourceDir.c_str()));
   QIcon::setFallbackThemeName("resources");
   ui->setupUi();
   QApplication::setOrganizationName("ATiltedTree");

@@ -35,6 +35,7 @@
 #include <QTreeWidgetItem>
 #include <QWidget>
 #include <config.h>
+#include <filesystem>
 
 const QList<QString> apassValues = {
     "radeg",     "raerr",   "decdeg",  "decerr",  "Johnson_V",   "Verr",    "Vnobs",

@@ -69,12 +69,12 @@ if(WIN32)
         $<IF:$<STREQUAL:${CMAKE_BUILD_TYPE},Release>,--release,--debug>
         $<TARGET_FILE:APASSTools>"
     )
-
   endif()
 endif()
 
 install(TARGETS APASSTools)
-if(WIN32)
+
+if(WIN32 AND NOT STATIC)
   install(
     CODE "
   execute_process(
