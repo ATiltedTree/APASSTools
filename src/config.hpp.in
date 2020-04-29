@@ -1,7 +1,5 @@
 #pragma once
 
-#include <filesystem>
-
 #define CONFIG_APP_VERSION "@PROJECT_VERSION@"
 #define CONFIG_APP_NAME "@CMAKE_PROJECT_NAME@"
 #define CONFIG_APP_URL "@CMAKE_PROJECT_HOMEPAGE_URL@"
