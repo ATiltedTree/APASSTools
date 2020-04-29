@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=Utility;
+Comment=Converts APASS files
+Exec=APASSTools
+Icon=apasstools
+Name=APASSTools
+GenericName=Toolkit for APASS files
+Terminal=false
+Type=Application
+

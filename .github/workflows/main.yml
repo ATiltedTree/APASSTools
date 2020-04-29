@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+        include:
+          - os: ubuntu-latest
+            qt-arch: linux_x64
+            name: APASSTools-Linux.deb
+            cmake-configure: "-DCMAKE_CXX_COMPILER=clang++ -GNinja"
+            cmake-build: ""
+
+          - os: windows-latest
+            qt-arch: win64_msvc2017_64
+            name: APASSTools-Windows.exe
+            cmake-configure: -G "Visual Studio 16 2019"
+            cmake-build: ""
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - name: Setup | Cache
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: ../Qt
+          key: ${{ runner.os }}-${{ matrix.qt-arch }}-QtCache
+      - name: Setup | Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v1
+      - name: Setup | Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          arch: ${{ matrix.qt-arch }}
+          cached: ${{ steps.cache.outputs.cache-hit }}
+          modules: qtsvg
+      - name: Build | CMake
+        run: |
+          mkdir build && cd build
+          cmake ${{ matrix.cmake-configure }} -DCMAKE_BUILD_TYPE=Debug ..
+      - name: Build | Compile
+        run: |
+          cd build
+          cmake --build . ${{ matrix.cmake-build }}
+      - name: Build | Package
+        run: |
+          cd build
+          cmake --build . --target package
+      - name: Post Setup | Upload Artifacts
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: ${{ matrix.name }}
+          path: build/${{ matrix.name }}

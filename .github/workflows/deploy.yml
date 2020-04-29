@@ -1,0 +1,94 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  prepare-release:
+    name: Setup | Build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            qt-arch: linux_x64
+            name: APASSTools-Linux.deb
+            cmake-configure: "-DCMAKE_CXX_COMPILER=clang++ -GNinja"
+            cmake-build: ""
+          - os: windows-latest
+            qt-arch: win64_msvc2017_64
+            name: APASSTools-Windows.exe
+            cmake-configure: -G "Visual Studio 16 2019"
+            cmake-build: --config Release
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - name: Setup | Cache
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: ../Qt
+          key: ${{ runner.os }}-${{ matrix.qt-arch }}-QtCache
+      - name: Setup | Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v1
+      - name: Setup | Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          arch: ${{ matrix.qt-arch }}
+          cached: ${{ steps.cache.outputs.cache-hit }}
+          modules: qtsvg
+      - name: Build | CMake
+        run: |
+          mkdir build && cd build
+          cmake ${{ matrix.cmake-configure }} -DCMAKE_BUILD_TYPE=Release ..
+      - name: Build | Compile
+        run: |
+          cd build
+          cmake --build . ${{ matrix.cmake-build }}
+      - name: Build | Package
+        run: |
+          cd build
+          cmake --build . ${{ matrix.cmake-build }} --target package
+      - name: Post Setup | Upload Artifacts
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: ${{ matrix.name }}
+          path: build/${{ matrix.name }}
+
+  github-release:
+    name: Deploy | Github
+
+    runs-on: ubuntu-latest
+    needs: prepare-release
+
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+      - name: Setup | Tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Setup | Artifacts
+        uses: actions/download-artifact@v2-preview
+      - name: Setup | Changelog
+        run: |
+          # Temporary fix for https://github.com/actions/setup-go/issues/14
+          export PATH=$PATH:$(go env GOPATH)/bin
+          go get -u github.com/git-chglog/git-chglog/cmd/git-chglog
+          git-chglog -c .chglog/config.yml $(git describe --tags) > RELEASE.md
+      - name: Deploy | Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          body_path: RELEASE.md
+          files: |
+            APASSTools-Linux.deb/APASSTools-Linux.deb
+            APASSTools-Windows.exe/APASSTools-Windows.exe

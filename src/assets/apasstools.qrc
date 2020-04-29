@@ -1,0 +1,16 @@
+<RCC>
+  <qresource>
+    <file>icons/apasstools.svg</file>
+    <file>icons/document-open.svg</file>
+    <file>icons/download.svg</file>
+    <file>icons/edit-clear.svg</file>
+    <file>icons/filesave.svg</file>
+    <file>icons/filenew.svg</file>
+    <file>icons/filesaveas.svg</file>
+    <file>icons/help-about.svg</file>
+    <file>icons/help.svg</file>
+    <file>icons/settings.svg</file>
+    <file>icons/text-csv.svg</file>
+    <file>icons/window-close.svg</file>
+  </qresource>
+</RCC>

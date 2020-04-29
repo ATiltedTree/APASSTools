@@ -1,0 +1,67 @@
+cmake_minimum_required(VERSION 3.14)
+
+project(
+  APASSTools
+  LANGUAGES CXX
+  VERSION 0.1.0
+  HOMEPAGE_URL https://github.com/ATiltedTree/APASSTools
+)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+option(STATIC "Build the executable statically" OFF)
+option(WITH_CLANG_TIDY "Enable clang-tidy on build" OFF)
+
+if(STATIC)
+  set(USE_STATIC_QT_BY_DEFAULT ON)
+endif()
+
+if(WITH_CLANG_TIDY)
+  set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+endif()
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+add_subdirectory("src")
+
+if(UNIX)
+  install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION share/doc/APASSTools)
+  install(FILES ${CMAKE_SOURCE_DIR}/data/APASSTools.desktop DESTINATION share/applications)
+  install(FILES ${CMAKE_SOURCE_DIR}/data/apasstools.svg
+          DESTINATION share/icons/hicolor/scalable/apps
+  )
+endif()
+
+if(WIN32)
+  list(APPEND CPACK_GENERATOR "NSIS64")
+
+  set(CPACK_SOURCE_GENERATOR "ZIP")
+
+  set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_MUI_ICON ${CMAKE_SOURCE_DIR}/data/apasstools.ico)
+  set(CPACK_NSIS_INSTALLED_ICON_NAME bin/APASSTools.exe)
+  set(CPACK_NSIS_PACKAGE_NAME ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_DISPLAY_NAME ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_MENU_LINKS "bin/APASSTools.exe" ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+elseif(UNIX)
+  list(APPEND CPACK_GENERATOR "DEB")
+
+  set(CPACK_SOURCE_GENERATOR "TGZ")
+
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "ATiltedTree")
+  list(APPEND CPACK_DEBIAN_PACKAGE_DEPENDS libqt5gui5 libqt5svg5 libqt5network5)
+elseif(DARWIN)
+
+endif()
+
+set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CMAKE_SYSTEM_NAME}")
+set(CPACK_PACKAGE_VENDOR "ATiltedTree")
+set(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_SOURCE_DIR}/README.md)
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
+
+include(CPack)
