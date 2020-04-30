@@ -37,48 +37,31 @@ configure_file(config.hpp.in config.hpp @ONLY)
 
 target_link_libraries(APASSTools PRIVATE Qt5::Widgets Qt5::Svg Qt5::Network)
 
-if(STATIC)
-  qt5_import_plugins(APASSTools INCLUDE Qt5::QSvgPlugin)
-  target_link_libraries(APASSTools PRIVATE Qt5::QSvgPlugin)
-  target_link_libraries(APASSTools PRIVATE -static -static-libstdc++ -static-libgcc)
-  set_target_properties(
-    APASSTools PROPERTIES LINK_SEARCH_START_STATIC OFF LINK_SEARCH_END_STATIC ON
-  )
-endif()
-
 if(WIN32)
   target_sources(APASSTools PRIVATE assets/apasstools.rc)
 
-  if(STATIC)
-    qt5_import_plugins(
-      APASSTools INCLUDE Qt5::QWindowsIntegrationPlugin Qt5::QWindowsVistaStylePlugin
-    )
-    target_link_libraries(
-      APASSTools PRIVATE Qt5::QWindowsIntegrationPlugin Qt5::QWindowsVistaStylePlugin
-    )
-  else()
-    # Delegate to Qt's official deployment binary on Windows to copy over the necessary Qt-specific
-    # libraries, etc.
-    get_target_property(MOC_EXECUTABLE_LOCATION Qt5::moc IMPORTED_LOCATION)
-    get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
-    find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
+  # Delegate to Qt's official deployment binary on Windows to copy over the necessary Qt-specific
+  # libraries, etc.
+  get_target_property(MOC_EXECUTABLE_LOCATION Qt5::moc IMPORTED_LOCATION)
+  get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
+  find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
-    set(WINDEPLOYQT_ARGS
-        "
-        --no-translations
-        --no-compiler-runtime
-        --no-opengl-sw
-        --no-system-d3d-compiler
-        --no-angle
-        $<IF:$<STREQUAL:${CMAKE_BUILD_TYPE},Release>,--release,--debug>
-        $<TARGET_FILE:APASSTools>"
-    )
-  endif()
+  set(WINDEPLOYQT_ARGS
+      "--no-translations
+      --no-compiler-runtime
+      --no-opengl-sw
+      --no-system-d3d-compiler
+      --no-angle
+      --dry-run
+      --list mapping
+      $<IF:$<STREQUAL:${CMAKE_BUILD_TYPE},Release>,--release,--debug>
+      $<TARGET_FILE:APASSTools>"
+  )
 endif()
 
 install(TARGETS APASSTools)
 
-if(WIN32 AND NOT STATIC)
+if(WIN32)
   install(
     CODE "
   execute_process(
@@ -86,8 +69,6 @@ if(WIN32 AND NOT STATIC)
       \"${CMAKE_COMMAND}\" -E env PATH=\"${QT_BINARY_DIRECTORY}\"
       \"${WINDEPLOYQT_EXE}\"
       ${WINDEPLOYQT_ARGS}
-      --dry-run
-      --list mapping
     OUTPUT_VARIABLE _output
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
