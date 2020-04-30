@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 project(
   APASSTools
@@ -12,17 +12,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
-option(STATIC "Build the executable statically" OFF)
-option(WITH_CLANG_TIDY "Enable clang-tidy on build" OFF)
-
-if(STATIC)
-  set(USE_STATIC_QT_BY_DEFAULT ON)
-endif()
-
-if(WITH_CLANG_TIDY)
-  set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
-endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
