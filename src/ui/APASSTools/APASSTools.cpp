@@ -77,9 +77,6 @@ void APASSTools::changeSettings(SettingsAction action) {
     this->ui->observationSpin->setValue(Settings::appSettings.observationThreshold);
     this->ui->magnitudeSpin->setValue(Settings::appSettings.magnitudeThreshold);
     break;
-  default:
-    Settings::sync();
-    break;
   }
 }
 
@@ -98,7 +95,7 @@ void APASSTools::doImport(const QString& data) {
   auto* bar = new QProgressBar(this);
   this->ui->statusbar->addWidget(bar, 1);
   this->apass.importCSV(data, this->ui->observationSpin->value(), this->ui->magnitudeSpin->value(),
-                         bar);
+                        bar);
   this->updateTree();
   this->unsavedChanges = true;
   this->ui->statusbar->removeWidget(bar);
@@ -143,9 +140,10 @@ void APASSTools::onSettings() {
 
 void APASSTools::onSave() {
   if (this->ui->nameEdit->text().isEmpty()) {
-    SHOW_ERROR(Please enter a name !)
+    QMessageBox::information(this, "Error!", "Please enter a name!");
+    return;
   } else if (!this->unsavedChanges) {
-    SHOW_ERROR(Please import something before saving !)
+    QMessageBox::information(this, "Error!", "Please import something before saving !");
   }
   if (Settings::appSettings.defaultSaveDir.isEmpty()) {
     QString dirname = QFileDialog::getExistingDirectory(this, tr("Open save location"), "/");
@@ -156,9 +154,10 @@ void APASSTools::onSave() {
 
 void APASSTools::onSaveAs() {
   if (this->ui->nameEdit->text().isEmpty()) {
-    SHOW_ERROR(Please enter a name !)
+    QMessageBox::information(this, "Error!", "Please enter a name!");
+    return;
   } else if (!this->unsavedChanges) {
-    SHOW_ERROR(Please import something before saving !)
+    QMessageBox::information(this, "Error!", "Please import something before saving !");
   }
   QString dirname = QFileDialog::getExistingDirectory(this, tr("Open save location"), "/");
   Settings::appSettings.defaultSaveDir = dirname;

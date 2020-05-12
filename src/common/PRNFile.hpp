@@ -6,8 +6,8 @@
 #include <QTextStream>
 #include <memory>
 
-#define LENGTH_OF_DEG 9
-#define LENGTH_OF_V_NOBS 2
+constexpr int LENGTH_OF_DEG    = 9;
+constexpr int LENGTH_OF_V_NOBS = 2;
 
 class PRNFile {
 private:

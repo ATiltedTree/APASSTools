@@ -30,11 +30,12 @@ namespace Ui {
     QDialog* parent;
 
     CSVDialog(QDialog* parent)
-        : parent(parent), formLayout(new QFormLayout(parent)), labelCSVFile(new QLabel(parent)),
+        : formLayout(new QFormLayout(parent)), labelCSVFile(new QLabel(parent)),
           horizontalLayout(new QHBoxLayout()), lineEditCSVFile(new QLineEdit(parent)),
-          buttonCSVFile(new QPushButton(parent)), buttonBox(new QDialogButtonBox(parent)){};
+          buttonCSVFile(new QPushButton(parent)), buttonBox(new QDialogButtonBox(parent)),
+          parent(parent) {}
 
-    void setupUi() {
+    void setupUi() const {
       parent->window()->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
       parent->setWindowFlag(Qt::WindowType::MSWindowsFixedSizeDialogHint, true);
       parent->setWindowIcon(getIcon(Icon::TextCSV));
@@ -53,7 +54,7 @@ namespace Ui {
       retranslateUi();
     }
 
-    void retranslateUi() {
+    void retranslateUi() const {
       parent->setWindowTitle(QCoreApplication::translate("CSVDialog", "From CSV...", nullptr));
       labelCSVFile->setText(QCoreApplication::translate("CSVDialog", "CSV File", nullptr));
     }

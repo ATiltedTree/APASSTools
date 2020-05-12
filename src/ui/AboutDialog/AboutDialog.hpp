@@ -10,6 +10,8 @@
 #include <QLayout>
 #include <config.hpp>
 
+constexpr int ICON_SIZE = 100;
+
 namespace Ui {
   class AboutDialog {
   public:
@@ -23,9 +25,9 @@ namespace Ui {
     AboutDialog(QDialog* parent)
         : gridLayout(new QGridLayout(parent)), lableTitle(new QLabel(parent)),
           lableIcon(new QLabel(parent)), lableDesc(new QLabel(parent)),
-          buttonBox(new QDialogButtonBox(parent)), parent(parent){};
+          buttonBox(new QDialogButtonBox(parent)), parent(parent) {}
 
-    void setupUi() {
+    void setupUi() const {
       parent->window()->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
       parent->setWindowFlag(Qt::WindowType::MSWindowsFixedSizeDialogHint, true);
       parent->setWindowIcon(getIcon(Icon::HelpAbout));
@@ -58,8 +60,8 @@ namespace Ui {
           "TH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
           "SOFTWARE\n");
 
-      lableIcon->setMaximumSize(QSize(100, 100));
-      lableIcon->setPixmap(getIcon(Icon::APASSTools).pixmap(100));
+      lableIcon->setMaximumSize(QSize(ICON_SIZE, ICON_SIZE));
+      lableIcon->setPixmap(getIcon(Icon::Logo).pixmap(ICON_SIZE));
       lableIcon->setScaledContents(true);
 
       buttonBox->setOrientation(Qt::Horizontal);
@@ -73,7 +75,7 @@ namespace Ui {
       retranslateUi();
     }
 
-    void retranslateUi() {
+    void retranslateUi() const {
       parent->setWindowTitle(QCoreApplication::translate("AboutDialog", "About", nullptr));
     }
   };
