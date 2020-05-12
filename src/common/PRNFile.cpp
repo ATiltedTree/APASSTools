@@ -7,11 +7,11 @@ void PRNFile::buildFile(const QString& filepath) {
   if (file.open(QIODevice::ReadWrite)) {
     QTextStream out(&file);
     for (Comet comet : this->apass.getComets()) {
-      out << QString::number(comet.radeg.asDouble(), 'd', 5).rightJustified(this->radegLength);
+      out << QString::number(comet.radeg.asDouble(), 'd', 5).rightJustified(LENGTH_OF_DEG);
       out << " ";
-      out << QString::number(comet.decdeg.asDouble(), 'd', 5).rightJustified(this->decdegLength);
+      out << QString::number(comet.decdeg.asDouble(), 'd', 5).rightJustified(LENGTH_OF_DEG);
       out << " ";
-      out << QString::number(comet.Vnobs.asInt()).rightJustified(this->VnobsLength);
+      out << QString::number(comet.Vnobs.asInt()).rightJustified(LENGTH_OF_V_NOBS);
       out << " ";
       out << QString::number(comet.Johnson_V.asDouble(), 'd', 2);
       out << " ";

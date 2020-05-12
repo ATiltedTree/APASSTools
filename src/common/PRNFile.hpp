@@ -12,9 +12,6 @@ constexpr int LENGTH_OF_V_NOBS = 2;
 class PRNFile {
 private:
   APASS apass;
-  int radegLength  = LENGTH_OF_DEG;
-  int decdegLength = LENGTH_OF_DEG;
-  int VnobsLength  = LENGTH_OF_V_NOBS;
 
 public:
   explicit PRNFile(APASS apass);
