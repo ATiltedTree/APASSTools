@@ -4,7 +4,3 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent), ui(new Ui::AboutDia
   ui->setupUi();
   connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this, &AboutDialog::accept);
 }
-
-AboutDialog::~AboutDialog() {
-  delete ui;
-}

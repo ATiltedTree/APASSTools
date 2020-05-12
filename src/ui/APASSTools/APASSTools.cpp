@@ -1,7 +1,7 @@
 #include "APASSTools.hpp"
 
 APASSTools::APASSTools(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::APASSTools(this)), apass(APASS::New()) {
+    : QMainWindow(parent), ui(new Ui::APASSTools(this)), apass(APASS()) {
   ui->setupUi();
   QApplication::setOrganizationName("ATiltedTree");
   QApplication::setApplicationName(CONFIG_APP_NAME);
@@ -9,10 +9,6 @@ APASSTools::APASSTools(QWidget* parent)
   this->changeSettings(SettingsAction::Init);
   this->changeSettings(SettingsAction::RestoreWindow);
   this->changeSettings(SettingsAction::RestoreValues);
-}
-
-APASSTools::~APASSTools() {
-  delete ui;
 }
 
 void APASSTools::closeEvent(QCloseEvent* event) {
@@ -88,20 +84,20 @@ void APASSTools::changeSettings(SettingsAction action) {
 }
 
 void APASSTools::updateTree() {
-  for (Comet::Ref comet : this->apass->getComets()) {
+  for (Comet comet : this->apass.getComets()) {
     auto* item = new QTreeWidgetItem();
-    for (int i = 0; i < comet->data.size(); i++) {
-      item->setText(i, QString::number(comet->data[i].toDouble(), 'd', 3));
+    for (int i = 0; i < comet.data.size(); i++) {
+      item->setText(i, QString::number(comet.data[i].toDouble(), 'd', 3));
     }
     this->ui->CSVDisplay->addTopLevelItem(item);
   }
 }
 
 void APASSTools::doImport(const QString& data) {
-  this->apass->clearComets();
+  this->apass.clearComets();
   auto* bar = new QProgressBar(this);
   this->ui->statusbar->addWidget(bar, 1);
-  this->apass->importCSV(data, this->ui->observationSpin->value(), this->ui->magnitudeSpin->value(),
+  this->apass.importCSV(data, this->ui->observationSpin->value(), this->ui->magnitudeSpin->value(),
                          bar);
   this->updateTree();
   this->unsavedChanges = true;
@@ -111,36 +107,36 @@ void APASSTools::doImport(const QString& data) {
 
 void APASSTools::onClear() {
   this->ui->CSVDisplay->clear();
-  this->apass->clearComets();
+  this->apass.clearComets();
   this->unsavedChanges = false;
 }
 
 void APASSTools::onFromCSVFile() {
-  CSVDialog::Ref csvDialog = CSVDialog::New(this);
-  csvDialog->setModal(true);
-  if (csvDialog->exec() == QDialog::Accepted) {
-    this->doImport(csvDialog->getResult());
+  CSVDialog csvDialog = CSVDialog(this);
+  csvDialog.setModal(true);
+  if (csvDialog.exec() == QDialog::Accepted) {
+    this->doImport(csvDialog.getResult());
   }
 }
 
 void APASSTools::onFromWeb() {
-  WebDialog::Ref webDialog = WebDialog::New(this);
-  webDialog->setModal(true);
-  if (webDialog->exec() == QDialog::Accepted) {
-    this->doImport(webDialog->getResult());
+  WebDialog webDialog = WebDialog(this);
+  webDialog.setModal(true);
+  if (webDialog.exec() == QDialog::Accepted) {
+    this->doImport(webDialog.getResult());
   }
 }
 
 void APASSTools::onAbout() {
-  AboutDialog::Ref aboutDialog = AboutDialog::New(this);
-  aboutDialog->setModal(true);
-  aboutDialog->exec();
+  AboutDialog aboutDialog = AboutDialog(this);
+  aboutDialog.setModal(true);
+  aboutDialog.exec();
 }
 
 void APASSTools::onSettings() {
-  SettingsDialog::Ref settingsDialog = SettingsDialog::New(this);
-  settingsDialog->setModal(true);
-  if (settingsDialog->exec() == QDialog::Accepted) {
+  SettingsDialog settingsDialog = SettingsDialog(this);
+  settingsDialog.setModal(true);
+  if (settingsDialog.exec() == QDialog::Accepted) {
     this->changeSettings(SettingsAction::RestoreValues);
   }
 }
@@ -171,11 +167,11 @@ void APASSTools::onSaveAs() {
 }
 
 void APASSTools::doSave(const QString& dirname, bool createTDF) {
-  PRNFile::Ref prn = PRNFile::New(this->apass);
-  prn->buildFile(dirname + this->ui->nameEdit->text() + "/" + ".prn");
+  PRNFile prn = PRNFile(this->apass);
+  prn.buildFile(dirname + this->ui->nameEdit->text() + "/" + ".prn");
   if (createTDF) {
-    TDFFile::Ref tdf = TDFFile::New(this->ui->nameEdit->text());
-    tdf->buildFile(dirname + "/" + this->ui->nameEdit->text() + ".tdf");
+    TDFFile tdf = TDFFile(this->ui->nameEdit->text());
+    tdf.buildFile(dirname + "/" + this->ui->nameEdit->text() + ".tdf");
   }
   this->unsavedChanges = false;
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Macros.hpp"
 #include "common/APASS.hpp"
 #include "common/Error.hpp"
 #include "common/Icon.hpp"
@@ -217,16 +216,13 @@ private slots:
 
 public:
   explicit APASSTools(QWidget* parent);
-  ~APASSTools() override;
-  SMART_PTRS(APASSTools)
-
   void closeEvent(QCloseEvent* event) override;
   void updateTree();
 
 private:
   Ui::APASSTools* ui;
   bool unsavedChanges = false;
-  APASS::Ref apass;
+  APASS apass;
   void setupConnections();
   void changeSettings(SettingsAction action);
   void doImport(const QString& data);

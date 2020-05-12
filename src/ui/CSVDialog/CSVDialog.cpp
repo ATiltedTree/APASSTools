@@ -7,9 +7,6 @@ CSVDialog::CSVDialog(QWidget* parent) : QDialog(parent), ui(new Ui::CSVDialog(th
   connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
-CSVDialog::~CSVDialog() {
-  delete ui;
-}
 QString CSVDialog::getResult() {
   QFile csvFile(this->ui->lineEditCSVFile->text());
   if (!csvFile.open(QIODevice::ReadOnly)) {

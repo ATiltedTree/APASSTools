@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Macros.hpp"
 #include "common/Icon.hpp"
 #include "common/Settings.hpp"
 #include <QApplication>
@@ -69,9 +68,6 @@ private slots:
 
 public:
   explicit CSVDialog(QWidget* parent);
-  ~CSVDialog() override;
-  SMART_PTRS(CSVDialog)
-
   QString getResult();
 
 private:

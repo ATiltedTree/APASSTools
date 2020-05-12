@@ -13,10 +13,6 @@ SettingsDialog::SettingsDialog(QWidget* parent)
   this->getSettings();
 }
 
-SettingsDialog::~SettingsDialog() {
-  delete ui;
-}
-
 void SettingsDialog::getSettings() {
   this->ui->createTDFCheck->setChecked(Settings::appSettings.createTDFFile);
   this->ui->savePathEdit->setText(Settings::appSettings.defaultSaveDir);

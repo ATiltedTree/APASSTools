@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Macros.hpp"
 #include "common/Icon.hpp"
 #include <QApplication>
 #include <QCloseEvent>
@@ -88,9 +87,6 @@ private slots:
 
 public:
   explicit WebDialog(QWidget* parent);
-  ~WebDialog() override;
-  SMART_PTRS(WebDialog)
-
   QString getResult();
 
 private:
