@@ -45,7 +45,6 @@ elseif(APPLE)
 
 endif()
 
-set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CMAKE_SYSTEM_NAME}")
 set(CPACK_PACKAGE_VENDOR "ATiltedTree")
 set(CPACK_PACKAGE_DESCRIPTION "A toolkit for managing and converting APASS catalog files")
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
