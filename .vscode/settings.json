@@ -1,3 +1,13 @@
 {
   "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools",
+  "conventionalCommits.scopes": [
+    "release",
+    "windows",
+    "linux",
+    "mac",
+    "cmake",
+    "format",
+    "tidy",
+    "vscode"
+  ],
 }
