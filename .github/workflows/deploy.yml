@@ -14,6 +14,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
+        include:
+          - os: ubuntu-latest
+            artifact-name: APASSTools-Linux.deb
+          - os: windows-latest
+            artifact-name: APASSTools-Windows.exe
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -45,7 +51,8 @@ jobs:
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: build/APASSTools-@(Linux|Windows)-*.*
+          name: ${{ matrix.artifact-name }}
+          path: build/${{ matrix.artifact-name }}
 
   github-release:
     name: Deploy | Github
@@ -75,4 +82,4 @@ jobs:
         with:
           body_path: RELEASE.md
           files: |
-            APASSTools-*-*.*
+            APASSTools-*.*
