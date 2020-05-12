@@ -1,5 +1,5 @@
 ---
-Checks: "-*,clang-diagnostic-*,clang-analyzer-*,modernize-*,bugprone-*,performance-*,readability-*,llvm-*,-llvm-header-guard,-modernize-use-trailing-return-type,-readability-else-after-return,-readability-magic-numbers,-readability-convert-member-functions-to-static,-readability-make-member-function-const"
+Checks: "-*,cppcoreguidelines-*,clang-diagnostic-*,clang-analyzer-*,modernize-*,bugprone-*,performance-*,readability-*,-modernize-use-trailing-return-type"
 WarningsAsErrors: ""
 HeaderFilterRegex: ".*"
 AnalyzeTemporaryDtors: false
