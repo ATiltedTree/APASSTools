@@ -115,10 +115,11 @@ private slots:
   void onChangeSaveLocation();
 
 public:
-  explicit SettingsDialog(QWidget* parent);
+  explicit SettingsDialog(QWidget* parent, Settings* settings);
   void getSettings();
   void saveSettings();
 
 private:
   Ui::SettingsDialog* ui;
+  Settings* settings;
 };

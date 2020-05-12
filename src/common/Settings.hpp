@@ -1,29 +1,28 @@
 #pragma once
 
+#include <QByteArray>
 #include <QPoint>
 #include <QSettings>
 #include <QSize>
-
-struct WindowSettings {
-  QSize size;
-  QPoint pos;
-};
 
 struct AppSettings {
   QString defaultSaveDir;
   QString lastCSVDir;
   int observationThreshold;
-  double magnitudeThreshold;
   bool createTDFFile;
+  double magnitudeThreshold;
 };
 
 class Settings {
-private:
-  /* data */
 public:
-  static WindowSettings windowSettings;
-  static AppSettings appSettings;
+  QByteArray windowGeometry{};
+  AppSettings appSettings{};
 
-  static void init();
-  static void sync();
+  Settings();
+  ~Settings();
+
+  Settings(const Settings&) = delete;
+  Settings& operator=(const Settings&) = delete;
+  Settings(Settings&&)                 = delete;
+  Settings& operator=(Settings&&) = delete;
 };

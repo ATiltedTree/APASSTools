@@ -1,6 +1,7 @@
 #include "CSVDialog.hpp"
 
-CSVDialog::CSVDialog(QWidget* parent) : QDialog(parent), ui(new Ui::CSVDialog(this)) {
+CSVDialog::CSVDialog(QWidget* parent, Settings* settings)
+    : QDialog(parent), ui(new Ui::CSVDialog(this)), settings(settings) {
   ui->setupUi();
   connect(this->ui->buttonCSVFile, &QPushButton::clicked, this, &CSVDialog::onSelectFile);
   connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
@@ -21,7 +22,7 @@ QString CSVDialog::getResult() {
 
 void CSVDialog::onSelectFile() {
   QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open CSV"), Settings::appSettings.lastCSVDir, tr("CSV Files (*.csv)"));
-  Settings::appSettings.lastCSVDir = fileName.left(fileName.lastIndexOf(QChar('/')));
+      this, tr("Open CSV"), this->settings->appSettings.lastCSVDir, tr("CSV Files (*.csv)"));
+  this->settings->appSettings.lastCSVDir = fileName.left(fileName.lastIndexOf(QChar('/')));
   this->ui->lineEditCSVFile->setText(fileName);
 }

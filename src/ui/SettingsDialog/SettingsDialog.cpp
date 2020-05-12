@@ -1,7 +1,7 @@
 #include "SettingsDialog.hpp"
 
-SettingsDialog::SettingsDialog(QWidget* parent)
-    : QDialog(parent), ui(new Ui::SettingsDialog(this)) {
+SettingsDialog::SettingsDialog(QWidget* parent, Settings* settings)
+    : QDialog(parent), ui(new Ui::SettingsDialog(this)), settings(settings) {
   ui->setupUi();
   connect(this->ui->buttons->button(QDialogButtonBox::Apply), &QPushButton::clicked, this,
           &SettingsDialog::onApply);
@@ -14,19 +14,19 @@ SettingsDialog::SettingsDialog(QWidget* parent)
 }
 
 void SettingsDialog::getSettings() {
-  this->ui->createTDFCheck->setChecked(Settings::appSettings.createTDFFile);
-  this->ui->savePathEdit->setText(Settings::appSettings.defaultSaveDir);
-  this->ui->obsSpin->setValue(Settings::appSettings.observationThreshold);
-  this->ui->magSpin->setValue(Settings::appSettings.magnitudeThreshold);
-  this->ui->createTDFCheck->setChecked(Settings::appSettings.createTDFFile);
+  this->ui->createTDFCheck->setChecked(this->settings->appSettings.createTDFFile);
+  this->ui->savePathEdit->setText(this->settings->appSettings.defaultSaveDir);
+  this->ui->obsSpin->setValue(this->settings->appSettings.observationThreshold);
+  this->ui->magSpin->setValue(this->settings->appSettings.magnitudeThreshold);
+  this->ui->createTDFCheck->setChecked(this->settings->appSettings.createTDFFile);
 }
 
 void SettingsDialog::saveSettings() {
-  Settings::appSettings.createTDFFile        = this->ui->createTDFCheck->isChecked();
-  Settings::appSettings.defaultSaveDir       = this->ui->savePathEdit->text();
-  Settings::appSettings.observationThreshold = this->ui->obsSpin->value();
-  Settings::appSettings.magnitudeThreshold   = this->ui->magSpin->value();
-  Settings::appSettings.createTDFFile        = this->ui->createTDFCheck->isChecked();
+  this->settings->appSettings.createTDFFile        = this->ui->createTDFCheck->isChecked();
+  this->settings->appSettings.defaultSaveDir       = this->ui->savePathEdit->text();
+  this->settings->appSettings.observationThreshold = this->ui->obsSpin->value();
+  this->settings->appSettings.magnitudeThreshold   = this->ui->magSpin->value();
+  this->settings->appSettings.createTDFFile        = this->ui->createTDFCheck->isChecked();
 }
 
 void SettingsDialog::onApply() {
