@@ -43,20 +43,18 @@ namespace Ui {
     QDialog* parent;
 
     SettingsDialog(QDialog* parent)
-        : parent(parent), formLayout(new QFormLayout(parent)), tabWidget(new QTabWidget(parent)),
-          general(new QWidget()), verticalLayout(new QVBoxLayout(general)),
-          filterBox(new QGroupBox(general)), formLayout_3(new QFormLayout(filterBox)),
-          obsLabel(new QLabel(filterBox)), buttons(new QDialogButtonBox(parent)),
+        : formLayout(new QFormLayout(parent)), buttons(new QDialogButtonBox(parent)),
+          tabWidget(new QTabWidget(parent)), general(new QWidget()),
+          verticalLayout(new QVBoxLayout(general)), filterBox(new QGroupBox(general)),
+          formLayout_3(new QFormLayout(filterBox)), obsLabel(new QLabel(filterBox)),
           obsSpin(new QSpinBox(filterBox)), magLabel(new QLabel(filterBox)),
           magSpin(new QDoubleSpinBox(filterBox)), saveBox(new QGroupBox(general)),
           formLayout_2(new QFormLayout(saveBox)), savePathLabel(new QLabel(saveBox)),
           savePathLayout(new QHBoxLayout()), savePathEdit(new QLineEdit(saveBox)),
           savePathButton(new QToolButton(saveBox)), createTDFLabel(new QLabel(saveBox)),
-          createTDFCheck(new QCheckBox(saveBox))
+          createTDFCheck(new QCheckBox(saveBox)), parent(parent) {}
 
-              {};
-
-    void setupUi() {
+    void setupUi() const {
       parent->setWindowIcon(getIcon(Icon::Settings));
 
       buttons->setOrientation(Qt::Horizontal);
@@ -88,7 +86,7 @@ namespace Ui {
       retranslateUi();
     }
 
-    void retranslateUi() {
+    void retranslateUi() const {
       parent->setWindowTitle(QCoreApplication::translate("SettingsDialog", "Settings", nullptr));
       filterBox->setTitle(QCoreApplication::translate("SettingsDialog", "Filter", nullptr));
       obsLabel->setText(

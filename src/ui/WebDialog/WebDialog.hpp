@@ -19,6 +19,8 @@
 #include <QWidget>
 #include <config.hpp>
 
+constexpr int MAX_RADIUS = 15;
+
 namespace Ui {
   class WebDialog {
   public:
@@ -31,29 +33,24 @@ namespace Ui {
     QSpinBox* spinBoxRadius;
     QWidget* widget;
     QDialogButtonBox* buttonBox;
-    QProgressBar* progressBar;
     QDialog* parent;
 
     WebDialog(QDialog* parent)
-        : parent(parent), formLayout(new QFormLayout(parent)), labelRA(new QLabel(parent)),
+        : formLayout(new QFormLayout(parent)), labelRA(new QLabel(parent)),
           editRA(new QLineEdit(parent)), labelDec(new QLabel(parent)),
           editDec(new QLineEdit(parent)), labelRadius(new QLabel(parent)),
           spinBoxRadius(new QSpinBox(parent)), widget(new QWidget(parent)),
-          buttonBox(new QDialogButtonBox(parent)), progressBar(new QProgressBar(parent)){};
+          buttonBox(new QDialogButtonBox(parent)), parent(parent) {}
 
-    void setupUi() {
+    void setupUi() const {
       parent->window()->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
       parent->setWindowFlag(Qt::WindowType::MSWindowsFixedSizeDialogHint, true);
       parent->setWindowIcon(getIcon(Icon::Download));
 
       spinBoxRadius->setMinimum(1);
-      spinBoxRadius->setMaximum(15);
+      spinBoxRadius->setMaximum(MAX_RADIUS);
 
       buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
-
-      progressBar->setEnabled(true);
-      progressBar->setValue(0);
-      progressBar->setTextVisible(true);
 
       formLayout->setWidget(0, QFormLayout::LabelRole, labelRA);
       formLayout->setWidget(0, QFormLayout::FieldRole, editRA);
@@ -63,12 +60,11 @@ namespace Ui {
       formLayout->setWidget(2, QFormLayout::FieldRole, spinBoxRadius);
       formLayout->setWidget(3, QFormLayout::FieldRole, widget);
       formLayout->setWidget(4, QFormLayout::SpanningRole, buttonBox);
-      formLayout->setWidget(5, QFormLayout::SpanningRole, progressBar);
 
       retranslateUi();
     }
 
-    void retranslateUi() {
+    void retranslateUi() const {
       parent->setWindowTitle(QCoreApplication::translate("WebDialog", "From Web...", nullptr));
       labelRA->setText(QCoreApplication::translate("WebDialog", "R. A.", nullptr));
       labelDec->setText(QCoreApplication::translate("WebDialog", "Dec.", nullptr));
@@ -82,7 +78,6 @@ class WebDialog : public QDialog {
 
 private slots:
   void onFinished(QNetworkReply* networkReply);
-  void onProgress(qint64 bytesReceived, qint64 bytesTotal);
   void doDownload();
 
 public:
@@ -92,7 +87,5 @@ public:
 private:
   Ui::WebDialog* ui;
   QNetworkAccessManager manager;
-  bool isDone = false;
   QString data;
-  QNetworkReply* reply{};
 };

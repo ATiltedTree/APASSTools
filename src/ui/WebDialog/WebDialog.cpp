@@ -4,6 +4,7 @@ WebDialog::WebDialog(QWidget* parent) : QDialog(parent), ui(new Ui::WebDialog(th
   ui->setupUi();
   connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this, &WebDialog::doDownload);
   connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+  connect(&this->manager, &QNetworkAccessManager::finished, this, &WebDialog::onFinished);
 }
 
 void WebDialog::doDownload() {
@@ -16,21 +17,15 @@ void WebDialog::doDownload() {
   QNetworkRequest req;
   req.setUrl(QUrl("http://www.aavso.org/cgi-bin/apass_dr10_download.pl"));
   req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
-  this->reply = this->manager.post(req, query.toString().toUtf8());
-  connect(this->reply, &QNetworkReply::downloadProgress, this, &WebDialog::onProgress);
-  connect(&this->manager, &QNetworkAccessManager::finished, this, &WebDialog::onFinished);
-}
-
-void WebDialog::onProgress(qint64 bytesReceived, qint64 bytesTotal) {
-  this->ui->progressBar->setMaximum(this->reply->size());
-  this->ui->progressBar->setValue(bytesReceived);
+  this->manager.post(req, query.toString().toUtf8());
 }
 
 void WebDialog::onFinished(QNetworkReply* networkReply) {
   if (networkReply->isReadable()) {
-    this->data   = networkReply->readAll();
-    this->isDone = true;
+    this->data = networkReply->readAll();
     this->accept();
+  } else {
+    this->reject();
   }
 }
 

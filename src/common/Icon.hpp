@@ -5,7 +5,7 @@
 #include <map>
 
 enum Icon {
-  APASSTools,
+  Logo,
   DocumentOpen,
   Download,
   EditClear,
@@ -20,18 +20,13 @@ enum Icon {
   QtIcon
 };
 
-static std::map<Icon, std::string> iconLookup = {std::pair{Icon::APASSTools, "apasstools"},
-                                                 {Icon::DocumentOpen, "document-open"},
-                                                 {Icon::Download, "download"},
-                                                 {Icon::EditClear, "edit-clear"},
-                                                 {Icon::FileSave, "filesave"},
-                                                 {Icon::FileSaveAs, "filesaveas"},
-                                                 {Icon::FileNew, "filenew"},
-                                                 {Icon::HelpAbout, "help-about"},
-                                                 {Icon::Help, "help"},
-                                                 {Icon::Settings, "settings"},
-                                                 {Icon::TextCSV, "text-csv"},
-                                                 {Icon::WindowClose, "window-close"},
-                                                 {Icon::QtIcon, "qt5-logo"}};
+static std::map<Icon, std::string> iconLookup = {
+    {Icon::Logo, "apasstools"},   {Icon::DocumentOpen, "document-open"},
+    {Icon::Download, "download"}, {Icon::EditClear, "edit-clear"},
+    {Icon::FileSave, "filesave"}, {Icon::FileSaveAs, "filesaveas"},
+    {Icon::FileNew, "filenew"},   {Icon::HelpAbout, "help-about"},
+    {Icon::Help, "help"},         {Icon::Settings, "settings"},
+    {Icon::TextCSV, "text-csv"},  {Icon::WindowClose, "window-close"},
+    {Icon::QtIcon, "qt5-logo"}};
 
 QIcon getIcon(Icon icon);

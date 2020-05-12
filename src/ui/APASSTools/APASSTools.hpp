@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/APASS.hpp"
-#include "common/Error.hpp"
 #include "common/Icon.hpp"
 #include "common/PRNFile.hpp"
 #include "common/Settings.hpp"
@@ -73,40 +72,28 @@ namespace Ui {
     QMenu* menuEdit;
     QStatusBar* statusbar;
     QMainWindow* parent;
+    QTreeWidgetItem* CSVDisplayHeaderItem;
 
-    APASSTools(QMainWindow* parent) : parent(parent){};
+    APASSTools(QMainWindow* parent)
+        : actionCSV(new QAction(parent)), actionWeb(new QAction(parent)),
+          actionSave(new QAction(parent)), actionSaveAs(new QAction(parent)),
+          actionQuit(new QAction(parent)), actionHelp(new QAction(parent)),
+          actionAbout(new QAction(parent)), actionAboutQt(new QAction(parent)),
+          actionSettings(new QAction(parent)), actionClear(new QAction(parent)),
+          centralwidget(new QWidget(parent)), centralLayout(new QGridLayout(centralwidget)),
+          settingsBox(new QGroupBox(centralwidget)),
+          settingsBoxLayout(new QFormLayout(settingsBox)),
+          magnitudeSpin(new QDoubleSpinBox(settingsBox)),
+          observationSpin(new QSpinBox(settingsBox)), obsLabel(new QLabel(settingsBox)),
+          nameEdit(new QLineEdit(settingsBox)), nameLabel(new QLabel(settingsBox)),
+          magLabel(new QLabel(settingsBox)), CSVDisplay(new QTreeWidget(centralwidget)),
+          menubar(new QMenuBar(parent)), menuFile(new QMenu(menubar)),
+          menuNewFrom(new QMenu(menuFile)), menuHelp(new QMenu(menubar)),
+          menuEdit(new QMenu(menubar)), statusbar(new QStatusBar(parent)), parent(parent),
+          CSVDisplayHeaderItem(new QTreeWidgetItem()) {}
 
-    void setupUi() {
-      actionCSV                  = new QAction(parent);
-      actionWeb                  = new QAction(parent);
-      actionSave                 = new QAction(parent);
-      actionSaveAs               = new QAction(parent);
-      actionQuit                 = new QAction(parent);
-      actionHelp                 = new QAction(parent);
-      actionAbout                = new QAction(parent);
-      actionAboutQt              = new QAction(parent);
-      actionSettings             = new QAction(parent);
-      actionClear                = new QAction(parent);
-      centralwidget              = new QWidget(parent);
-      centralLayout              = new QGridLayout(centralwidget);
-      settingsBox                = new QGroupBox(centralwidget);
-      settingsBoxLayout          = new QFormLayout(settingsBox);
-      magnitudeSpin              = new QDoubleSpinBox(settingsBox);
-      observationSpin            = new QSpinBox(settingsBox);
-      obsLabel                   = new QLabel(settingsBox);
-      nameEdit                   = new QLineEdit(settingsBox);
-      nameLabel                  = new QLabel(settingsBox);
-      magLabel                   = new QLabel(settingsBox);
-      CSVDisplay                 = new QTreeWidget(centralwidget);
-      menubar                    = new QMenuBar(parent);
-      menuFile                   = new QMenu(menubar);
-      menuEdit                   = new QMenu(menubar);
-      menuNewFrom                = new QMenu(menuFile);
-      menuHelp                   = new QMenu(menubar);
-      statusbar                  = new QStatusBar(parent);
-      auto* CSVDisplayHeaderItem = new QTreeWidgetItem();
-
-      parent->setWindowIcon(getIcon(Icon::APASSTools));
+    void setupUi() const {
+      parent->setWindowIcon(getIcon(Icon::Logo));
       parent->setCentralWidget(centralwidget);
       parent->setMenuBar(menubar);
       parent->setStatusBar(statusbar);
@@ -168,7 +155,7 @@ namespace Ui {
       retranslateUi();
     }
 
-    void retranslateUi() {
+    void retranslateUi() const {
       parent->setWindowTitle(QCoreApplication::translate("APASSTools", "APASSTools", nullptr));
 
       actionCSV->setText(QCoreApplication::translate("APASSTools", "CSV File", nullptr));
