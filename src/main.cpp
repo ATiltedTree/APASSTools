@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
-  APASSTools::Ref w = APASSTools::New(nullptr);
-  w->show();
+  APASSTools apasstools = APASSTools(nullptr);
+  apasstools.show();
   return QApplication::exec();
 }

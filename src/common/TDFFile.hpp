@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Macros.hpp"
 #include <QFile>
 #include <QObject>
 #include <QString>
@@ -21,7 +20,6 @@ private:
 
 public:
   explicit TDFFile(QString name);
-  SMART_PTRS(TDFFile)
 
   void buildFile(const QString& filepath);
 };

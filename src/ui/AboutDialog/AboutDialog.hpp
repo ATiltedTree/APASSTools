@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Macros.hpp"
 #include "common/Icon.hpp"
 #include <QApplication>
 #include <QDialog>
@@ -85,8 +84,6 @@ class AboutDialog : public QDialog {
 
 public:
   explicit AboutDialog(QWidget* parent);
-  ~AboutDialog() override;
-  SMART_PTRS(AboutDialog)
 
 private:
   Ui::AboutDialog* ui;

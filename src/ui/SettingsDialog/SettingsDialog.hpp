@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Macros.hpp"
 #include "common/Icon.hpp"
 #include "common/Settings.hpp"
 #include <QCheckBox>
@@ -119,9 +118,6 @@ private slots:
 
 public:
   explicit SettingsDialog(QWidget* parent);
-  ~SettingsDialog() override;
-  SMART_PTRS(SettingsDialog)
-
   void getSettings();
   void saveSettings();
 

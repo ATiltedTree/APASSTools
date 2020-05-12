@@ -6,10 +6,6 @@ WebDialog::WebDialog(QWidget* parent) : QDialog(parent), ui(new Ui::WebDialog(th
   connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
-WebDialog::~WebDialog() {
-  delete ui;
-}
-
 void WebDialog::doDownload() {
   this->ui->buttonBox->setEnabled(false);
   QUrlQuery query;

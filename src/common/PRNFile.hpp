@@ -1,7 +1,6 @@
 #pragma once
 
 #include "APASS.hpp"
-#include "Macros.hpp"
 #include <QFile>
 #include <QString>
 #include <QTextStream>
@@ -12,14 +11,13 @@
 
 class PRNFile {
 private:
-  APASS::Ref apass;
+  APASS apass;
   int radegLength  = LENGTH_OF_DEG;
   int decdegLength = LENGTH_OF_DEG;
   int VnobsLength  = LENGTH_OF_V_NOBS;
 
 public:
-  explicit PRNFile(APASS::Ref apass);
-  SMART_PTRS(PRNFile)
+  explicit PRNFile(APASS apass);
 
   void buildFile(const QString& filepath);
 };
