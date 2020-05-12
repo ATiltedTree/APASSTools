@@ -17,16 +17,9 @@ jobs:
 
         include:
           - os: ubuntu-latest
-            qt-arch: linux_x64
-            name: APASSTools-Linux.deb
-            cmake-configure: "-DCMAKE_CXX_COMPILER=clang++ -GNinja"
-            cmake-build: ""
-
+            artifact-name: APASSTools-Linux.deb
           - os: windows-latest
-            qt-arch: win64_msvc2017_64
-            name: APASSTools-Windows.exe
-            cmake-configure: -G "Visual Studio 16 2019"
-            cmake-build: ""
+            artifact-name: APASSTools-Windows.exe
 
     runs-on: ${{ matrix.os }}
 
@@ -38,29 +31,26 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-${{ matrix.qt-arch }}-QtCache
-      - name: Setup | Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v1
+          key: ${{ runner.os }}-QtCache
       - name: Setup | Qt
         uses: jurplel/install-qt-action@v2
         with:
-          arch: ${{ matrix.qt-arch }}
           cached: ${{ steps.cache.outputs.cache-hit }}
           modules: qtsvg
       - name: Build | CMake
         run: |
           mkdir build && cd build
-          cmake ${{ matrix.cmake-configure }} -DCMAKE_BUILD_TYPE=Debug ..
+          cmake -DCMAKE_BUILD_TYPE=Debug ..
       - name: Build | Compile
         run: |
           cd build
-          cmake --build . ${{ matrix.cmake-build }}
+          cmake --build .
       - name: Build | Package
         run: |
           cd build
           cmake --build . --target package
       - name: Post Setup | Upload Artifacts
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.name }}
-          path: build/${{ matrix.name }}
+          name: ${{ matrix.artifact-name }}
+          path: build/${{ matrix.artifact-name }}
