@@ -4,7 +4,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 add_executable(
-  APASSTools WIN32
+  apasstools WIN32
   main.cpp
   ui/CSVDialog/CSVDialog.cpp
   ui/CSVDialog/CSVDialog.hpp
@@ -35,10 +35,10 @@ add_executable(
 
 configure_file(config.hpp.in config.hpp @ONLY)
 
-target_link_libraries(APASSTools PRIVATE Qt5::Widgets Qt5::Svg Qt5::Network)
+target_link_libraries(apasstools PUBLIC Qt5::Widgets Qt5::Svg Qt5::Network)
 
 if(WIN32)
-  target_sources(APASSTools PRIVATE assets/apasstools.rc)
+  target_sources(apasstools PRIVATE assets/apasstools.rc)
 
   # Delegate to Qt's official deployment binary on Windows to copy over the necessary Qt-specific
   # libraries, etc.
@@ -54,12 +54,12 @@ if(WIN32)
       --no-angle
       --dry-run
       --list mapping
-      $<IF:$<STREQUAL:${CMAKE_BUILD_TYPE},Release>,--release,--debug>
-      $<TARGET_FILE:APASSTools>"
+      $<IF:$<CONFIG:Debug>,--debug,--release>
+      $<TARGET_FILE:apasstools>"
   )
 endif()
 
-install(TARGETS APASSTools)
+install(TARGETS apasstools)
 
 if(WIN32)
   install(
@@ -85,8 +85,6 @@ if(WIN32)
   "
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
-  if(NOT ${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    set(CMAKE_INSTALL_DEBUG_LIBRARIES ON)
-  endif()
+  set(CMAKE_INSTALL_DEBUG_LIBRARIES $<CONFIG:Debug>)
   include(InstallRequiredSystemLibraries)
 endif()

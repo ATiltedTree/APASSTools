@@ -1,7 +1,7 @@
 [Desktop Entry]
 Categories=Utility;
 Comment=Converts APASS files
-Exec=APASSTools
+Exec=apasstools
 Icon=apasstools
 Name=APASSTools
 GenericName=Toolkit for APASS files

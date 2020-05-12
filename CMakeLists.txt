@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE
+      "Debug"
+      CACHE STRING "Choose the type of build,options are: Debug Release RelWithDebInfo MinSizeRel."
+  )
+endif(NOT CMAKE_BUILD_TYPE)
+
 project(
   APASSTools
   LANGUAGES CXX
@@ -30,10 +37,10 @@ if(WIN32)
 
   set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CMAKE_PROJECT_NAME})
   set(CPACK_NSIS_MUI_ICON ${CMAKE_SOURCE_DIR}/data/apasstools.ico)
-  set(CPACK_NSIS_INSTALLED_ICON_NAME bin/APASSTools.exe)
+  set(CPACK_NSIS_INSTALLED_ICON_NAME bin/apasstools.exe)
   set(CPACK_NSIS_PACKAGE_NAME ${CMAKE_PROJECT_NAME})
   set(CPACK_NSIS_DISPLAY_NAME ${CMAKE_PROJECT_NAME})
-  set(CPACK_NSIS_MENU_LINKS "bin/APASSTools.exe" ${CMAKE_PROJECT_NAME})
+  set(CPACK_NSIS_MENU_LINKS "bin/apasstools.exe" ${CMAKE_PROJECT_NAME})
   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 elseif(UNIX)
   list(APPEND CPACK_GENERATOR "DEB")
