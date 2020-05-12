@@ -8,6 +8,7 @@
     "cmake",
     "format",
     "tidy",
-    "vscode"
+    "vscode",
+    "settings"
   ],
 }
