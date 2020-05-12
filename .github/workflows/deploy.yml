@@ -75,5 +75,4 @@ jobs:
         with:
           body_path: RELEASE.md
           files: |
-            APASSTools-@(Linux|Windows)-*.*
-            APASSTools-@(Linux|Windows)-*.*.sha256
+            APASSTools-*-*.*
