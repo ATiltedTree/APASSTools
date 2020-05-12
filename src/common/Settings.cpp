@@ -1,38 +1,29 @@
 #include "Settings.hpp"
 
-WindowSettings Settings::windowSettings = WindowSettings();
-AppSettings Settings::appSettings       = AppSettings();
+Settings::Settings() {
+  QSettings qsettings;
 
-void Settings::init() {
-  QSettings settings;
+  this->windowGeometry = qsettings.value("windowGeometry").toByteArray();
 
-  settings.beginGroup("WindowSettings");
-  Settings::windowSettings.pos  = settings.value("pos").toPoint();
-  Settings::windowSettings.size = settings.value("size").toSize();
-  settings.endGroup();
-
-  settings.beginGroup("AppSettings");
-  Settings::appSettings.defaultSaveDir       = settings.value("defaultSaveDir").toString();
-  Settings::appSettings.lastCSVDir           = settings.value("lastCSVDir").toString();
-  Settings::appSettings.observationThreshold = settings.value("observationThreshold").toInt();
-  Settings::appSettings.magnitudeThreshold   = settings.value("magnitudeThreshold").toDouble();
-  Settings::appSettings.createTDFFile        = settings.value("createTDFFile").toBool();
-  settings.endGroup();
+  qsettings.beginGroup("AppSettings");
+  this->appSettings.defaultSaveDir       = qsettings.value("defaultSaveDir").toString();
+  this->appSettings.lastCSVDir           = qsettings.value("lastCSVDir").toString();
+  this->appSettings.observationThreshold = qsettings.value("observationThreshold").toInt();
+  this->appSettings.magnitudeThreshold   = qsettings.value("magnitudeThreshold").toDouble();
+  this->appSettings.createTDFFile        = qsettings.value("createTDFFile").toBool();
+  qsettings.endGroup();
 }
 
-void Settings::sync() {
-  QSettings settings;
+Settings::~Settings() {
+  QSettings qsettings;
 
-  settings.beginGroup("WindowSettings");
-  settings.setValue("pos", Settings::windowSettings.pos);
-  settings.setValue("size", Settings::windowSettings.size);
-  settings.endGroup();
+  qsettings.setValue("windowGeometry", this->windowGeometry);
 
-  settings.beginGroup("AppSettings");
-  settings.setValue("defaultSaveDir", Settings::appSettings.defaultSaveDir);
-  settings.setValue("lastCSVDir", Settings::appSettings.lastCSVDir);
-  settings.setValue("magnitudeThreshold", Settings::appSettings.magnitudeThreshold);
-  settings.setValue("observationThreshold", Settings::appSettings.observationThreshold);
-  settings.setValue("createTDFFile", Settings::appSettings.createTDFFile);
-  settings.endGroup();
+  qsettings.beginGroup("AppSettings");
+  qsettings.setValue("defaultSaveDir", this->appSettings.defaultSaveDir);
+  qsettings.setValue("lastCSVDir", this->appSettings.lastCSVDir);
+  qsettings.setValue("magnitudeThreshold", this->appSettings.magnitudeThreshold);
+  qsettings.setValue("observationThreshold", this->appSettings.observationThreshold);
+  qsettings.setValue("createTDFFile", this->appSettings.createTDFFile);
+  qsettings.endGroup();
 }

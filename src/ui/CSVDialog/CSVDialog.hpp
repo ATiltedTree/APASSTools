@@ -68,9 +68,10 @@ private slots:
   void onSelectFile();
 
 public:
-  explicit CSVDialog(QWidget* parent);
+  explicit CSVDialog(QWidget* parent, Settings* settings);
   QString getResult();
 
 private:
   Ui::CSVDialog* ui;
+  Settings* settings;
 };

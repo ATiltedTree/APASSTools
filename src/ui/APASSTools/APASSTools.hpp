@@ -35,15 +35,15 @@
 #include <QWidget>
 #include <config.hpp>
 
-const QList<QString> apassValues = {
-    "radeg",     "raerr",   "decdeg",  "decerr",  "Johnson_V",   "Verr",    "Vnobs",
-    "Johnson_B", "Berr",    "Bnobs",   "Sloan_u", "SUerr",       "SUnobs",  "Sloan_g",
-    "SGerr",     "SGnobs",  "Sloan_r", "SRerr",   "SRnobs",      "Sloan_i", "SIerr",
-    "SInobs",    "Sloan_z", "SZerr",   "SZnobs",  "PanSTARRS_Y", "Yerr",    "Ynobs"};
-
 namespace Ui {
   class APASSTools {
   public:
+    const QList<QString> apassValues = {
+        "radeg",     "raerr",   "decdeg",  "decerr",  "Johnson_V",   "Verr",    "Vnobs",
+        "Johnson_B", "Berr",    "Bnobs",   "Sloan_u", "SUerr",       "SUnobs",  "Sloan_g",
+        "SGerr",     "SGnobs",  "Sloan_r", "SRerr",   "SRnobs",      "Sloan_i", "SIerr",
+        "SInobs",    "Sloan_z", "SZerr",   "SZnobs",  "PanSTARRS_Y", "Yerr",    "Ynobs"};
+
     QAction* actionCSV;
     QAction* actionWeb;
     QAction* actionSave;
@@ -187,8 +187,6 @@ namespace Ui {
   };
 } // namespace Ui
 
-enum SettingsAction { SaveWindow, RestoreWindow, RestoreValues, Init, Sync };
-
 class APASSTools : public QMainWindow {
   Q_OBJECT
 
@@ -210,8 +208,9 @@ private:
   Ui::APASSTools* ui;
   bool unsavedChanges = false;
   APASS apass;
+  Settings settings;
+
   void setupConnections();
-  void changeSettings(SettingsAction action);
   void doImport(const QString& data);
-  void doSave(const QString& dirname, bool createTDF);
+  void doSave(bool saveAs);
 };

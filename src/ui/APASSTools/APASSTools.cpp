@@ -1,14 +1,14 @@
 #include "APASSTools.hpp"
 
 APASSTools::APASSTools(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::APASSTools(this)), apass(APASS()) {
+    : QMainWindow(parent), ui(new Ui::APASSTools(this)), apass(APASS()), settings(Settings()) {
   ui->setupUi();
   QApplication::setOrganizationName("ATiltedTree");
   QApplication::setApplicationName(CONFIG_APP_NAME);
   this->setupConnections();
-  this->changeSettings(SettingsAction::Init);
-  this->changeSettings(SettingsAction::RestoreWindow);
-  this->changeSettings(SettingsAction::RestoreValues);
+  this->restoreGeometry(this->settings.windowGeometry);
+  this->ui->observationSpin->setValue(this->settings.appSettings.observationThreshold);
+  this->ui->magnitudeSpin->setValue(this->settings.appSettings.magnitudeThreshold);
 }
 
 void APASSTools::closeEvent(QCloseEvent* event) {
@@ -22,27 +22,16 @@ void APASSTools::closeEvent(QCloseEvent* event) {
     switch (ret) {
     case QMessageBox::Save:
       this->onSave();
-      this->changeSettings(SettingsAction::SaveWindow);
-      this->changeSettings(SettingsAction::Sync);
+      [[fallthrough]];
+    case QMessageBox::Discard:
       event->accept();
       break;
     case QMessageBox::Cancel:
       event->ignore();
-      break;
-    case QMessageBox::Discard:
-      this->changeSettings(SettingsAction::SaveWindow);
-      this->changeSettings(SettingsAction::Sync);
-      event->accept();
-      break;
-
-    default:
-      break;
+      return;
     }
-  } else {
-    this->changeSettings(SettingsAction::SaveWindow);
-    this->changeSettings(SettingsAction::Sync);
-    event->accept();
   }
+  this->settings.windowGeometry = this->saveGeometry();
 }
 
 void APASSTools::setupConnections() {
@@ -55,29 +44,6 @@ void APASSTools::setupConnections() {
   connect(this->ui->actionSettings, &QAction::triggered, this, &APASSTools::onSettings);
   connect(this->ui->actionSave, &QAction::triggered, this, &APASSTools::onSave);
   connect(this->ui->actionSaveAs, &QAction::triggered, this, &APASSTools::onSaveAs);
-}
-
-void APASSTools::changeSettings(SettingsAction action) {
-  switch (action) {
-  case SettingsAction::SaveWindow:
-    Settings::windowSettings.pos  = this->pos();
-    Settings::windowSettings.size = this->size();
-    break;
-  case SettingsAction::RestoreWindow:
-    this->resize(Settings::windowSettings.size);
-    this->move(Settings::windowSettings.pos);
-    break;
-  case SettingsAction::Init:
-    Settings::init();
-    break;
-  case SettingsAction::Sync:
-    Settings::sync();
-    break;
-  case SettingsAction::RestoreValues:
-    this->ui->observationSpin->setValue(Settings::appSettings.observationThreshold);
-    this->ui->magnitudeSpin->setValue(Settings::appSettings.magnitudeThreshold);
-    break;
-  }
 }
 
 void APASSTools::updateTree() {
@@ -109,7 +75,7 @@ void APASSTools::onClear() {
 }
 
 void APASSTools::onFromCSVFile() {
-  CSVDialog csvDialog = CSVDialog(this);
+  CSVDialog csvDialog = CSVDialog(this, &this->settings);
   csvDialog.setModal(true);
   if (csvDialog.exec() == QDialog::Accepted) {
     this->doImport(csvDialog.getResult());
@@ -131,44 +97,41 @@ void APASSTools::onAbout() {
 }
 
 void APASSTools::onSettings() {
-  SettingsDialog settingsDialog = SettingsDialog(this);
+  SettingsDialog settingsDialog = SettingsDialog(this, &this->settings);
   settingsDialog.setModal(true);
   if (settingsDialog.exec() == QDialog::Accepted) {
-    this->changeSettings(SettingsAction::RestoreValues);
+    this->ui->observationSpin->setValue(this->settings.appSettings.observationThreshold);
+    this->ui->magnitudeSpin->setValue(this->settings.appSettings.magnitudeThreshold);
   }
 }
 
 void APASSTools::onSave() {
-  if (this->ui->nameEdit->text().isEmpty()) {
-    QMessageBox::information(this, "Error!", "Please enter a name!");
-    return;
-  } else if (!this->unsavedChanges) {
-    QMessageBox::information(this, "Error!", "Please import something before saving !");
-  }
-  if (Settings::appSettings.defaultSaveDir.isEmpty()) {
-    QString dirname = QFileDialog::getExistingDirectory(this, tr("Open save location"), "/");
-    Settings::appSettings.defaultSaveDir = dirname;
-  }
-  this->doSave(Settings::appSettings.defaultSaveDir, Settings::appSettings.createTDFFile);
+  this->doSave(false);
 }
 
 void APASSTools::onSaveAs() {
+  this->doSave(true);
+}
+
+void APASSTools::doSave(bool saveAs) {
   if (this->ui->nameEdit->text().isEmpty()) {
     QMessageBox::information(this, "Error!", "Please enter a name!");
     return;
   } else if (!this->unsavedChanges) {
     QMessageBox::information(this, "Error!", "Please import something before saving !");
   }
-  QString dirname = QFileDialog::getExistingDirectory(this, tr("Open save location"), "/");
-  Settings::appSettings.defaultSaveDir = dirname;
+  QString dirname;
+  if (this->settings.appSettings.defaultSaveDir.isEmpty()) {
+    this->settings.appSettings.defaultSaveDir =
+        QFileDialog::getExistingDirectory(this, tr("Open save location"), "/");
+    dirname = this->settings.appSettings.defaultSaveDir;
+  } else if (saveAs) {
+    dirname = QFileDialog::getExistingDirectory(this, tr("Open save location"), "/");
+  }
 
-  this->doSave(Settings::appSettings.defaultSaveDir, Settings::appSettings.createTDFFile);
-}
-
-void APASSTools::doSave(const QString& dirname, bool createTDF) {
   PRNFile prn = PRNFile(this->apass);
   prn.buildFile(dirname + this->ui->nameEdit->text() + "/" + ".prn");
-  if (createTDF) {
+  if (this->settings.appSettings.createTDFFile) {
     TDFFile tdf = TDFFile(this->ui->nameEdit->text());
     tdf.buildFile(dirname + "/" + this->ui->nameEdit->text() + ".tdf");
   }
