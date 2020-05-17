@@ -25,8 +25,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_subdirectory("src")
 
 if(UNIX)
-  install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION share/doc/APASSTools)
-  install(FILES ${CMAKE_SOURCE_DIR}/data/APASSTools.desktop DESTINATION share/applications)
+  install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION share/doc/apasstools)
+  install(FILES ${CMAKE_SOURCE_DIR}/data/apasstools.desktop DESTINATION share/applications)
   install(FILES ${CMAKE_SOURCE_DIR}/data/apasstools.svg
           DESTINATION share/icons/hicolor/scalable/apps
   )
