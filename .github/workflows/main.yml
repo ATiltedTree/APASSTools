@@ -57,7 +57,7 @@ jobs:
       - name: Build | Package
         run: |
           cd build
-          cmake --build . --target package
+          cmake --build . --config RelWithDebInfo --target package
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2
         with:

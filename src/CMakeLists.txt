@@ -135,6 +135,7 @@ if(WIN32)
     execute_process(
       COMMAND \"${WINDEPLOYQT}\" ${WINDEPLOYQT_ARGS}
     )"
+    COMPONENT Runtime
   )
   set(CMAKE_INSTALL_UCRT_LIBRARIES ON)
   set(CMAKE_INSTALL_DEBUG_LIBRARIES $<CONFIG:Debug>)
@@ -152,5 +153,6 @@ elseif(APPLE)
     execute_process(
       COMMAND \"${MACDEPLOYQT}\" \"\${CMAKE_INSTALL_PREFIX}/apasstools.app\"
     )"
+    COMPONENT Runtime
   )
 endif()
