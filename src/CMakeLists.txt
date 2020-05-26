@@ -57,7 +57,7 @@ elseif(APPLE)
     apasstools "${CMAKE_SOURCE_DIR}/data/apasstools.svg" "${ICON_SIZES}"
   )
 
-  target_sources(${target} PRIVATE "${ICON}")
+  target_sources(apasstools PRIVATE "${ICON}")
   set_source_files_properties(
     "${ICON}" PROPERTIES MACOSX_PACKAGE_LOCATION Resources
   )
