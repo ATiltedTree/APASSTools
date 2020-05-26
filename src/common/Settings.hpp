@@ -21,8 +21,8 @@ public:
   Settings();
   ~Settings();
 
-  Settings(const Settings&) = delete;
-  Settings& operator=(const Settings&) = delete;
-  Settings(Settings&&)                 = delete;
-  Settings& operator=(Settings&&) = delete;
+  Settings(const Settings &) = delete;
+  auto operator=(const Settings &) -> Settings & = delete;
+  Settings(Settings &&) = delete;
+  auto operator=(Settings &&) -> Settings & = delete;
 };

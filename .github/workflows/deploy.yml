@@ -10,9 +10,10 @@ jobs:
     name: Setup | Build
 
     strategy:
-      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - windows-latest
 
         include:
           - os: ubuntu-latest
@@ -68,7 +69,7 @@ jobs:
       - name: Setup | Artifacts
         uses: actions/download-artifact@v2
       - name: Setup | Hash
-        run: for file in APASSTools-*; do openssl dgst -sha256 -r "$file" | awk '{print $1}' > "${file}.sha256"; done
+        run: for file in APASSTools-*/APASSTools-*; do openssl dgst -sha256 -r "$file" | awk '{print $1}' > "${file}.sha256"; done
       - name: Setup | Changelog
         run: |
           # Temporary fix for https://github.com/actions/setup-go/issues/14
@@ -82,4 +83,4 @@ jobs:
         with:
           body_path: RELEASE.md
           files: |
-            APASSTools-*.*
+            APASSTools-*/APASSTools-*

@@ -1,10 +1,14 @@
 #include "WebDialog.hpp"
 
-WebDialog::WebDialog(QWidget* parent) : QDialog(parent), ui(new Ui::WebDialog(this)) {
+WebDialog::WebDialog(QWidget *parent)
+    : QDialog(parent), ui(new Ui::WebDialog(this)) {
   ui->setupUi();
-  connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this, &WebDialog::doDownload);
-  connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-  connect(&this->manager, &QNetworkAccessManager::finished, this, &WebDialog::onFinished);
+  connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this,
+          &WebDialog::doDownload);
+  connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this,
+          &QDialog::reject);
+  connect(&this->manager, &QNetworkAccessManager::finished, this,
+          &WebDialog::onFinished);
 }
 
 void WebDialog::doDownload() {
@@ -20,7 +24,7 @@ void WebDialog::doDownload() {
   this->manager.post(req, query.toString().toUtf8());
 }
 
-void WebDialog::onFinished(QNetworkReply* networkReply) {
+void WebDialog::onFinished(QNetworkReply *networkReply) {
   if (networkReply->isReadable()) {
     this->data = networkReply->readAll();
     this->accept();
@@ -29,6 +33,6 @@ void WebDialog::onFinished(QNetworkReply* networkReply) {
   }
 }
 
-QString WebDialog::getResult() {
+auto WebDialog::getResult() -> QString {
   return this->data;
 }

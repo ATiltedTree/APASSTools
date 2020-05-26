@@ -21,28 +21,31 @@
 namespace Ui {
   class CSVDialog {
   public:
-    QFormLayout* formLayout;
-    QLabel* labelCSVFile;
-    QHBoxLayout* horizontalLayout;
-    QLineEdit* lineEditCSVFile;
-    QPushButton* buttonCSVFile;
-    QDialogButtonBox* buttonBox;
-    QDialog* parent;
+    QFormLayout *formLayout;
+    QLabel *labelCSVFile;
+    QHBoxLayout *horizontalLayout;
+    QLineEdit *lineEditCSVFile;
+    QPushButton *buttonCSVFile;
+    QDialogButtonBox *buttonBox;
+    QDialog *parent;
 
-    CSVDialog(QDialog* parent)
+    CSVDialog(QDialog *parent)
         : formLayout(new QFormLayout(parent)), labelCSVFile(new QLabel(parent)),
-          horizontalLayout(new QHBoxLayout()), lineEditCSVFile(new QLineEdit(parent)),
-          buttonCSVFile(new QPushButton(parent)), buttonBox(new QDialogButtonBox(parent)),
-          parent(parent) {}
+          horizontalLayout(new QHBoxLayout()),
+          lineEditCSVFile(new QLineEdit(parent)),
+          buttonCSVFile(new QPushButton(parent)),
+          buttonBox(new QDialogButtonBox(parent)), parent(parent) {}
 
     void setupUi() const {
-      parent->window()->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+      parent->window()->layout()->setSizeConstraint(
+          QLayout::SizeConstraint::SetFixedSize);
       parent->setWindowFlag(Qt::WindowType::MSWindowsFixedSizeDialogHint, true);
       parent->setWindowIcon(getIcon(Icon::TextCSV));
 
       buttonCSVFile->setIcon(getIcon(Icon::DocumentOpen));
 
-      buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
+      buttonBox->setStandardButtons(QDialogButtonBox::Cancel |
+                                    QDialogButtonBox::Ok);
 
       horizontalLayout->addWidget(lineEditCSVFile);
       horizontalLayout->addWidget(buttonCSVFile);
@@ -55,8 +58,10 @@ namespace Ui {
     }
 
     void retranslateUi() const {
-      parent->setWindowTitle(QCoreApplication::translate("CSVDialog", "From CSV...", nullptr));
-      labelCSVFile->setText(QCoreApplication::translate("CSVDialog", "CSV File", nullptr));
+      parent->setWindowTitle(
+          QCoreApplication::translate("CSVDialog", "From CSV...", nullptr));
+      labelCSVFile->setText(
+          QCoreApplication::translate("CSVDialog", "CSV File", nullptr));
     }
   };
 } // namespace Ui
@@ -68,10 +73,10 @@ private slots:
   void onSelectFile();
 
 public:
-  explicit CSVDialog(QWidget* parent, Settings* settings);
-  QString getResult();
+  explicit CSVDialog(QWidget *parent, Settings *settings);
+  auto getResult() -> QString;
 
 private:
-  Ui::CSVDialog* ui;
-  Settings* settings;
+  Ui::CSVDialog *ui;
+  Settings *settings;
 };

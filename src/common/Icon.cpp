@@ -9,8 +9,8 @@ static const std::map<Icon, QString> iconLookup = {
     {Icon::TextCSV, "text-csv"},  {Icon::WindowClose, "window-close"},
     {Icon::QtIcon, "qt5-logo"}};
 
-QIcon getIcon(Icon icon) {
-  QString iconName         = iconLookup.at(icon);
+auto getIcon(Icon icon) -> QIcon {
+  const QString &iconName = iconLookup.at(icon);
   QString resourceLocation = ":/icons/";
   return QIcon::fromTheme(iconName, QIcon(resourceLocation.append(iconName)));
 }

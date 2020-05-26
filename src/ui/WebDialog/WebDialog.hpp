@@ -24,18 +24,18 @@ constexpr int MAX_RADIUS = 15;
 namespace Ui {
   class WebDialog {
   public:
-    QFormLayout* formLayout;
-    QLabel* labelRA;
-    QLineEdit* editRA;
-    QLabel* labelDec;
-    QLineEdit* editDec;
-    QLabel* labelRadius;
-    QSpinBox* spinBoxRadius;
-    QWidget* widget;
-    QDialogButtonBox* buttonBox;
-    QDialog* parent;
+    QFormLayout *formLayout;
+    QLabel *labelRA;
+    QLineEdit *editRA;
+    QLabel *labelDec;
+    QLineEdit *editDec;
+    QLabel *labelRadius;
+    QSpinBox *spinBoxRadius;
+    QWidget *widget;
+    QDialogButtonBox *buttonBox;
+    QDialog *parent;
 
-    WebDialog(QDialog* parent)
+    WebDialog(QDialog *parent)
         : formLayout(new QFormLayout(parent)), labelRA(new QLabel(parent)),
           editRA(new QLineEdit(parent)), labelDec(new QLabel(parent)),
           editDec(new QLineEdit(parent)), labelRadius(new QLabel(parent)),
@@ -43,14 +43,16 @@ namespace Ui {
           buttonBox(new QDialogButtonBox(parent)), parent(parent) {}
 
     void setupUi() const {
-      parent->window()->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+      parent->window()->layout()->setSizeConstraint(
+          QLayout::SizeConstraint::SetFixedSize);
       parent->setWindowFlag(Qt::WindowType::MSWindowsFixedSizeDialogHint, true);
       parent->setWindowIcon(getIcon(Icon::Download));
 
       spinBoxRadius->setMinimum(1);
       spinBoxRadius->setMaximum(MAX_RADIUS);
 
-      buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
+      buttonBox->setStandardButtons(QDialogButtonBox::Cancel |
+                                    QDialogButtonBox::Ok);
 
       formLayout->setWidget(0, QFormLayout::LabelRole, labelRA);
       formLayout->setWidget(0, QFormLayout::FieldRole, editRA);
@@ -65,10 +67,14 @@ namespace Ui {
     }
 
     void retranslateUi() const {
-      parent->setWindowTitle(QCoreApplication::translate("WebDialog", "From Web...", nullptr));
-      labelRA->setText(QCoreApplication::translate("WebDialog", "R. A.", nullptr));
-      labelDec->setText(QCoreApplication::translate("WebDialog", "Dec.", nullptr));
-      labelRadius->setText(QCoreApplication::translate("WebDialog", "Radius", nullptr));
+      parent->setWindowTitle(
+          QCoreApplication::translate("WebDialog", "From Web...", nullptr));
+      labelRA->setText(
+          QCoreApplication::translate("WebDialog", "R. A.", nullptr));
+      labelDec->setText(
+          QCoreApplication::translate("WebDialog", "Dec.", nullptr));
+      labelRadius->setText(
+          QCoreApplication::translate("WebDialog", "Radius", nullptr));
     }
   };
 } // namespace Ui
@@ -77,15 +83,15 @@ class WebDialog : public QDialog {
   Q_OBJECT
 
 private slots:
-  void onFinished(QNetworkReply* networkReply);
+  void onFinished(QNetworkReply *networkReply);
   void doDownload();
 
 public:
-  explicit WebDialog(QWidget* parent);
-  QString getResult();
+  explicit WebDialog(QWidget *parent);
+  auto getResult() -> QString;
 
 private:
-  Ui::WebDialog* ui;
+  Ui::WebDialog *ui;
   QNetworkAccessManager manager;
   QString data;
 };

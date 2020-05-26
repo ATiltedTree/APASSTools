@@ -40,10 +40,12 @@ target_link_libraries(apasstools PUBLIC Qt5::Widgets Qt5::Svg Qt5::Network)
 if(WIN32)
   target_sources(apasstools PRIVATE assets/apasstools.rc)
 
-  # Delegate to Qt's official deployment binary on Windows to copy over the necessary Qt-specific
-  # libraries, etc.
+  # Delegate to Qt's official deployment binary on Windows to copy over the
+  # necessary Qt-specific libraries, etc.
   get_target_property(MOC_EXECUTABLE_LOCATION Qt5::moc IMPORTED_LOCATION)
-  get_filename_component(QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY)
+  get_filename_component(
+    QT_BINARY_DIRECTORY "${MOC_EXECUTABLE_LOCATION}" DIRECTORY
+  )
   find_program(WINDEPLOYQT_EXE windeployqt HINTS "${QT_BINARY_DIRECTORY}")
 
   set(WINDEPLOYQT_ARGS
