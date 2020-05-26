@@ -11,9 +11,10 @@ jobs:
     name: Build
 
     strategy:
-      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - windows-latest
 
         include:
           - os: ubuntu-latest
@@ -40,11 +41,11 @@ jobs:
       - name: Build | CMake
         run: |
           mkdir build && cd build
-          cmake -DCMAKE_BUILD_TYPE=Debug ..
+          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
       - name: Build | Compile
         run: |
           cd build
-          cmake --build .
+          cmake --build . --config RelWithDebInfo
       - name: Build | Package
         run: |
           cd build
