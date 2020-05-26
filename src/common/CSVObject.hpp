@@ -5,9 +5,9 @@
 class CSVObject {
 public:
   explicit CSVObject(QString value);
-  QString asString();
-  int asInt();
-  double asDouble();
+  auto asString() -> QString;
+  auto asInt() -> int;
+  auto asDouble() -> double;
 
 private:
   QString value;

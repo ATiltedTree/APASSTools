@@ -20,4 +20,4 @@ enum class Icon {
   QtIcon
 };
 
-QIcon getIcon(Icon icon);
+auto getIcon(Icon icon) -> QIcon;

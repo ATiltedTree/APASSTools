@@ -39,58 +39,62 @@ namespace Ui {
   class APASSTools {
   public:
     const QList<QString> apassValues = {
-        "radeg",     "raerr",   "decdeg",  "decerr",  "Johnson_V",   "Verr",    "Vnobs",
-        "Johnson_B", "Berr",    "Bnobs",   "Sloan_u", "SUerr",       "SUnobs",  "Sloan_g",
-        "SGerr",     "SGnobs",  "Sloan_r", "SRerr",   "SRnobs",      "Sloan_i", "SIerr",
-        "SInobs",    "Sloan_z", "SZerr",   "SZnobs",  "PanSTARRS_Y", "Yerr",    "Ynobs"};
+        "radeg",  "raerr",       "decdeg", "decerr", "Johnson_V", "Verr",
+        "Vnobs",  "Johnson_B",   "Berr",   "Bnobs",  "Sloan_u",   "SUerr",
+        "SUnobs", "Sloan_g",     "SGerr",  "SGnobs", "Sloan_r",   "SRerr",
+        "SRnobs", "Sloan_i",     "SIerr",  "SInobs", "Sloan_z",   "SZerr",
+        "SZnobs", "PanSTARRS_Y", "Yerr",   "Ynobs"};
 
-    QAction* actionCSV;
-    QAction* actionWeb;
-    QAction* actionSave;
-    QAction* actionSaveAs;
-    QAction* actionQuit;
-    QAction* actionHelp;
-    QAction* actionAbout;
-    QAction* actionAboutQt;
-    QAction* actionSettings;
-    QAction* actionClear;
-    QWidget* centralwidget;
-    QGridLayout* centralLayout;
-    QGroupBox* settingsBox;
-    QFormLayout* settingsBoxLayout;
-    QDoubleSpinBox* magnitudeSpin;
-    QSpinBox* observationSpin;
-    QLabel* obsLabel;
-    QLineEdit* nameEdit;
-    QLabel* nameLabel;
-    QLabel* magLabel;
-    QTreeWidget* CSVDisplay;
-    QMenuBar* menubar;
-    QMenu* menuFile;
-    QMenu* menuNewFrom;
-    QMenu* menuHelp;
-    QMenu* menuEdit;
-    QStatusBar* statusbar;
-    QMainWindow* parent;
-    QTreeWidgetItem* CSVDisplayHeaderItem;
+    QAction *actionCSV;
+    QAction *actionWeb;
+    QAction *actionSave;
+    QAction *actionSaveAs;
+    QAction *actionQuit;
+    QAction *actionHelp;
+    QAction *actionAbout;
+    QAction *actionAboutQt;
+    QAction *actionSettings;
+    QAction *actionClear;
+    QWidget *centralwidget;
+    QGridLayout *centralLayout;
+    QGroupBox *settingsBox;
+    QFormLayout *settingsBoxLayout;
+    QDoubleSpinBox *magnitudeSpin;
+    QSpinBox *observationSpin;
+    QLabel *obsLabel;
+    QLineEdit *nameEdit;
+    QLabel *nameLabel;
+    QLabel *magLabel;
+    QTreeWidget *CSVDisplay;
+    QMenuBar *menubar;
+    QMenu *menuFile;
+    QMenu *menuNewFrom;
+    QMenu *menuHelp;
+    QMenu *menuEdit;
+    QStatusBar *statusbar;
+    QMainWindow *parent;
+    QTreeWidgetItem *CSVDisplayHeaderItem;
 
-    APASSTools(QMainWindow* parent)
+    APASSTools(QMainWindow *parent)
         : actionCSV(new QAction(parent)), actionWeb(new QAction(parent)),
           actionSave(new QAction(parent)), actionSaveAs(new QAction(parent)),
           actionQuit(new QAction(parent)), actionHelp(new QAction(parent)),
           actionAbout(new QAction(parent)), actionAboutQt(new QAction(parent)),
           actionSettings(new QAction(parent)), actionClear(new QAction(parent)),
-          centralwidget(new QWidget(parent)), centralLayout(new QGridLayout(centralwidget)),
+          centralwidget(new QWidget(parent)),
+          centralLayout(new QGridLayout(centralwidget)),
           settingsBox(new QGroupBox(centralwidget)),
           settingsBoxLayout(new QFormLayout(settingsBox)),
           magnitudeSpin(new QDoubleSpinBox(settingsBox)),
-          observationSpin(new QSpinBox(settingsBox)), obsLabel(new QLabel(settingsBox)),
-          nameEdit(new QLineEdit(settingsBox)), nameLabel(new QLabel(settingsBox)),
-          magLabel(new QLabel(settingsBox)), CSVDisplay(new QTreeWidget(centralwidget)),
+          observationSpin(new QSpinBox(settingsBox)),
+          obsLabel(new QLabel(settingsBox)),
+          nameEdit(new QLineEdit(settingsBox)),
+          nameLabel(new QLabel(settingsBox)), magLabel(new QLabel(settingsBox)),
+          CSVDisplay(new QTreeWidget(centralwidget)),
           menubar(new QMenuBar(parent)), menuFile(new QMenu(menubar)),
           menuNewFrom(new QMenu(menuFile)), menuHelp(new QMenu(menubar)),
-          menuEdit(new QMenu(menubar)), statusbar(new QStatusBar(parent)), parent(parent),
-          CSVDisplayHeaderItem(new QTreeWidgetItem()) {}
+          menuEdit(new QMenu(menubar)), statusbar(new QStatusBar(parent)),
+          parent(parent), CSVDisplayHeaderItem(new QTreeWidgetItem()) {}
 
     void setupUi() const {
       parent->setWindowIcon(getIcon(Icon::Logo));
@@ -156,33 +160,56 @@ namespace Ui {
     }
 
     void retranslateUi() const {
-      parent->setWindowTitle(QCoreApplication::translate("APASSTools", "APASSTools", nullptr));
+      parent->setWindowTitle(
+          QCoreApplication::translate("APASSTools", "APASSTools", nullptr));
 
-      actionCSV->setText(QCoreApplication::translate("APASSTools", "CSV File", nullptr));
-      actionWeb->setText(QCoreApplication::translate("APASSTools", "Web", nullptr));
-      actionSave->setText(QCoreApplication::translate("APASSTools", "Save", nullptr));
-      actionSave->setShortcut(QCoreApplication::translate("APASSTools", "Ctrl+S", nullptr));
-      actionSaveAs->setText(QCoreApplication::translate("APASSTools", "Save as ...", nullptr));
-      actionSaveAs->setShortcut(QCoreApplication::translate("APASSTools", "Ctrl+Shift+S", nullptr));
-      actionQuit->setText(QCoreApplication::translate("APASSTools", "Quit", nullptr));
-      actionQuit->setShortcut(QCoreApplication::translate("APASSTools", "Ctrl+Q", nullptr));
-      actionHelp->setText(QCoreApplication::translate("APASSTools", "Help", nullptr));
-      actionHelp->setShortcut(QCoreApplication::translate("APASSTools", "F1", nullptr));
-      actionAbout->setText(QCoreApplication::translate("APASSTools", "About", nullptr));
-      actionAboutQt->setText(QCoreApplication::translate("APASSTools", "About Qt", nullptr));
-      actionSettings->setText(QCoreApplication::translate("APASSTools", "Settings", nullptr));
-      actionClear->setText(QCoreApplication::translate("APASSTools", "Clear", nullptr));
-      actionClear->setToolTip(QCoreApplication::translate("APASSTools", "Clear preview", nullptr));
+      actionCSV->setText(
+          QCoreApplication::translate("APASSTools", "CSV File", nullptr));
+      actionWeb->setText(
+          QCoreApplication::translate("APASSTools", "Web", nullptr));
+      actionSave->setText(
+          QCoreApplication::translate("APASSTools", "Save", nullptr));
+      actionSave->setShortcut(
+          QCoreApplication::translate("APASSTools", "Ctrl+S", nullptr));
+      actionSaveAs->setText(
+          QCoreApplication::translate("APASSTools", "Save as ...", nullptr));
+      actionSaveAs->setShortcut(
+          QCoreApplication::translate("APASSTools", "Ctrl+Shift+S", nullptr));
+      actionQuit->setText(
+          QCoreApplication::translate("APASSTools", "Quit", nullptr));
+      actionQuit->setShortcut(
+          QCoreApplication::translate("APASSTools", "Ctrl+Q", nullptr));
+      actionHelp->setText(
+          QCoreApplication::translate("APASSTools", "Help", nullptr));
+      actionHelp->setShortcut(
+          QCoreApplication::translate("APASSTools", "F1", nullptr));
+      actionAbout->setText(
+          QCoreApplication::translate("APASSTools", "About", nullptr));
+      actionAboutQt->setText(
+          QCoreApplication::translate("APASSTools", "About Qt", nullptr));
+      actionSettings->setText(
+          QCoreApplication::translate("APASSTools", "Settings", nullptr));
+      actionClear->setText(
+          QCoreApplication::translate("APASSTools", "Clear", nullptr));
+      actionClear->setToolTip(
+          QCoreApplication::translate("APASSTools", "Clear preview", nullptr));
 
-      settingsBox->setTitle(QCoreApplication::translate("APASSTools", "Settings", nullptr));
-      obsLabel->setText(
-          QCoreApplication::translate("APASSTools", "Observation Threshold", nullptr));
-      nameLabel->setText(QCoreApplication::translate("APASSTools", "Name", nullptr));
-      magLabel->setText(QCoreApplication::translate("APASSTools", "Magnitude Threshold", nullptr));
-      menuFile->setTitle(QCoreApplication::translate("APASSTools", "File", nullptr));
-      menuEdit->setTitle(QCoreApplication::translate("APASSTools", "Edit", nullptr));
-      menuNewFrom->setTitle(QCoreApplication::translate("APASSTools", "New from", nullptr));
-      menuHelp->setTitle(QCoreApplication::translate("APASSTools", "Help", nullptr));
+      settingsBox->setTitle(
+          QCoreApplication::translate("APASSTools", "Settings", nullptr));
+      obsLabel->setText(QCoreApplication::translate(
+          "APASSTools", "Observation Threshold", nullptr));
+      nameLabel->setText(
+          QCoreApplication::translate("APASSTools", "Name", nullptr));
+      magLabel->setText(QCoreApplication::translate(
+          "APASSTools", "Magnitude Threshold", nullptr));
+      menuFile->setTitle(
+          QCoreApplication::translate("APASSTools", "File", nullptr));
+      menuEdit->setTitle(
+          QCoreApplication::translate("APASSTools", "Edit", nullptr));
+      menuNewFrom->setTitle(
+          QCoreApplication::translate("APASSTools", "New from", nullptr));
+      menuHelp->setTitle(
+          QCoreApplication::translate("APASSTools", "Help", nullptr));
     } // retranslateUi
   };
 } // namespace Ui
@@ -200,17 +227,17 @@ private slots:
   void onSaveAs();
 
 public:
-  explicit APASSTools(QWidget* parent);
-  void closeEvent(QCloseEvent* event) override;
+  explicit APASSTools(QWidget *parent);
+  void closeEvent(QCloseEvent *event) override;
   void updateTree();
 
 private:
-  Ui::APASSTools* ui;
+  Ui::APASSTools *ui;
   bool unsavedChanges = false;
   APASS apass;
   Settings settings;
 
   void setupConnections();
-  void doImport(const QString& data);
+  void doImport(const QString &data);
   void doSave(bool saveAs);
 };

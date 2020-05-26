@@ -10,11 +10,9 @@ private:
   QList<Comet> comets;
 
 public:
-  APASS();
-
-  void addComet(Comet comet);
+  void addComet(const Comet &comet);
   void clearComets();
-  QList<Comet> getComets();
-  void importCSV(const QString& csv, int observationThreshold, double magnitudeThreshold,
-                 QProgressBar* bar);
+  auto getComets() -> QList<Comet>;
+  void importCSV(const QString &csv, int observationThreshold,
+                 double magnitudeThreshold, QProgressBar *bar);
 };

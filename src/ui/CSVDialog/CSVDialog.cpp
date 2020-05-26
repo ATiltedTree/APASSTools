@@ -1,14 +1,17 @@
 #include "CSVDialog.hpp"
 
-CSVDialog::CSVDialog(QWidget* parent, Settings* settings)
+CSVDialog::CSVDialog(QWidget *parent, Settings *settings)
     : QDialog(parent), ui(new Ui::CSVDialog(this)), settings(settings) {
   ui->setupUi();
-  connect(this->ui->buttonCSVFile, &QPushButton::clicked, this, &CSVDialog::onSelectFile);
-  connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-  connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+  connect(this->ui->buttonCSVFile, &QPushButton::clicked, this,
+          &CSVDialog::onSelectFile);
+  connect(this->ui->buttonBox, &QDialogButtonBox::accepted, this,
+          &QDialog::accept);
+  connect(this->ui->buttonBox, &QDialogButtonBox::rejected, this,
+          &QDialog::reject);
 }
 
-QString CSVDialog::getResult() {
+auto CSVDialog::getResult() -> QString {
   QFile csvFile(this->ui->lineEditCSVFile->text());
   if (!csvFile.open(QIODevice::ReadOnly)) {
     QMessageBox::information(nullptr, "error", csvFile.errorString());
@@ -22,7 +25,9 @@ QString CSVDialog::getResult() {
 
 void CSVDialog::onSelectFile() {
   QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open CSV"), this->settings->appSettings.lastCSVDir, tr("CSV Files (*.csv)"));
-  this->settings->appSettings.lastCSVDir = fileName.left(fileName.lastIndexOf(QChar('/')));
+      this, tr("Open CSV"), this->settings->appSettings.lastCSVDir,
+      tr("CSV Files (*.csv)"));
+  this->settings->appSettings.lastCSVDir =
+      fileName.left(fileName.lastIndexOf(QChar('/')));
   this->ui->lineEditCSVFile->setText(fileName);
 }

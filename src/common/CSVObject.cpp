@@ -1,5 +1,4 @@
 #include "CSVObject.hpp"
-
 #include <utility>
 
 CSVObject::CSVObject(QString value) {
@@ -10,7 +9,7 @@ CSVObject::CSVObject(QString value) {
  *
  * @return double
  */
-QString CSVObject::asString() {
+auto CSVObject::asString() -> QString {
   return this->value;
 }
 /**
@@ -18,7 +17,7 @@ QString CSVObject::asString() {
  *
  * @return double
  */
-int CSVObject::asInt() {
+auto CSVObject::asInt() -> int {
   return this->value.toInt();
 }
 /**
@@ -26,6 +25,6 @@ int CSVObject::asInt() {
  *
  * @return double
  */
-double CSVObject::asDouble() {
+auto CSVObject::asDouble() -> double {
   return this->value.toDouble();
 }

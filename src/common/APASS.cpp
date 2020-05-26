@@ -1,8 +1,6 @@
 #include "APASS.hpp"
 
-APASS::APASS() = default;
-
-void APASS::addComet(const Comet comet) {
+void APASS::addComet(const Comet &comet) {
   this->comets.append(comet);
 }
 
@@ -10,13 +8,12 @@ void APASS::clearComets() {
   this->comets.clear();
 }
 
-QList<Comet> APASS::getComets() {
+auto APASS::getComets() -> QList<Comet> {
   return this->comets;
 }
 
-void APASS::importCSV(const QString& csv, int observationThreshold, double magnitudeThreshold,
-                      QProgressBar* bar) {
-
+void APASS::importCSV(const QString &csv, int observationThreshold,
+                      double magnitudeThreshold, QProgressBar *bar) {
   QList<QString> csvRows(csv.split("\n"));
   csvRows.removeFirst();
   csvRows.removeLast();

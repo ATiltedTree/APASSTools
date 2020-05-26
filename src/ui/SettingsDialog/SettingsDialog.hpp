@@ -21,44 +21,51 @@
 namespace Ui {
   class SettingsDialog {
   public:
-    QFormLayout* formLayout;
-    QDialogButtonBox* buttons;
-    QTabWidget* tabWidget;
-    QWidget* general;
-    QVBoxLayout* verticalLayout;
-    QGroupBox* filterBox;
-    QFormLayout* formLayout_3;
-    QLabel* obsLabel;
-    QSpinBox* obsSpin;
-    QLabel* magLabel;
-    QDoubleSpinBox* magSpin;
-    QGroupBox* saveBox;
-    QFormLayout* formLayout_2;
-    QLabel* savePathLabel;
-    QHBoxLayout* savePathLayout;
-    QLineEdit* savePathEdit;
-    QToolButton* savePathButton;
-    QLabel* createTDFLabel;
-    QCheckBox* createTDFCheck;
-    QDialog* parent;
+    QFormLayout *formLayout;
+    QDialogButtonBox *buttons;
+    QTabWidget *tabWidget;
+    QWidget *general;
+    QVBoxLayout *verticalLayout;
+    QGroupBox *filterBox;
+    QFormLayout *formLayout_3;
+    QLabel *obsLabel;
+    QSpinBox *obsSpin;
+    QLabel *magLabel;
+    QDoubleSpinBox *magSpin;
+    QGroupBox *saveBox;
+    QFormLayout *formLayout_2;
+    QLabel *savePathLabel;
+    QHBoxLayout *savePathLayout;
+    QLineEdit *savePathEdit;
+    QToolButton *savePathButton;
+    QLabel *createTDFLabel;
+    QCheckBox *createTDFCheck;
+    QDialog *parent;
 
-    SettingsDialog(QDialog* parent)
-        : formLayout(new QFormLayout(parent)), buttons(new QDialogButtonBox(parent)),
+    SettingsDialog(QDialog *parent)
+        : formLayout(new QFormLayout(parent)),
+          buttons(new QDialogButtonBox(parent)),
           tabWidget(new QTabWidget(parent)), general(new QWidget()),
-          verticalLayout(new QVBoxLayout(general)), filterBox(new QGroupBox(general)),
-          formLayout_3(new QFormLayout(filterBox)), obsLabel(new QLabel(filterBox)),
-          obsSpin(new QSpinBox(filterBox)), magLabel(new QLabel(filterBox)),
-          magSpin(new QDoubleSpinBox(filterBox)), saveBox(new QGroupBox(general)),
-          formLayout_2(new QFormLayout(saveBox)), savePathLabel(new QLabel(saveBox)),
-          savePathLayout(new QHBoxLayout()), savePathEdit(new QLineEdit(saveBox)),
-          savePathButton(new QToolButton(saveBox)), createTDFLabel(new QLabel(saveBox)),
+          verticalLayout(new QVBoxLayout(general)),
+          filterBox(new QGroupBox(general)),
+          formLayout_3(new QFormLayout(filterBox)),
+          obsLabel(new QLabel(filterBox)), obsSpin(new QSpinBox(filterBox)),
+          magLabel(new QLabel(filterBox)),
+          magSpin(new QDoubleSpinBox(filterBox)),
+          saveBox(new QGroupBox(general)),
+          formLayout_2(new QFormLayout(saveBox)),
+          savePathLabel(new QLabel(saveBox)), savePathLayout(new QHBoxLayout()),
+          savePathEdit(new QLineEdit(saveBox)),
+          savePathButton(new QToolButton(saveBox)),
+          createTDFLabel(new QLabel(saveBox)),
           createTDFCheck(new QCheckBox(saveBox)), parent(parent) {}
 
     void setupUi() const {
       parent->setWindowIcon(getIcon(Icon::Settings));
 
       buttons->setOrientation(Qt::Horizontal);
-      buttons->setStandardButtons(QDialogButtonBox::Apply | QDialogButtonBox::Cancel |
+      buttons->setStandardButtons(QDialogButtonBox::Apply |
+                                  QDialogButtonBox::Cancel |
                                   QDialogButtonBox::Ok);
 
       formLayout_3->setWidget(0, QFormLayout::LabelRole, obsLabel);
@@ -87,21 +94,26 @@ namespace Ui {
     }
 
     void retranslateUi() const {
-      parent->setWindowTitle(QCoreApplication::translate("SettingsDialog", "Settings", nullptr));
-      filterBox->setTitle(QCoreApplication::translate("SettingsDialog", "Filter", nullptr));
-      obsLabel->setText(
-          QCoreApplication::translate("SettingsDialog", "Observation Threshold", nullptr));
-      magLabel->setText(
-          QCoreApplication::translate("SettingsDialog", "Magnitude Threshold", nullptr));
-      saveBox->setTitle(QCoreApplication::translate("SettingsDialog", "Saving", nullptr));
-      savePathLabel->setText(
-          QCoreApplication::translate("SettingsDialog", "Default Save Path", nullptr));
-      savePathButton->setText(QCoreApplication::translate("SettingsDialog", "...", nullptr));
-      createTDFLabel->setText(
-          QCoreApplication::translate("SettingsDialog", "Create TDF for Guide", nullptr));
+      parent->setWindowTitle(
+          QCoreApplication::translate("SettingsDialog", "Settings", nullptr));
+      filterBox->setTitle(
+          QCoreApplication::translate("SettingsDialog", "Filter", nullptr));
+      obsLabel->setText(QCoreApplication::translate(
+          "SettingsDialog", "Observation Threshold", nullptr));
+      magLabel->setText(QCoreApplication::translate(
+          "SettingsDialog", "Magnitude Threshold", nullptr));
+      saveBox->setTitle(
+          QCoreApplication::translate("SettingsDialog", "Saving", nullptr));
+      savePathLabel->setText(QCoreApplication::translate(
+          "SettingsDialog", "Default Save Path", nullptr));
+      savePathButton->setText(
+          QCoreApplication::translate("SettingsDialog", "...", nullptr));
+      createTDFLabel->setText(QCoreApplication::translate(
+          "SettingsDialog", "Create TDF for Guide", nullptr));
       createTDFCheck->setText(QString());
-      tabWidget->setTabText(tabWidget->indexOf(general),
-                            QCoreApplication::translate("SettingsDialog", "General", nullptr));
+      tabWidget->setTabText(
+          tabWidget->indexOf(general),
+          QCoreApplication::translate("SettingsDialog", "General", nullptr));
     } // retranslateUi
   };
 } // namespace Ui
@@ -115,11 +127,11 @@ private slots:
   void onChangeSaveLocation();
 
 public:
-  explicit SettingsDialog(QWidget* parent, Settings* settings);
+  explicit SettingsDialog(QWidget *parent, Settings *settings);
   void getSettings();
   void saveSettings();
 
 private:
-  Ui::SettingsDialog* ui;
-  Settings* settings;
+  Ui::SettingsDialog *ui;
+  Settings *settings;
 };
