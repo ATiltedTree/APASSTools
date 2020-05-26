@@ -7,6 +7,8 @@ project(
   HOMEPAGE_URL https://github.com/ATiltedTree/APASSTools
 )
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -17,7 +19,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory("src")
 
-if(CMAKE_SYSTEM_NAME STREQUAL "LINUX")
+if(UNIX AND NOT APPLE)
   install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION share/doc/apasstools)
   install(FILES ${CMAKE_SOURCE_DIR}/data/apasstools.desktop
           DESTINATION share/applications
@@ -38,7 +40,7 @@ if(WIN32)
   set(CPACK_NSIS_MENU_LINKS "bin/apasstools.exe" ${CMAKE_PROJECT_NAME})
   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 endif()
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if(UNIX AND NOT APPLE)
   list(APPEND CPACK_GENERATOR "DEB")
 
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "ATiltedTree")
