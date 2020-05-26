@@ -1,12 +1,5 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE
-      "Debug"
-      CACHE STRING "Choose the type of build,options are: Debug Release RelWithDebInfo MinSizeRel."
-  )
-endif(NOT CMAKE_BUILD_TYPE)
-
 project(
   APASSTools
   LANGUAGES CXX
@@ -26,7 +19,9 @@ add_subdirectory("src")
 
 if(UNIX)
   install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION share/doc/apasstools)
-  install(FILES ${CMAKE_SOURCE_DIR}/data/apasstools.desktop DESTINATION share/applications)
+  install(FILES ${CMAKE_SOURCE_DIR}/data/apasstools.desktop
+          DESTINATION share/applications
+  )
   install(FILES ${CMAKE_SOURCE_DIR}/data/apasstools.svg
           DESTINATION share/icons/hicolor/scalable/apps
   )
@@ -54,7 +49,9 @@ endif()
 
 set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CMAKE_SYSTEM_NAME}")
 set(CPACK_PACKAGE_VENDOR "ATiltedTree")
-set(CPACK_PACKAGE_DESCRIPTION "A toolkit for managing and converting APASS catalog files")
+set(CPACK_PACKAGE_DESCRIPTION
+    "A toolkit for managing and converting APASS catalog files"
+)
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
 set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
 
