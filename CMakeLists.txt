@@ -17,7 +17,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory("src")
 
-if(UNIX)
+if(CMAKE_SYSTEM_NAME STREQUAL "LINUX")
   install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION share/doc/apasstools)
   install(FILES ${CMAKE_SOURCE_DIR}/data/apasstools.desktop
           DESTINATION share/applications
@@ -37,14 +37,16 @@ if(WIN32)
   set(CPACK_NSIS_DISPLAY_NAME ${CMAKE_PROJECT_NAME})
   set(CPACK_NSIS_MENU_LINKS "bin/apasstools.exe" ${CMAKE_PROJECT_NAME})
   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
-elseif(UNIX)
+endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   list(APPEND CPACK_GENERATOR "DEB")
 
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "ATiltedTree")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt5gui5, libqt5svg5, libqt5network5")
   set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
-elseif(APPLE)
-
+endif()
+if(APPLE)
+  list(APPEND CPACK_GENERATOR "DragNDrop")
 endif()
 
 set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CMAKE_SYSTEM_NAME}")

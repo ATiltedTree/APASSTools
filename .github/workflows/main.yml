@@ -15,12 +15,18 @@ jobs:
         os:
           - ubuntu-latest
           - windows-latest
+          - macos-latest
 
         include:
           - os: ubuntu-latest
             artifact-name: APASSTools-Linux.deb
+            image-magick: ""
           - os: windows-latest
             artifact-name: APASSTools-Windows.exe
+            image-magick: choco install imagemagick --yes
+          - os: macos-latest
+            artifact-name: APASSTools-Darwin.dmg
+            image-magick: brew install imagemagick
 
     runs-on: ${{ matrix.os }}
 
@@ -38,6 +44,8 @@ jobs:
         with:
           cached: ${{ steps.cache.outputs.cache-hit }}
           modules: qtsvg
+      - name: Setup | ImageMagick
+        run: ${{ matrix.image-magick }}
       - name: Build | CMake
         run: |
           mkdir build && cd build
@@ -49,7 +57,7 @@ jobs:
       - name: Build | Package
         run: |
           cd build
-          cmake --build . --target package
+          cmake --build . --config RelWithDebInfo --target package
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
