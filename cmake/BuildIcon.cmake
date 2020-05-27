@@ -3,76 +3,64 @@ macro(build_icon target src icon_sizes)
 
     find_program(CONVERT convert)
 
-    add_custom_command(
-      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/icons"
-      COMMAND "${CMAKE_COMMAND}" -E make_directory
-              "${CMAKE_CURRENT_BINARY_DIR}/icons"
-    )
     if(APPLE)
+      set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons.iconset")
+      set(ICON "${ICON_FOLDER}/${target}.icns")
+
       find_program(ICONUTIL iconutil)
 
-      set(ICON "${CMAKE_CURRENT_BINARY_DIR}/${target}.icns")
+      execute_process(
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${ICON_FOLDER}"
+      )
 
       foreach(ICON_SIZE ${icon_sizes})
         add_custom_command(
-          DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/icons"
-          OUTPUT
-            "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}.png"
+          OUTPUT "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
           COMMAND
             "${CONVERT}" -background none -resize ${ICON_SIZE}x${ICON_SIZE}
-            "${src}"
-            "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}.png"
+            "${src}" "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
         )
         math(EXPR DOUBLE_SIZE "${ICON_SIZE} * 2")
         add_custom_command(
-          DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/icons"
-          OUTPUT
-            "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}@2.png"
+          OUTPUT "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}@2.png"
           COMMAND
             "${CONVERT}" -background none -resize ${DOUBLE_SIZE}x${DOUBLE_SIZE}
-            "${src}"
-            "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}@2.png"
+            "${src}" "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}@2.png"
         )
-        list(
-          APPEND
-          ICONS
-          "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}.png"
-          "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}@2.png"
+        list(APPEND ICONS "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
+             "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}@2.png"
         )
       endforeach()
 
       add_custom_command(
         OUTPUT "${ICON}"
         DEPENDS ${ICONS}
-        COMMAND "${ICONUTIL}" --convert icns
-                "${CMAKE_CURRENT_BINARY_DIR}/icons" --output "${ICON}"
+        COMMAND "${ICONUTIL}" --convert icns "${ICON_FOLDER}" --output
+                "${ICON}"
       )
     elseif(WIN32)
+      set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons")
+      set(ICON "${ICON_FOLDER}/${target}.ico")
 
-      set(ICON "${CMAKE_CURRENT_BINARY_DIR}/${target}.ico")
+      execute_process(
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${ICON_FOLDER}"
+      )
 
       foreach(ICON_SIZE ${icon_sizes})
         add_custom_command(
-          DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/icons"
-          OUTPUT
-            "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}.png"
+          OUTPUT "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
           COMMAND
             "${CONVERT}" -background none -resize ${ICON_SIZE}x${ICON_SIZE}
-            "${src}"
-            "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}.png"
+            "${src}" "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
         )
-        list(
-          APPEND ICONS
-          "${CMAKE_CURRENT_BINARY_DIR}/icons/icon_${ICON_SIZE}x${ICON_SIZE}.png"
-        )
+        list(APPEND ICONS "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png")
       endforeach()
 
       add_custom_command(
         OUTPUT "${ICON}"
         DEPENDS ${ICONS}
-        COMMAND "${CONVERT}" "${CMAKE_CURRENT_BINARY_DIR}/icons/*" "${ICON}"
+        COMMAND "${CONVERT}" "${ICON_FOLDER}/*" "${ICON}"
       )
-
     endif()
   endif()
 endmacro()
