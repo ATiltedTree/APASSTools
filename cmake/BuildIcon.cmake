@@ -4,8 +4,8 @@ macro(build_icon target src icon_sizes)
     find_package(ImageMagick REQUIRED COMPONENTS convert)
 
     if(APPLE)
-      set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons.iconset")
-      set(ICON "${CMAKE_CURRENT_BINARY_DIR}/${target}.icns")
+      set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons/${target}.iconset")
+      set(ICON "${CMAKE_CURRENT_BINARY_DIR}/icons/${target}.icns")
 
       find_program(ICONUTIL iconutil)
 
@@ -39,8 +39,8 @@ macro(build_icon target src icon_sizes)
                 "${ICON}"
       )
     elseif(WIN32)
-      set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons")
-      set(ICON "${CMAKE_CURRENT_BINARY_DIR}/${target}.ico")
+      set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons/${target}")
+      set(ICON "${CMAKE_CURRENT_BINARY_DIR}/icons/${target}.ico")
 
       execute_process(
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${ICON_FOLDER}"
