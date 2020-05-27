@@ -5,7 +5,7 @@ macro(build_icon target src icon_sizes)
 
     if(APPLE)
       set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons.iconset")
-      set(ICON "${ICON_FOLDER}/${target}.icns")
+      set(ICON "${CMAKE_CURRENT_BINARY_DIR}/${target}.icns")
 
       find_program(ICONUTIL iconutil)
 
@@ -40,7 +40,7 @@ macro(build_icon target src icon_sizes)
       )
     elseif(WIN32)
       set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons")
-      set(ICON "${ICON_FOLDER}/${target}.ico")
+      set(ICON "${CMAKE_CURRENT_BINARY_DIR}/${target}.ico")
 
       execute_process(
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${ICON_FOLDER}"
