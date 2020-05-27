@@ -1,4 +1,4 @@
-macro(deploy_qt target deploy_args)
+macro(deploy_qt args)
   if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux")
     # Delegate to Qt's official deployment binary to copy over the necessary
     # Qt-specific libraries, etc.
@@ -13,9 +13,8 @@ macro(deploy_qt target deploy_args)
       HINTS "${QT_BINARY_DIRECTORY}"
     )
 
-    install(
-      CODE "execute_process(COMMAND \"${DEPLOY_QT}\" \"${deploy_args}\" \"${target}\")"
-      COMPONENT Runtime
+    install(CODE "execute_process(COMMAND \"${DEPLOY_QT}\" \"${args}\")"
+            COMPONENT Runtime
     )
 
   endif()

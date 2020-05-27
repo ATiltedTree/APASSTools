@@ -84,14 +84,14 @@ include(DeployQt)
 
 if(WIN32)
   deploy_qt(
-    "\\\${CMAKE_INSTALL_PREFIX}/bin/apasstools.exe"
     "--no-translations
     --no-compiler-runtime
     --no-opengl-sw
     --no-system-d3d-compiler
     --no-angle
-    $<IF:$<CONFIG:Debug>,--debug,--release>"
+    $<IF:$<CONFIG:Debug>,--debug,--release>
+    \\\${CMAKE_INSTALL_PREFIX}/bin/apasstools.exe"
   )
 elseif(APPLE)
-  deploy_qt("\\\${CMAKE_INSTALL_PREFIX}/apasstools.app" "")
+  deploy_qt("\\\${CMAKE_INSTALL_PREFIX}/apasstools.app")
 endif()
