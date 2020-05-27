@@ -21,16 +21,16 @@ macro(build_icon target src icon_sizes)
         add_custom_command(
           OUTPUT "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
           COMMAND
-            "${MAGICK}" convert "${src}" -background none -resize
-            ${ICON_SIZE}x${ICON_SIZE}
+            "${MAGICK}" convert -background none -size
+            ${ICON_SIZE}x${ICON_SIZE} "${src}"
             "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
         )
         math(EXPR DOUBLE_SIZE "${ICON_SIZE} * 2")
         add_custom_command(
           OUTPUT "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}@2.png"
           COMMAND
-            "${MAGICK}" convert "${src}" -background none -resize
-            ${DOUBLE_SIZE}x${DOUBLE_SIZE}
+            "${MAGICK}" convert -background none -size
+            ${DOUBLE_SIZE}x${DOUBLE_SIZE} "${src}"
             "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}@2.png"
         )
         list(APPEND ICONS "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
@@ -56,8 +56,8 @@ macro(build_icon target src icon_sizes)
         add_custom_command(
           OUTPUT "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
           COMMAND
-            "${MAGICK}" convert "${src}" -background none -resize
-            ${ICON_SIZE}x${ICON_SIZE}
+            "${MAGICK}" convert -background none -size
+            ${ICON_SIZE}x${ICON_SIZE} "${src}"
             "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png"
         )
         list(APPEND ICONS "${ICON_FOLDER}/icon_${ICON_SIZE}x${ICON_SIZE}.png")

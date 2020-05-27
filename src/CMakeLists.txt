@@ -45,6 +45,8 @@ if(WIN32)
     apasstools "${CMAKE_SOURCE_DIR}/data/apasstools.svg" "${ICON_SIZES}"
   )
 
+  set(CPACK_NSIS_MUI_ICON ${ICON})
+
   configure_file(assets/apasstools.rc.in assets/apasstools.rc)
   target_sources(
     apasstools PRIVATE "${ICON}"
@@ -89,9 +91,9 @@ if(WIN32)
     --no-opengl-sw
     --no-system-d3d-compiler
     --no-angle
-    $<IF:$<CONFIG:Debug>,--debug,--release>
-    \\\${CMAKE_INSTALL_PREFIX}/bin/apasstools.exe"
+    $<IF:$<CONFIG:Debug>,--debug,--release>"
+    "\\\${CMAKE_INSTALL_PREFIX}/bin/apasstools.exe"
   )
 elseif(APPLE)
-  deploy_qt("\\\${CMAKE_INSTALL_PREFIX}/apasstools.app")
+  deploy_qt("" "\\\${CMAKE_INSTALL_PREFIX}/apasstools.app")
 endif()
