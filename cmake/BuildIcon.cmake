@@ -1,7 +1,7 @@
 macro(build_icon target src icon_sizes)
   if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
-    find_program(CONVERT convert)
+    find_package(ImageMagick REQUIRED COMPONENTS convert)
 
     if(APPLE)
       set(ICON_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/icons.iconset")
