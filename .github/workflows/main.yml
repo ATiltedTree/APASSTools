@@ -16,6 +16,9 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macos-latest
+        qt-version:
+          - 5.12.8 # LTS
+          - 5.15.0 # Latest
 
         include:
           - os: ubuntu-latest
@@ -38,10 +41,11 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-QtCache
+          key: ${{ runner.os }}-${{ matrix.qt-version }}-QtCache
       - name: Setup | Qt
         uses: jurplel/install-qt-action@v2
         with:
+          version: ${{ matrix.qt-version }}
           cached: ${{ steps.cache.outputs.cache-hit }}
           modules: qtsvg
       - name: Setup | ImageMagick
