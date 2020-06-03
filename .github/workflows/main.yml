@@ -46,6 +46,7 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt-version }}
+          arch: win64_msvc2019_64 # Workaround for jurplel/install-qt-action #38
           cached: ${{ steps.cache.outputs.cache-hit }}
       - name: Setup | ImageMagick
         run: ${{ matrix.image-magick }}
