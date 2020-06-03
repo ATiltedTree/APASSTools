@@ -21,20 +21,20 @@ jobs:
           - 5.15.0 # Latest
 
         include:
-          - os: ubuntu-latest
-            artifact-name: APASSTools-Linux.deb
-            image-magick: ""
-          - os: windows-latest
-            artifact-name: APASSTools-Windows.exe
-            image-magick: choco install imagemagick --yes
-          - os: macos-latest
-            artifact-name: APASSTools-Darwin.dmg
-            image-magick: brew install imagemagick
-
           - qt-version: 5.15.0
             qt-arch: win64_msvc2019_64
           - qt-version: 5.12.8
             qt-arch: win64_msvc2017_64
+
+          - os: ubuntu-latest
+            artifact-name: APASSTools-Linux-${{ matrix.qt-version }}.deb
+            image-magick: ""
+          - os: windows-latest
+            artifact-name: APASSTools-Windows-${{ matrix.qt-version }}.exe
+            image-magick: choco install imagemagick --yes
+          - os: macos-latest
+            artifact-name: APASSTools-Darwin-${{ matrix.qt-version }}.dmg
+            image-magick: brew install imagemagick
 
     runs-on: ${{ matrix.os }}
 
@@ -70,5 +70,5 @@ jobs:
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.qt-version }}-${{ matrix.artifact-name }}
-          path: build/${{ matrix.artifact-name }}
+          name: ${{ matrix.artifact-name }}
+          path: build/APASSTools-*

@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.artifact-name }}
-          path: build/${{ matrix.artifact-name }}
+          path: build/APASSTools-*
 
   github-release:
     name: Deploy | Github
