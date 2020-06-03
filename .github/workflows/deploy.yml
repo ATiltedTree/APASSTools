@@ -18,13 +18,10 @@ jobs:
 
         include:
           - os: ubuntu-latest
-            artifact-name: APASSTools-Linux.deb
             image-magick: ""
           - os: windows-latest
-            artifact-name: APASSTools-Windows.exe
             image-magick: choco install imagemagick --yes
           - os: macos-latest
-            artifact-name: APASSTools-Darwin.dmg
             image-magick: brew install imagemagick
 
     runs-on: ${{ matrix.os }}
@@ -59,7 +56,7 @@ jobs:
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.artifact-name }}
+          name: APASSTools-${{ runner.os }}
           path: build/APASSTools-*
 
   github-release:
