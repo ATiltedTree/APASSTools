@@ -42,7 +42,6 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache.outputs.cache-hit }}
-          modules: qtsvg
       - name: Setup | ImageMagick
         run: ${{ matrix.image-magick }}
       - name: Build | Configure
