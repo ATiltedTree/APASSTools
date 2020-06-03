@@ -70,5 +70,5 @@ jobs:
       - name: Post Setup | Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.artifact-name }}
+          name: ${{ matrix.qt-version }}-${{ matrix.artifact-name }}
           path: build/${{ matrix.artifact-name }}
