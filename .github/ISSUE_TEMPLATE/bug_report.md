@@ -7,26 +7,21 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Bug Report
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+#### Current Behavior
+<!-- A clear and concise description of the behavior. -->
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+#### Expected Behavior
+<!-- A clear and concise description of what you expected to happen. -->
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+#### Additional context/Screenshots
+<!-- Add any other context about the problem here. If applicable, add screenshots to help explain. -->
 
-**System-info:**
- - OS: [e.g. Windows, Linux, Darwin]
- - Version [e.g. 0.1.0, 0.2.0]
- - Qt Version: [e.g. 5.12.8, 5.15.0]
+#### Possible Solution
+<!--- Only if you have suggestions on a fix for the bug -->
 
-**Additional context**
-Add any other context about the problem here.
+#### System-info:
+ - OS: <!-- e.g. Windows, Linux, Darwin -->
+ - Version <!-- e.g. 0.1.0, 0.2.0 -->
+ - Qt Version: <!-- e.g. 5.12.8, 5.15.0 -->
