@@ -7,8 +7,6 @@ assignees: ''
 
 ---
 
-## Bug Report
-
 #### Current Behavior
 <!-- A clear and concise description of the behavior. -->
 
@@ -21,7 +19,8 @@ assignees: ''
 #### Possible Solution
 <!--- Only if you have suggestions on a fix for the bug -->
 
-#### System-info:
- - OS: <!-- e.g. Windows, Linux, Darwin -->
- - Version <!-- e.g. 0.1.0, 0.2.0 -->
- - Qt Version: <!-- e.g. 5.12.8, 5.15.0 -->
+#### System-info
+
+- OS: <!-- e.g. Windows, Linux, Darwin -->
+- Version <!-- e.g. 0.1.0, 0.2.0 -->
+- Qt Version: <!-- e.g. 5.12.8, 5.15.0 -->
