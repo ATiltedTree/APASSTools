@@ -5,32 +5,32 @@ set(CMAKE_AUTORCC ON)
 
 add_executable(
   apasstools WIN32 MACOSX_BUNDLE
-  main.cpp
-  ui/CSVDialog/CSVDialog.cpp
-  ui/CSVDialog/CSVDialog.hpp
-  ui/APASSTools/APASSTools.cpp
-  ui/APASSTools/APASSTools.hpp
-  ui/WebDialog/WebDialog.cpp
-  ui/WebDialog/WebDialog.hpp
-  ui/AboutDialog/AboutDialog.cpp
-  ui/AboutDialog/AboutDialog.hpp
-  ui/SettingsDialog/SettingsDialog.cpp
-  ui/SettingsDialog/SettingsDialog.hpp
-  common/Settings.cpp
-  common/Settings.hpp
+  assets/apasstools.qrc
   common/APASS.cpp
   common/APASS.hpp
   common/Comet.cpp
   common/Comet.hpp
   common/CSVObject.cpp
   common/CSVObject.hpp
-  common/PRNFile.cpp
-  common/PRNFile.hpp
-  common/TDFFile.cpp
-  common/TDFFile.hpp
   common/Icon.cpp
   common/Icon.hpp
-  assets/apasstools.qrc
+  common/PRNFile.cpp
+  common/PRNFile.hpp
+  common/Settings.cpp
+  common/Settings.hpp
+  common/TDFFile.cpp
+  common/TDFFile.hpp
+  main.cpp
+  ui/AboutDialog/AboutDialog.cpp
+  ui/AboutDialog/AboutDialog.hpp
+  ui/APASSTools/APASSTools.cpp
+  ui/APASSTools/APASSTools.hpp
+  ui/CSVDialog/CSVDialog.cpp
+  ui/CSVDialog/CSVDialog.hpp
+  ui/SettingsDialog/SettingsDialog.cpp
+  ui/SettingsDialog/SettingsDialog.hpp
+  ui/WebDialog/WebDialog.cpp
+  ui/WebDialog/WebDialog.hpp
 )
 
 configure_file(config.hpp.in config.hpp)
