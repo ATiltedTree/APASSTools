@@ -30,13 +30,6 @@ jobs:
           - qt-version: 5.12.8
             qt-arch: win64_msvc2017_64
 
-          - os: ubuntu-latest
-            image-magick: ""
-          - os: windows-latest
-            image-magick: choco install imagemagick --yes
-          - os: macos-latest
-            image-magick: brew install imagemagick
-
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -54,8 +47,6 @@ jobs:
           version: ${{ matrix.qt-version }}
           arch: ${{ matrix.qt-arch }} # Workaround for jurplel/install-qt-action #38
           cached: ${{ steps.cache.outputs.cache-hit }}
-      - name: Setup | ImageMagick
-        run: ${{ matrix.image-magick }}
       - name: Build | Configure
         run: |
           mkdir build && cd build
