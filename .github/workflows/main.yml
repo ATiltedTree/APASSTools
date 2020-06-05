@@ -17,12 +17,15 @@ jobs:
           - windows-latest
           - macos-latest
         qt-version:
+          - 5.9.9 # OldLTS
           - 5.12.8 # LTS
           - 5.15.0 # Latest
 
         include:
           - qt-version: 5.15.0
             qt-arch: win64_msvc2019_64
+          - qt-version: 5.12.8
+            qt-arch: win64_msvc2017_64
           - qt-version: 5.12.8
             qt-arch: win64_msvc2017_64
 
