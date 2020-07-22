@@ -1,4 +1,0 @@
-Language: Cpp
-BasedOnStyle: LLVM
-AllowShortFunctionsOnASingleLine: Empty
-NamespaceIndentation: All
