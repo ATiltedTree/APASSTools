@@ -7,15 +7,5 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-iced = { git = "https://github.com/hecrj/iced.git" }
-qt_widgets = "0.5.0"
-qt_core = "0.5.0"
-cpp_core = "0.6.0"
-
-[[bin]]
-name = "qt"
-path = "src/qt.rs"
-
-[[bin]]
-name = "iced"
-path = "src/iced.rs"
+gtk = "0.9.1"
+gio = "0.9.0"
